@@ -10,4 +10,6 @@
     <color name="blueNavbar">#2469ff</color>
     <color name="blueBackground">#7399eb</color>
     <color name="lightBlue">#d0e1f3</color>
+    <color name="green">#b6d9a8</color>
+    <color name="red">#e89a9a</color>
 </resources>

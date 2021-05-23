@@ -113,7 +113,6 @@
                 android:layout_toRightOf="@+id/reportesButton"
                 android:layout_weight="1"
                 android:background="@drawable/lista_movimientos_icon_chico" />
-
         </RelativeLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
