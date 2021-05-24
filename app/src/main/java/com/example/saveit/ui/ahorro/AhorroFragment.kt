@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.saveit.databinding.AhorroFragmentBinding
+import java.time.LocalDateTime
 
 class AhorroFragment: Fragment() {
         private var _binding: AhorroFragmentBinding? = null
@@ -16,9 +18,30 @@ class AhorroFragment: Fragment() {
 
         private var listener: OnFragmentInteractionListener? = null
 
+        val ahorrosList = listOf<Ahorro>(
+            Ahorro(15000f,true, LocalDateTime.now()),
+            Ahorro(5000f,false, LocalDateTime.now()),
+            Ahorro(25000f,true, LocalDateTime.now()),
+            Ahorro(15000f,true, LocalDateTime.now()),
+            Ahorro(5000f,false, LocalDateTime.now()),
+            Ahorro(18700f,true, LocalDateTime.now()),
+            Ahorro(15000f,false, LocalDateTime.now()),
+            Ahorro(18700f,true, LocalDateTime.now()),
+            Ahorro(15000f,false, LocalDateTime.now()),
+            Ahorro(18700f,true, LocalDateTime.now()),
+            Ahorro(15000f,false, LocalDateTime.now()),
+            Ahorro(18700f,true, LocalDateTime.now()),
+            Ahorro(15000f,false, LocalDateTime.now()),
+            Ahorro(18700f,true, LocalDateTime.now()),
+            Ahorro(18700f,true, LocalDateTime.now()),
+            Ahorro(15000f,false, LocalDateTime.now()),
+            Ahorro(16000f,true, LocalDateTime.now())
+        )
+
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                   savedInstanceState: Bundle?): View? {
             _binding = AhorroFragmentBinding.inflate(inflater, container, false)
+            initRecycler()
             return binding.root
         }
 
@@ -68,4 +91,11 @@ class AhorroFragment: Fragment() {
             fun newInstance() =
                 AhorroFragment()
         }
+        fun initRecycler(){
+            binding.rvAhorro.layoutManager = LinearLayoutManager(context)
+            val adapter = AhorroAdapter(ahorrosList)
+            binding.rvAhorro.adapter = adapter
+
+        }
+
 }
