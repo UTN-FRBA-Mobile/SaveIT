@@ -6,6 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.saveit.data.UserViewModel
 import com.example.saveit.databinding.ListaMovimientosFragmentBinding
 
 class ListaMovimientosFragment: Fragment() {
@@ -14,11 +18,27 @@ class ListaMovimientosFragment: Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var mUserViewModel: UserViewModel
+
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = ListaMovimientosFragmentBinding.inflate(inflater, container, false)
+
+        // RecyclerView
+        val adapter = ListaMovimientosAdapter()
+        val recyclerView = binding.recyclerView
+
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // UserViewModel
+        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        mUserViewModel.readAllData.observe(viewLifecycleOwner, Observer { user ->
+            adapter.setData(user)
+        })
+
         return binding.root
     }
 

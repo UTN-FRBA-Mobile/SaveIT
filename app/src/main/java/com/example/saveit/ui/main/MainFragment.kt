@@ -41,19 +41,19 @@ class MainFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.ahorroButton.text = "Ahorro"
+        //binding.ahorroButton.text = "Ahorro"
         binding.ahorroButton.setOnClickListener {
             onButtonAhorroPressed()
         }
-        binding.reportesButton.text = "Reportes"
+        //binding.reportesButton.text = "Reportes"
         binding.reportesButton.setOnClickListener {
             onButtonReportesPressed()
         }
-        binding.listaMovimientosButton.text = "Lista Movimientos"
+        //binding.listaMovimientosButton.text = "Lista Movimientos"
         binding.listaMovimientosButton.setOnClickListener {
             onButtonlistaMovimientosPressed()
         }
-        binding.agregarMovimientosButton.text = "Agregar Movimientos"
+        //binding.agregarMovimientosButton.text = "Agregar Movimientos"
         binding.agregarMovimientosButton.setOnClickListener {
             onButtonagregarMovimientosPressed()
         }
