@@ -1,4 +1,4 @@
-package com.example.saveit.ui.reportes
+package com.example.saveit.ui.reportes.bylocation
 
 import android.content.Context
 import android.os.Bundle
@@ -6,68 +6,45 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.saveit.databinding.ReportesFragmentBinding
-import com.example.saveit.ui.reportes.bycategory.ByCategoryFragment
-import com.example.saveit.ui.reportes.bydate.ByDateFragment
-import com.example.saveit.ui.reportes.bylocation.ByLocationFragment
+import com.example.saveit.databinding.ByLocationFragmentBinding
 
-private const val ARG_TITLE = "Reportes"
-class ReportesFragment: Fragment() {
-    private var _binding: ReportesFragmentBinding? = null
+//private const val ARG_TITLE = "@string/titulo_bylocation"
+class ByLocationFragment : Fragment() {
+    private var _binding: ByLocationFragmentBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var title: String? = null
+    //private var title: String? = null
     private var listener: OnFragmentInteractionListener? = null
-   // private lateinit var viewModel: ReportesViewModel
+    // private lateinit var viewModel: ByLocationViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             title = it.getString(ARG_TITLE)
         }
-    }
+    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = ReportesFragmentBinding.inflate(inflater, container, false)
+        _binding = ByLocationFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.byLocationButton.setOnClickListener {
-            onByLocationButtonPressed()
-        }
-
-        binding.byDateButton.setOnClickListener {
-            onByDateButtonPressed()
-        }
-
-        binding.byCategoryButton.setOnClickListener {
-            onByCategoryButtonPressed()
-        }
     }
 
-   // override fun onActivityCreated(savedInstanceState: Bundle?) {
-      //  super.onActivityCreated(savedInstanceState)
-      //  viewModel = ViewModelProvider(this).get(ReportesViewModel::class.java)
-        // TODO: Use the ViewModel
-   // }
-
-    fun onByLocationButtonPressed() {
-        listener?.showFragment(ByLocationFragment())
-    }
-    fun onByDateButtonPressed() {
-        listener?.showFragment(ByDateFragment())
-    }
-    fun onByCategoryButtonPressed() {
-        listener?.showFragment(ByCategoryFragment())
-    }
+    // override fun onActivityCreated(savedInstanceState: Bundle?) {
+    //  super.onActivityCreated(savedInstanceState)
+    //  viewModel = ViewModelProvider(this).get(ByLocationViewModel::class.java)
+    // TODO: Use the ViewModel
+    // }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -103,15 +80,10 @@ class ReportesFragment: Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param title Title.
-         * @return A new instance of fragment ReportesFragment.
+         * @return A new instance of fragment StatusUpdate.
          */
         @JvmStatic
-        fun newInstance(title: String) =
-            ReportesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_TITLE, title)
-                }
-            }
+        fun newInstance() =
+            ByLocationFragment()
     }
 }

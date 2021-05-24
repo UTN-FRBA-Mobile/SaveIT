@@ -9,8 +9,15 @@ import com.example.saveit.ui.ahorro.AhorroFragment
 import com.example.saveit.ui.movimientos.agregar.AgregarMovimientosFragment
 import com.example.saveit.ui.movimientos.lista.ListaMovimientosFragment
 import com.example.saveit.ui.reportes.ReportesFragment
+import com.example.saveit.ui.reportes.bycategory.ByCategoryFragment
+import com.example.saveit.ui.reportes.bydate.ByDateFragment
+import com.example.saveit.ui.reportes.bylocation.ByLocationFragment
 
-class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionListener, AhorroFragment.OnFragmentInteractionListener, ListaMovimientosFragment.OnFragmentInteractionListener, AgregarMovimientosFragment.OnFragmentInteractionListener, ReportesFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionListener,
+    AhorroFragment.OnFragmentInteractionListener, ListaMovimientosFragment.OnFragmentInteractionListener,
+    AgregarMovimientosFragment.OnFragmentInteractionListener, ReportesFragment.OnFragmentInteractionListener,
+    ByCategoryFragment.OnFragmentInteractionListener, ByDateFragment.OnFragmentInteractionListener,
+    ByLocationFragment.OnFragmentInteractionListener {
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

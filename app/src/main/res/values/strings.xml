@@ -4,4 +4,7 @@
     <string name="titulo_ahorro">Ahorro</string>
     <string name="titulo_movimientos">Movimientos</string>
     <string name="titulo_reportes">Reportes</string>
+    <string name="titulo_bycategory">Reportes por Categoría</string>
+    <string name="titulo_bylocation">Reportes por Ubicación</string>
+    <string name="titulo_bydate">Reportes por Fecha</string>
 </resources>
