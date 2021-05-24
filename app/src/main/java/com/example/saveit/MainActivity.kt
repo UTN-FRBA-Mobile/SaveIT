@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), NavegacionInterface {
     override fun showFragment(fragment: Fragment, addToBackstack: Boolean) {
         val transaction = supportFragmentManager
             .beginTransaction()
-            .replace(R.id.container, fragment)
+            .replace(R.id.fragmentContainer, fragment)
 
         if (addToBackstack) {
             transaction.addToBackStack(null)

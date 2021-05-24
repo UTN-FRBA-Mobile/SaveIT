@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.saveit.NavegacionInterface
 //import androidx.lifecycle.ViewModelProvider
 import com.example.saveit.databinding.MainFragmentBinding
 import com.example.saveit.ui.ahorro.AhorroFragment
@@ -22,7 +23,7 @@ class MainFragment: Fragment() {
     private val binding get() = _binding!!
 
     private var title: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+    //private var listener: OnFragmentInteractionListener? = null
    // private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,31 +68,35 @@ class MainFragment: Fragment() {
    // }
 
     fun onButtonAhorroPressed() {
-        listener?.showFragment(AhorroFragment())
+    (activity as NavegacionInterface).showFragment(AhorroFragment(), true)
+ //       listener?.showFragment(AhorroFragment())
     }
     fun onButtonReportesPressed() {
-        listener?.showFragment(ReportesFragment())
+        (activity as NavegacionInterface).showFragment(ReportesFragment(), true)
+ //       listener?.showFragment(ReportesFragment())
     }
     fun onButtonlistaMovimientosPressed() {
-        listener?.showFragment(ListaMovimientosFragment())
+        (activity as NavegacionInterface).showFragment(ListaMovimientosFragment(), true)
+  //      listener?.showFragment(ListaMovimientosFragment())
     }
     fun onButtonagregarMovimientosPressed() {
-        listener?.showFragment(AgregarMovimientosFragment())
+        (activity as NavegacionInterface).showFragment(AgregarMovimientosFragment(), true)
+        //listener?.showFragment(AgregarMovimientosFragment())
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
+  //  override fun onAttach(context: Context) {
+   //     super.onAttach(context)
+    //    if (context is OnFragmentInteractionListener) {
+     //       listener = context
+      //  } else {
+       //     throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        //}
+    //}
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
+   // override fun onDetach() {
+     //   super.onDetach()
+       // listener = null
+    //}
 
     /**
      * This interface must be implemented by activities that contain this
@@ -104,9 +109,9 @@ class MainFragment: Fragment() {
      * (http://developer.android.com/training/basics/fragments/communicating.html)
      * for more information.
      */
-    interface OnFragmentInteractionListener {
-        fun showFragment(fragment: Fragment)
-    }
+   // interface OnFragmentInteractionListener {
+    //    fun showFragment(fragment: Fragment)
+    //}
 
     companion object {
         /**

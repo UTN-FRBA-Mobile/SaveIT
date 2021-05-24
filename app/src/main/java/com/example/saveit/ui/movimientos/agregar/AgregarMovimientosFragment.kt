@@ -23,7 +23,7 @@ class AgregarMovimientosFragment: Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var listener: OnFragmentInteractionListener? = null
+   // private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -49,19 +49,19 @@ class AgregarMovimientosFragment: Fragment() {
 //          binding.textField.setTextColor(Color.WHITE)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
+   // override fun onAttach(context: Context) {
+    //    super.onAttach(context)
+      //  if (context is OnFragmentInteractionListener) {
+       //     listener = context
+        //} else {
+        //    throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        //}
+   // }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
+    //override fun onDetach() {
+      //  super.onDetach()
+       // listener = null
+    //}
 
 
     /**
@@ -75,9 +75,9 @@ class AgregarMovimientosFragment: Fragment() {
      * (http://developer.android.com/training/basics/fragments/communicating.html)
      * for more information.
      */
-    interface OnFragmentInteractionListener {
-        fun showFragment(fragment: Fragment)
-    }
+   // interface OnFragmentInteractionListener {
+     //   fun showFragment(fragment: Fragment)
+    //}
 
     companion object {
         /**
