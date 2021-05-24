@@ -1,4 +1,4 @@
-package com.example.saveit.ui.main
+package com.example.saveit.ui.reportes
 
 import android.content.Context
 import android.os.Bundle
@@ -17,7 +17,7 @@ class ReportesFragment: Fragment() {
 
     private var title: String? = null
     private var listener: OnFragmentInteractionListener? = null
-   // private lateinit var viewModel: MainViewModel
+   // private lateinit var viewModel: ReportesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,18 +52,18 @@ class ReportesFragment: Fragment() {
 
    // override fun onActivityCreated(savedInstanceState: Bundle?) {
       //  super.onActivityCreated(savedInstanceState)
-      //  viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+      //  viewModel = ViewModelProvider(this).get(ReportesViewModel::class.java)
         // TODO: Use the ViewModel
    // }
 
     fun onByLocationButtonPressed() {
-        //listener?.showFragment(AhorroFragment())
+        //listener?.showFragment(ByLocationFragment())
     }
     fun onByDateButtonPressed() {
-        //listener?.showFragment(ReportesFragment())
+        //listener?.showFragment(ByDateFragment())
     }
     fun onByCategoryButtonPressed() {
-        //listener?.showFragment(ListaMovimientosFragment())
+        //listener?.showFragment(ByCategoryFragment())
     }
 
     override fun onAttach(context: Context) {
@@ -101,11 +101,11 @@ class ReportesFragment: Fragment() {
          * this fragment using the provided parameters.
          *
          * @param title Title.
-         * @return A new instance of fragment MainFragment.
+         * @return A new instance of fragment ReportesFragment.
          */
         @JvmStatic
         fun newInstance(title: String) =
-            MainFragment().apply {
+            ReportesFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_TITLE, title)
                 }
