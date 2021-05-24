@@ -7,42 +7,56 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.saveit.data.User
 import com.example.saveit.data.UserViewModel
-import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
-import com.example.saveit.R
+import com.example.saveit.databinding.AgregarUsuariosFragmentBinding
 
-class AgregarMovimientosFragment: Fragment() {
-    private var _binding: AgregarMovimientosFragmentBinding? = null
+class AgregarUsuarioFragment: Fragment() {
+    private var _binding: AgregarUsuariosFragmentBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
     private var listener: OnFragmentInteractionListener? = null
 
+    private lateinit var mUserViewModel: UserViewModel
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
+        _binding = AgregarUsuariosFragmentBinding.inflate(inflater, container, false)
 
-        val itemsMedioPago = listOf("Tarjeta Debito", "Tarjeta Credito", "Efectivo", "QR", "Billetera Virtual")
-        val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemsMedioPago)
-        (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
+        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
-        val itemsCategorias = listOf("Comida", "Viajes", "Electronica", "Vestimenta")
-        val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemsCategorias)
-        (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
-       // binding.medioPago.setOnClickListener {
-         //   insertDataToDataBase()
-        //}
+        binding.addBtn.setOnClickListener {
+            insertDataToDataBase()
+        }
 
         return binding.root
     }
 
+    private fun insertDataToDataBase() {
+        val firstName = binding.addFirstNameEt.text.toString()
+        val lastName = binding.addLastNameEt.text.toString()
+        val age = binding.addAgeEt.text
+
+        if (inputCheck(firstName, lastName, age)) {
+            val user = User(0, firstName, lastName, Integer.parseInt(age.toString()))
+
+            // Add Data to Database
+            mUserViewModel.addUser(user)
+            Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
+        }
+        else {
+            Toast.makeText(requireContext(), "Please fill out all fields", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun inputCheck(firstName: String, lastName: String, age: Editable): Boolean {
+        return !(TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || age.isEmpty())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -88,6 +102,6 @@ class AgregarMovimientosFragment: Fragment() {
          */
         @JvmStatic
         fun newInstance() =
-            AgregarMovimientosFragment()
+            AgregarUsuarioFragment()
     }
 }

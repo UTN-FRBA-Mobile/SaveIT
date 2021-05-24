@@ -7,10 +7,12 @@ import com.example.saveit.ui.main.MainFragment
 import com.example.saveit.databinding.ActivityMainBinding
 import com.example.saveit.ui.ahorro.AhorroFragment
 import com.example.saveit.ui.movimientos.agregar.AgregarMovimientosFragment
+import com.example.saveit.ui.movimientos.agregar.AgregarUsuarioFragment
 import com.example.saveit.ui.movimientos.lista.ListaMovimientosFragment
 import com.example.saveit.ui.reportes.ReportesFragment
 
-class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionListener, AhorroFragment.OnFragmentInteractionListener, ListaMovimientosFragment.OnFragmentInteractionListener, AgregarMovimientosFragment.OnFragmentInteractionListener, ReportesFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), NavegacionInterface {
+//MainFragment.OnFragmentInteractionListener, AhorroFragment.OnFragmentInteractionListener, ListaMovimientosFragment.OnFragmentInteractionListener, AgregarMovimientosFragment.OnFragmentInteractionListener, AgregarUsuarioFragment.OnFragmentInteractionListener, ReportesFragment.OnFragmentInteractionListener {
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,11 +31,15 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
                 .commit()
         }
     }
-    override fun showFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .addToBackStack(null)
-            //.setCustomAnimations(R.anim.fragment_push_enter, R.anim.fragment_push_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
-            .replace(R.id.fragmentContainer, fragment)
-            .commit()
+    override fun showFragment(fragment: Fragment, addToBackstack: Boolean) {
+        val transaction = supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, fragment)
+
+        if (addToBackstack) {
+            transaction.addToBackStack(null)
+        }
+
+        transaction.commit()
     }
 }

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.saveit.databinding.MainFragmentBinding
 import com.example.saveit.ui.ahorro.AhorroFragment
 import com.example.saveit.ui.movimientos.agregar.AgregarMovimientosFragment
+import com.example.saveit.ui.movimientos.agregar.AgregarUsuarioFragment
 import com.example.saveit.ui.movimientos.lista.ListaMovimientosFragment
 import com.example.saveit.ui.reportes.ReportesFragment
 
