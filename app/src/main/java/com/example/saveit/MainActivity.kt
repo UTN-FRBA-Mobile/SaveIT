@@ -10,7 +10,7 @@ import com.example.saveit.ui.movimientos.agregar.AgregarMovimientosFragment
 import com.example.saveit.ui.movimientos.lista.ListaMovimientosFragment
 import com.example.saveit.ui.reportes.ReportesFragment
 
-class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionListener, AhorroFragment.OnFragmentInteractionListener, ListaMovimientosFragment.OnFragmentInteractionListener, AgregarMovimientosFragment.OnFragmentInteractionListener, ReportesFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), NavegacionInterface {
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,11 +29,15 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
                 .commit()
         }
     }
-    override fun showFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .addToBackStack(null)
-            //.setCustomAnimations(R.anim.fragment_push_enter, R.anim.fragment_push_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
+    override fun showFragment(fragment: Fragment, addToBackstack: Boolean) {
+        val transaction = supportFragmentManager
+            .beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
-            .commit()
+
+        if (addToBackstack) {
+            transaction.addToBackStack(null)
+        }
+
+        transaction.commit()
     }
 }

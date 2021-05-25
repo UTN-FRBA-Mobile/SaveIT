@@ -14,7 +14,7 @@ class AhorroFragment: Fragment() {
         // onDestroyView.
         private val binding get() = _binding!!
 
-        private var listener: OnFragmentInteractionListener? = null
+      //  private var listener: OnFragmentInteractionListener? = null
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                   savedInstanceState: Bundle?): View? {
@@ -27,7 +27,7 @@ class AhorroFragment: Fragment() {
 //          binding.textField.setTextColor(Color.WHITE)
         }
 
-        override fun onAttach(context: Context) {
+ /*       override fun onAttach(context: Context) {
             super.onAttach(context)
             if (context is OnFragmentInteractionListener) {
                 listener = context
@@ -42,7 +42,7 @@ class AhorroFragment: Fragment() {
         }
 
 
-        /**
+        *//**
          * This interface must be implemented by activities that contain this
          * fragment to allow an interaction in this fragment to be communicated
          * to the activity and potentially other fragments contained in that
@@ -52,10 +52,10 @@ class AhorroFragment: Fragment() {
          * See the Android Training lesson [Communicating with Other Fragments]
          * (http://developer.android.com/training/basics/fragments/communicating.html)
          * for more information.
-         */
+         *//*
         interface OnFragmentInteractionListener {
             fun showFragment(fragment: Fragment)
-        }
+        }*/
 
         companion object {
             /**
