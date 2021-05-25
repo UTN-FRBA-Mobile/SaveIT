@@ -35,6 +35,7 @@ class AhorroFragment: Fragment() {
             Ahorro(18700f,true, LocalDateTime.now()),
             Ahorro(18700f,true, LocalDateTime.now()),
             Ahorro(15000f,false, LocalDateTime.now()),
+            Ahorro(8200f,false, LocalDateTime.now()),
             Ahorro(16000f,true, LocalDateTime.now())
         )
 
@@ -47,10 +48,17 @@ class AhorroFragment: Fragment() {
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
+            binding.montoTotal.text = "Total: " + calcularMontoTotal().toString()
 //          binding.textField.setTextColor(Color.WHITE)
         }
 
-        override fun onAttach(context: Context) {
+    private fun calcularMontoTotal(): Any {
+        val ingresos = ahorrosList.filter { ahorro -> ahorro.ingreso }.map { ahorro -> ahorro.monto }.sum()
+        val egresos = ahorrosList.filter { ahorro -> !ahorro.ingreso }.map { ahorro -> ahorro.monto }.sum()
+        return ingresos - egresos
+    }
+
+    override fun onAttach(context: Context) {
             super.onAttach(context)
             if (context is OnFragmentInteractionListener) {
                 listener = context
