@@ -10,9 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.saveit.data.User
-import com.example.saveit.data.UserViewModel
+import com.example.saveit.data.Movimiento
+import com.example.saveit.data.MovimientoViewModel
 import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
+import java.util.*
 
 class AgregarMovimientosFragment: Fragment() {
     private var _binding: AgregarMovimientosFragmentBinding? = null
@@ -22,13 +23,13 @@ class AgregarMovimientosFragment: Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var mUserViewModel: UserViewModel
+    private lateinit var mMovimientoViewModel: MovimientoViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
 
-        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
 
         binding.addBtn.setOnClickListener {
             insertDataToDataBase()
@@ -43,10 +44,10 @@ class AgregarMovimientosFragment: Fragment() {
         val age = binding.addAgeEt.text
 
         if (inputCheck(firstName, lastName, age)) {
-            val user = User(0, firstName, lastName, Integer.parseInt(age.toString()))
+            val movimiento = Movimiento(0, firstName.toDouble(), firstName.toInt(), firstName.toInt(), Date().time, firstName, firstName, firstName.toInt())
 
             // Add Data to Database
-            mUserViewModel.addUser(user)
+            mMovimientoViewModel.addMovimiento(movimiento)
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
         }
         else {

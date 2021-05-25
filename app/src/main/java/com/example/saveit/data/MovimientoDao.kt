@@ -7,10 +7,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface UserDao {
+interface MovimientoDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addUser(user: User)
+    suspend fun addMovimiento(movimiento: Movimiento)
 
-    @Query("SELECT * FROM user_table ORDER BY id ASC")
-    fun readAllData(): LiveData<List<User>>
+    @Query("SELECT * FROM movimiento_table ORDER BY id ASC")
+    fun readAllData(): LiveData<List<Movimiento>>
 }

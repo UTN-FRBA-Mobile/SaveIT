@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.saveit.data.UserViewModel
+import com.example.saveit.data.MovimientoViewModel
 import com.example.saveit.databinding.ListaMovimientosFragmentBinding
 
 class ListaMovimientosFragment: Fragment() {
@@ -18,7 +18,7 @@ class ListaMovimientosFragment: Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private lateinit var mUserViewModel: UserViewModel
+    private lateinit var mMovimientoViewModel: MovimientoViewModel
 
     private var listener: OnFragmentInteractionListener? = null
 
@@ -34,8 +34,8 @@ class ListaMovimientosFragment: Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // UserViewModel
-        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-        mUserViewModel.readAllData.observe(viewLifecycleOwner, Observer { user ->
+        mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
+        mMovimientoViewModel.readAllData.observe(viewLifecycleOwner, Observer { user ->
             adapter.setData(user)
         })
 
