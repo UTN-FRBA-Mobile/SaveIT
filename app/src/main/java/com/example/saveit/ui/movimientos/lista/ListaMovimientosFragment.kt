@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.saveit.data.MovimientoViewModel
+import com.example.saveit.R
+import com.example.saveit.viewmodel.MovimientoViewModel
 import com.example.saveit.databinding.ListaMovimientosFragmentBinding
 
 class ListaMovimientosFragment: Fragment() {

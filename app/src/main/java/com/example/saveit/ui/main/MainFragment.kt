@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.saveit.R
 //import androidx.lifecycle.ViewModelProvider
 import com.example.saveit.databinding.MainFragmentBinding
 import com.example.saveit.ui.ahorro.AhorroFragment
@@ -66,16 +68,16 @@ class MainFragment: Fragment() {
    // }
 
     fun onButtonAhorroPressed() {
-        listener?.showFragment(AhorroFragment())
+        findNavController().navigate(R.id.action_mainFragment_to_ahorroFragment)
     }
     fun onButtonReportesPressed() {
-        listener?.showFragment(ReportesFragment())
+        findNavController().navigate(R.id.action_mainFragment_to_reportesFragment)
     }
     fun onButtonlistaMovimientosPressed() {
-        listener?.showFragment(ListaMovimientosFragment())
+        findNavController().navigate(R.id.action_mainFragment_to_listaMovimientosFragment2)
     }
     fun onButtonagregarMovimientosPressed() {
-        listener?.showFragment(AgregarMovimientosFragment())
+        findNavController().navigate(R.id.action_mainFragment_to_agregarMovimientosFragment)
     }
 
     override fun onAttach(context: Context) {

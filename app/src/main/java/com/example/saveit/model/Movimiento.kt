@@ -1,9 +1,12 @@
-package com.example.saveit.data
+package com.example.saveit.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+@Parcelize
 @Entity(tableName = "movimiento_table")
 data class Movimiento(
     @PrimaryKey(autoGenerate = true)
@@ -15,4 +18,4 @@ data class Movimiento(
     val descripcion: String,
     val ubicacion: String,
     val tipoMovimiento: Int
-)
+): Parcelable

@@ -1,54 +1,63 @@
-package com.example.saveit.ui.movimientos.agregar
+package com.example.saveit.ui.movimientos.actualizar
 
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.example.saveit.R
+import com.example.saveit.databinding.ActualizarMovimientoFragmentBinding
 import com.example.saveit.model.Movimiento
 import com.example.saveit.viewmodel.MovimientoViewModel
-import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
+import kotlinx.android.synthetic.main.actualizar_movimiento_fragment.*
 import java.util.*
 
-class AgregarMovimientosFragment: Fragment() {
-    private var _binding: AgregarMovimientosFragmentBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+class ActualizarMovimientoFragment : Fragment() {
+    private var _binding: ActualizarMovimientoFragmentBinding? = null
     private val binding get() = _binding!!
 
     private var listener: OnFragmentInteractionListener? = null
+
+    private val args by navArgs<ActualizarMovimientoFragmentArgs>()
 
     private lateinit var mMovimientoViewModel: MovimientoViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
+        _binding = ActualizarMovimientoFragmentBinding.inflate(inflater, container, false)
 
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
 
-        binding.addBtn.setOnClickListener {
-            insertDataToDataBase()
+        binding.updateFirstNameEt.setText(args.currentMovimiento.monto.toString())
+        binding.updateLastNameEt.setText(args.currentMovimiento.monto.toString())
+        binding.updateAgeEt.setText(args.currentMovimiento.monto.toString())
+
+        binding.updateBtn.setOnClickListener {
+            updateMovimiento()
         }
 
         return binding.root
     }
 
-    private fun insertDataToDataBase() {
-        val firstName = binding.addFirstNameEt.text.toString()
-        val lastName = binding.addLastNameEt.text.toString()
-        val age = binding.addAgeEt.text
+    private fun updateMovimiento() {
+        val firstName = updateFirstName_et.text.toString()
+        val lastName = updateLastName_et.text.toString()
+        val age = updateAge_et.text
 
         if (inputCheck(firstName, lastName, age)) {
-            val movimiento = Movimiento(0, firstName.toDouble(), firstName.toInt(), firstName.toInt(), Date().time, firstName, firstName, firstName.toInt())
+            val updatedMovimiento = Movimiento(args.currentMovimiento.id, firstName.toDouble(), firstName.toInt(), firstName.toInt(), Date().time, firstName, firstName, firstName.toInt())
 
-            // Add Data to Database
-            mMovimientoViewModel.addMovimiento(movimiento)
-            Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
+            mMovimientoViewModel.updateMovimiento(updatedMovimiento)
+            Toast.makeText(requireContext(), "Successfully updated!", Toast.LENGTH_LONG).show()
+
+            findNavController().navigate(R.id.action_actualizarMovimientoFragment_to_listaMovimientosFragment2)
         }
         else {
             Toast.makeText(requireContext(), "Please fill out all fields", Toast.LENGTH_LONG).show()
@@ -57,11 +66,6 @@ class AgregarMovimientosFragment: Fragment() {
 
     private fun inputCheck(firstName: String, lastName: String, age: Editable): Boolean {
         return !(TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || age.isEmpty())
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//          binding.textField.setTextColor(Color.WHITE)
     }
 
     override fun onAttach(context: Context) {
@@ -103,6 +107,6 @@ class AgregarMovimientosFragment: Fragment() {
          */
         @JvmStatic
         fun newInstance() =
-            AgregarMovimientosFragment()
+            ActualizarMovimientoFragment()
     }
 }
