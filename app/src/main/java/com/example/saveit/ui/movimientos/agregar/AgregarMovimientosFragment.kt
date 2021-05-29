@@ -1,4 +1,4 @@
-package com.example.saveit.ui.movimientos.agregar
+    package com.example.saveit.ui.movimientos.agregar
 
 import android.content.Context
 import android.os.Bundle
@@ -9,22 +9,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.saveit.data.User
 import com.example.saveit.data.UserViewModel
 import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
 import com.example.saveit.R
+import com.google.android.material.datepicker.MaterialDatePicker
 
-class AgregarMovimientosFragment: Fragment() {
+    class AgregarMovimientosFragment: Fragment() {
     private var _binding: AgregarMovimientosFragmentBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
    // private var listener: OnFragmentInteractionListener? = null
-
+   val datePicker = MaterialDatePicker.Builder.datePicker()
+       .setTitleText("Fecha de Movimiento")
+       .build()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
@@ -36,6 +40,11 @@ class AgregarMovimientosFragment: Fragment() {
         val itemsCategorias = listOf("Comida", "Viajes", "Electronica", "Vestimenta")
         val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemsCategorias)
         (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
+
+        val itemsMonedas = listOf("u\$s", "$")
+        val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemsMonedas)
+        (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+
        // binding.medioPago.setOnClickListener {
          //   insertDataToDataBase()
         //}
@@ -46,9 +55,22 @@ class AgregarMovimientosFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        datePicker.addOnPositiveButtonClickListener {
+            (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(datePicker.headerText)
+        }
+        binding.fecha.setOnClickListener {
+            onFechaMovimientoPressed()
+            //datePicker.show((activity as AppCompatActivity).supportFragmentManager , "tag")
+        }
+
+
 //          binding.textField.setTextColor(Color.WHITE)
     }
 
+        fun onFechaMovimientoPressed() {
+            datePicker.show((activity as AppCompatActivity).supportFragmentManager , "tag")
+
+        }
    // override fun onAttach(context: Context) {
     //    super.onAttach(context)
       //  if (context is OnFragmentInteractionListener) {
