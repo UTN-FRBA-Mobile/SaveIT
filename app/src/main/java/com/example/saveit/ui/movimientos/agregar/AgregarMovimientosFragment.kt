@@ -14,10 +14,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.saveit.data.User
-import com.example.saveit.data.UserViewModel
 import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
 import com.example.saveit.R
+import com.example.saveit.data.*
 import com.google.android.material.datepicker.MaterialDatePicker
 
     class AgregarMovimientosFragment: Fragment() {
@@ -33,15 +32,15 @@ import com.google.android.material.datepicker.MaterialDatePicker
                               savedInstanceState: Bundle?): View? {
         _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
 
-        val itemsMedioPago = listOf("Tarjeta Debito", "Tarjeta Credito", "Efectivo", "QR", "Billetera Virtual")
+        val itemsMedioPago = MedioPago.values().map { it.descripcion }
         val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemsMedioPago)
         (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
 
-        val itemsCategorias = listOf("Comida", "Viajes", "Electronica", "Vestimenta")
+        val itemsCategorias = Categoria.values().map { it.descripcion }
         val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemsCategorias)
         (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
 
-        val itemsMonedas = listOf("u\$s", "$")
+        val itemsMonedas = Moneda.values().map { it.descripcion }
         val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemsMonedas)
         (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
 
