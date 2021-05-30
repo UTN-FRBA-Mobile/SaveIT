@@ -25,7 +25,7 @@ class ActualizarMovimientoFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
 
-    private val args by navArgs<ActualizarMovimientoFragmentArgs>()
+  //  private val args by navArgs<ActualizarMovimientoFragmentArgs>()
 
     private lateinit var mMovimientoViewModel: MovimientoViewModel
 
@@ -35,9 +35,9 @@ class ActualizarMovimientoFragment : Fragment() {
 
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
 
-        binding.updateFirstNameEt.setText(args.currentMovimiento.monto.toString())
-        binding.updateLastNameEt.setText(args.currentMovimiento.monto.toString())
-        binding.updateAgeEt.setText(args.currentMovimiento.monto.toString())
+//        binding.updateFirstNameEt.setText(args.currentMovimiento.monto.toString())
+//        binding.updateLastNameEt.setText(args.currentMovimiento.monto.toString())
+//        binding.updateAgeEt.setText(args.currentMovimiento.monto.toString())
 
         binding.updateBtn.setOnClickListener {
             updateMovimiento()
@@ -52,9 +52,9 @@ class ActualizarMovimientoFragment : Fragment() {
         val age = updateAge_et.text
 
         if (inputCheck(firstName, lastName, age)) {
-            val updatedMovimiento = Movimiento(args.currentMovimiento.id, firstName.toDouble(), firstName.toInt(), firstName.toInt(), Date().time, firstName, firstName, firstName.toInt())
+//            val updatedMovimiento = Movimiento(args.currentMovimiento.id, firstName.toDouble(), firstName.toInt(), firstName.toInt(), Date().time, firstName, firstName, firstName.toInt())
 
-            mMovimientoViewModel.updateMovimiento(updatedMovimiento)
+//            mMovimientoViewModel.updateMovimiento(updatedMovimiento)
             Toast.makeText(requireContext(), "Successfully updated!", Toast.LENGTH_LONG).show()
 
             findNavController().navigate(R.id.action_actualizarMovimientoFragment_to_listaMovimientosFragment2)
