@@ -4,19 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/titulo_movimientos" />
-    <Button android:id="@+id/mButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-
+    android:orientation="vertical"
+    android:background="@color/blueBackground">
     <FrameLayout
         android:layout_width="220dp"
-        android:layout_height="wrap_content"
+        android:layout_height="400dp"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:layout_marginLeft="95dp"
@@ -25,7 +17,6 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
-
+            android:layout_height="match_parent" />
+        </FrameLayout>
 </LinearLayout>

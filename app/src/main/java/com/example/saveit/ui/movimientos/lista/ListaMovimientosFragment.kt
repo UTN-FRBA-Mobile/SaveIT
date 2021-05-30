@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.saveit.data.UserViewModel
+import com.example.saveit.R
+import com.example.saveit.viewmodel.MovimientoViewModel
 import com.example.saveit.databinding.ListaMovimientosFragmentBinding
 
 class ListaMovimientosFragment: Fragment() {
@@ -18,9 +20,9 @@ class ListaMovimientosFragment: Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private lateinit var mUserViewModel: UserViewModel
+    private lateinit var mMovimientoViewModel: MovimientoViewModel
 
-//    private var listener: OnFragmentInteractionListener? = null
+    private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -34,8 +36,8 @@ class ListaMovimientosFragment: Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // UserViewModel
-        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-        mUserViewModel.readAllData.observe(viewLifecycleOwner, Observer { user ->
+        mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
+        mMovimientoViewModel.readAllData.observe(viewLifecycleOwner, Observer { user ->
             adapter.setData(user)
         })
 
@@ -47,19 +49,19 @@ class ListaMovimientosFragment: Fragment() {
 //          binding.textField.setTextColor(Color.WHITE)
     }
 
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        if (context is OnFragmentInteractionListener) {
-//            listener = context
-//        } else {
-//            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-//        }
-//    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        }
+    }
 
-//    override fun onDetach() {
-//        super.onDetach()
-//        listener = null
-//    }
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
 
 
     /**
@@ -73,9 +75,9 @@ class ListaMovimientosFragment: Fragment() {
      * (http://developer.android.com/training/basics/fragments/communicating.html)
      * for more information.
      */
-//    interface OnFragmentInteractionListener {
-//        fun showFragment(fragment: Fragment)
-//    }
+    interface OnFragmentInteractionListener {
+        fun showFragment(fragment: Fragment)
+    }
 
     companion object {
         /**

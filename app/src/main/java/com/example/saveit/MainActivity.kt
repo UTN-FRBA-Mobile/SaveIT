@@ -3,16 +3,18 @@ package com.example.saveit
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.saveit.ui.main.MainFragment
 import com.example.saveit.databinding.ActivityMainBinding
 import com.example.saveit.ui.ahorro.AhorroFragment
+import com.example.saveit.ui.movimientos.actualizar.ActualizarMovimientoFragment
 import com.example.saveit.ui.movimientos.agregar.AgregarMovimientosFragment
 import com.example.saveit.ui.movimientos.agregar.AgregarUsuarioFragment
 import com.example.saveit.ui.movimientos.lista.ListaMovimientosFragment
 import com.example.saveit.ui.reportes.ReportesFragment
 
-class MainActivity : AppCompatActivity(), NavegacionInterface {
-//MainFragment.OnFragmentInteractionListener, AhorroFragment.OnFragmentInteractionListener, ListaMovimientosFragment.OnFragmentInteractionListener, AgregarMovimientosFragment.OnFragmentInteractionListener, AgregarUsuarioFragment.OnFragmentInteractionListener, ReportesFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionListener, AhorroFragment.OnFragmentInteractionListener, ListaMovimientosFragment.OnFragmentInteractionListener, AgregarMovimientosFragment.OnFragmentInteractionListener, ReportesFragment.OnFragmentInteractionListener, ActualizarMovimientoFragment.OnFragmentInteractionListener {
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,16 +32,20 @@ class MainActivity : AppCompatActivity(), NavegacionInterface {
                 )
                 .commit()
         }
+
+        setupActionBarWithNavController(findNavController(R.id.fragment))
     }
-    override fun showFragment(fragment: Fragment, addToBackstack: Boolean) {
-        val transaction = supportFragmentManager
-            .beginTransaction()
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.fragment)
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    override fun showFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .addToBackStack(null)
+            //.setCustomAnimations(R.anim.fragment_push_enter, R.anim.fragment_push_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
             .replace(R.id.fragmentContainer, fragment)
-
-        if (addToBackstack) {
-            transaction.addToBackStack(null)
-        }
-
-        transaction.commit()
+            .commit()
     }
 }
