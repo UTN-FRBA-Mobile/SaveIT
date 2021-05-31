@@ -1,6 +1,7 @@
 package com.example.saveit.ui.movimientos.agregar
 
 import android.content.Context
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -22,6 +23,9 @@ import com.example.saveit.R
 import com.example.saveit.data.*
 import com.example.saveit.ui.main.MainFragment
 import com.google.android.material.datepicker.MaterialDatePicker
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import kotlin.properties.Delegates
 
 class AgregarMovimientosFragment: Fragment() {
     private var _binding: AgregarMovimientosFragmentBinding? = null
@@ -32,6 +36,7 @@ class AgregarMovimientosFragment: Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var mMovimientoViewModel: MovimientoViewModel
+    private var tipoMovimiento by Delegates.notNull<Int>()
 
     val datePicker = MaterialDatePicker.Builder.datePicker()
        .setTitleText("Fecha de Movimiento")
@@ -54,6 +59,15 @@ class AgregarMovimientosFragment: Fragment() {
         val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemsMonedas)
         (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
 
+        binding.botonIngreso.setOnClickListener {
+            tipoMovimiento = TipoMovimiento.INGRESO.valor
+            insertDataToDataBase()
+        }
+
+        binding.botonEgreso.setOnClickListener {
+            tipoMovimiento = TipoMovimiento.EGRESO.valor
+            insertDataToDataBase()
+        }
        // binding.medioPago.setOnClickListener {
          //   insertDataToDataBase()
         //}
@@ -61,22 +75,27 @@ class AgregarMovimientosFragment: Fragment() {
         return binding.root
     }
 
-//    private fun insertDataToDataBase() {
-//        val firstName = binding.addFirstNameEt.text.toString()
-//        val lastName = binding.addLastNameEt.text.toString()
-//        val age = binding.addAgeEt.text
-//
+    private fun insertDataToDataBase() {
 //        if (inputCheck(firstName, lastName, age)) {
-//            val movimiento = Movimiento(0, firstName.toDouble(), firstName.toInt(), firstName.toInt(), Date().time, firstName, firstName, firstName.toInt())
-//
-//            // Add Data to Database
-//            mMovimientoViewModel.addMovimiento(movimiento)
-//            Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
+            val movimiento = Movimiento(0,
+                binding.monto.text.toString().toDouble(),
+                (Moneda.values().filter { m -> m.descripcion.equals(binding.moneda.editText?.text.toString())}).get(0).valor,
+                (MedioPago.values().filter { mp -> mp.descripcion.equals(binding.medioPago.editText?.text.toString()) }).get(0).valor,
+                (Categoria.values().filter { c -> c.descripcion.equals(binding.categoria.editText?.text.toString()) }).get(0).valor,
+                SimpleDateFormat("dd/MM/yyyy").parse(binding.fecha.text.toString()).time,
+                binding.descripcion.text.toString(),
+                "Ubicacion",
+                tipoMovimiento
+            )
+
+            // Add Data to Database
+            mMovimientoViewModel.addMovimiento(movimiento)
+            Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
 //        }
 //        else {
 //            Toast.makeText(requireContext(), "Please fill out all fields", Toast.LENGTH_LONG).show()
 //        }
-//    }
+    }
 
 //    private fun inputCheck(firstName: String, lastName: String, age: Editable): Boolean {
 //        return !(TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || age.isEmpty())
@@ -85,7 +104,9 @@ class AgregarMovimientosFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         datePicker.addOnPositiveButtonClickListener {
-            (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(datePicker.headerText)
+//            var fecha: String = LocalDate.parse(datePicker.headerText, DateTimeFormatter.ofPattern("MMM dd, yyyy", SimpleDateFormat("dd/MM/yyyy"))).toString()
+//            (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(fecha)
+            (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(SimpleDateFormat("dd/MM/yyyy").format(SimpleDateFormat("MMM dd, yyyy").parse(datePicker.headerText)).toString())
         }
         binding.fecha.setOnClickListener {
             onFechaMovimientoPressed()

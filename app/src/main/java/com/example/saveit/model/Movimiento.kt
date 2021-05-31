@@ -12,6 +12,7 @@ data class Movimiento(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val monto: Double,
+    val moneda: Int,
     val medioDePago: Int, // Referencia al enum de medios de pago
     val categoria: Int,
     val fecha: Long,

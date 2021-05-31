@@ -44,7 +44,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/monto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -55,6 +54,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/monto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
@@ -126,7 +126,7 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             app:errorEnabled="true"
-            app:startIconDrawable="@drawable/outline_calendar_today_black_36"
+            app:startIconDrawable="@drawable/outline_calendar_today_black_20"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
             <AutoCompleteTextView
@@ -148,6 +148,7 @@
             android:hint="Descripcion">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/descripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
@@ -168,7 +169,6 @@
             android:text="Ingreso"
             app:backgroundTint="#43A047"
             app:icon="@drawable/ic_add_36dp"
-            app:elevation="2dp"
             style="@style/Widget.MaterialComponents.Button.Rounded.Icon"
             android:layout_weight="1"
             />
@@ -177,7 +177,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Egreso"
-            app:elevation="2dp"
             app:backgroundTint="#E64A19"
             app:icon="@drawable/ic_remove_24dp"
             style="@style/Widget.MaterialComponents.Button.Rounded.Icon"
