@@ -33,6 +33,12 @@
             app:strokeWidth="10dp"
             app:strokeColor="@color/blueBackground">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/categoria"
                 android:layout_width="fill_parent"
@@ -49,6 +55,22 @@
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/medios_de_pago"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="Medio de Pago"
+                    app:errorEnabled="true"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+                    <AutoCompleteTextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/periodo_de_tiempo"
                 android:layout_width="fill_parent"
@@ -64,6 +86,8 @@
                     android:inputType="none"
                     />
             </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
