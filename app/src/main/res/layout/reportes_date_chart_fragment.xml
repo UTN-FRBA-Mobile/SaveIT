@@ -1,17 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingTop="10dp"
+        android:orientation="vertical"
+        android:background="@color/blueBackground"
+        tools:context=".ui.reportes.ReportesDateChartFragment">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="REPORTES POR FECHA"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:text="@string/titulo_reportes_por_fecha" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            app:cardBackgroundColor="#E3F2FD"
+            app:cardElevation="2dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:checkable="false"
+            android:paddingHorizontal="10dp"
+            app:cardCornerRadius="28dp"
+            app:contentPadding="20dp"
+            app:strokeWidth="10dp"
+            app:strokeColor="@color/blueBackground">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/categoria"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Categoria"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+                <AutoCompleteTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/periodo_de_tiempo"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Período"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+                <AutoCompleteTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
 
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
