@@ -44,7 +44,7 @@
                     android:layout_width="fill_parent"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="@+string/dropdown_reportes_por_fecha_periodo"
+                    android:hint="@string/dropdown_reportes_por_fecha_periodo"
                     app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
@@ -60,7 +60,7 @@
                 android:layout_width="fill_parent"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:hint="@+string/dropdown_reportes_por_fecha_categoria"
+                android:hint="@string/dropdown_reportes_por_fecha_categoria"
                 app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
@@ -76,7 +76,7 @@
                     android:layout_width="fill_parent"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="@+string/dropdown_reportes_por_fecha_medio_de_pago"
+                    android:hint="@string/dropdown_reportes_por_fecha_medio_de_pago"
                     app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
@@ -92,7 +92,7 @@
                     android:layout_width="fill_parent"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="@+string/dropdown_reportes_por_fecha_moneda"
+                    android:hint="@string/dropdown_reportes_por_fecha_moneda"
                     app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
