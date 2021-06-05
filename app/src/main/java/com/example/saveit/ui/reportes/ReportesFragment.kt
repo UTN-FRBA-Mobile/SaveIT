@@ -39,6 +39,10 @@ class ReportesFragment : Fragment() {
         binding.mapChartButton.setOnClickListener {
             onButtonMapChartPressed()
         }
+
+        binding.dateChartButton.setOnClickListener {
+            onButtonDateChartPressed()
+        }
     }
 
     fun onButtonPieChartPressed() {
@@ -56,6 +60,12 @@ class ReportesFragment : Fragment() {
         (activity as NavegacionInterface).showFragment(ReportesMapChartFragment(), true)
         //   listener?.showFragment(AhorroFragment())
     }
+
+    fun onButtonDateChartPressed() {
+        (activity as NavegacionInterface).showFragment(ReportesDateChartFragment(), true)
+        //   listener?.showFragment(AhorroFragment())
+    }
+
     /*override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
