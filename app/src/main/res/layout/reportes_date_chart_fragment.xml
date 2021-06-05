@@ -44,7 +44,7 @@
                     android:layout_width="fill_parent"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="Período"
+                    android:hint="@+string/dropdown_reportes_por_fecha_periodo"
                     app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
@@ -60,7 +60,7 @@
                 android:layout_width="fill_parent"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:hint="Categoria"
+                android:hint="@+string/dropdown_reportes_por_fecha_categoria"
                 app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
@@ -72,11 +72,11 @@
             </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/medios_de_pago"
+                    android:id="@+id/medio_de_pago"
                     android:layout_width="fill_parent"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="Medio de Pago"
+                    android:hint="@+string/dropdown_reportes_por_fecha_medio_de_pago"
                     app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
@@ -86,6 +86,27 @@
                         android:inputType="none"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/moneda"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="@+string/dropdown_reportes_por_fecha_moneda"
+                    app:errorEnabled="true"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+                    <AutoCompleteTextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/lineChart"/>
 
             </LinearLayout>
 
