@@ -21,13 +21,14 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             app:cardBackgroundColor="#E3F2FD"
             app:cardElevation="2dp"
             android:clickable="false"
             android:focusable="false"
             android:checkable="false"
             android:paddingHorizontal="10dp"
+            android:layout_marginBottom="20dp"
             app:cardCornerRadius="28dp"
             app:contentPadding="20dp"
             app:strokeWidth="10dp"
@@ -35,8 +36,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
                 >
 
                 <com.github.mikephil.charting.charts.LineChart
@@ -64,7 +65,5 @@
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
-
-
 
     </LinearLayout>

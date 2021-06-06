@@ -43,6 +43,11 @@ class ReportesDateChartFragment: Fragment()  {
         val adapterPeriodosDeTiempo = ArrayAdapter(requireContext(), R.layout.lista_items, itemsPeriodosDeTiempo)
         (binding.periodoDeTiempo.editText as? AutoCompleteTextView)?.setAdapter(adapterPeriodosDeTiempo)
 
+        (binding.medioDePago.editText as? AutoCompleteTextView)?.setText(adapterMedioPago.getItem(0).toString(), false)
+        (binding.categoria.editText as? AutoCompleteTextView)?.setText(adapterCategoria.getItem(0).toString(), false)
+        (binding.moneda.editText as? AutoCompleteTextView)?.setText(adapterMonedas.getItem(0).toString(), false)
+        (binding.periodoDeTiempo.editText as? AutoCompleteTextView)?.setText(adapterPeriodosDeTiempo.getItem(0).toString(), false)
+
         binding.botonGenerarReporte.setOnClickListener {
             openReport()
         }
