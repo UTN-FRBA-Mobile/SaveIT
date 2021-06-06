@@ -21,7 +21,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             app:cardBackgroundColor="#E3F2FD"
             app:cardElevation="2dp"
             android:clickable="false"
@@ -38,22 +38,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/periodo_de_tiempo"
-                    android:layout_width="fill_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/dropdown_reportes_por_fecha_periodo"
-                    app:errorEnabled="true"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
-
-                    <AutoCompleteTextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/categoria"
@@ -103,10 +87,48 @@
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.github.mikephil.charting.charts.LineChart
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/periodo_de_tiempo"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/lineChart"/>
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/dropdown_reportes_por_fecha_periodo"
+                    app:errorEnabled="true"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+                    <AutoCompleteTextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/boton_generar_reporte"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Generar"
+                    android:layout_marginRight="10dp"
+                    app:backgroundTint="#43A047"
+                    android:layout_weight=".5"
+                    />
+
+                <Button
+                    android:id="@+id/boton_limpiar_formulario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Limpiar"
+                    android:layout_marginLeft="10dp"
+                    app:backgroundTint="#E64A19"
+                    android:layout_weight=".5"
+                    />
+
+            </LinearLayout>
 
             </LinearLayout>
 

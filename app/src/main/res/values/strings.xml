@@ -5,6 +5,7 @@
     <string name="titulo_movimientos">Movimientos</string>
     <string name="titulo_reportes">Reportes</string>
     <string name="titulo_reportes_por_fecha">Reportes Por Fecha</string>
+    <string name="titulo_reportes_por_fecha_detalle">Reportes Por Fecha - Detalle</string>
     <string name="dropdown_reportes_por_fecha_periodo">Período</string>
     <string name="dropdown_reportes_por_fecha_categoria">Categoría</string>
     <string name="dropdown_reportes_por_fecha_medio_de_pago">Medio de Pago</string>
