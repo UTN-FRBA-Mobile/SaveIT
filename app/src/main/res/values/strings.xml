@@ -6,6 +6,7 @@
     <string name="titulo_reportes">Reportes</string>
     <string name="titulo_reportes_por_fecha">Reportes Por Fecha</string>
     <string name="titulo_grafico_de_torta">Grafico de torta</string>
+    <string name="titulo_grafico_de_barras">Grafico de barras</string>
     <string name="titulo_reportes_por_fecha_detalle">Reportes Por Fecha - Detalle</string>
     <string name="dropdown_reportes_por_fecha_periodo">Período</string>
     <string name="dropdown_reportes_por_fecha_categoria">Categoría</string>

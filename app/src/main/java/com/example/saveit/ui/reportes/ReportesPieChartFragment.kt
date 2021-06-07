@@ -76,6 +76,8 @@ class ReportesPieChartFragment: Fragment()  {
         var pieData = PieData(pieDataSet)
 
         pieChart.setData(pieData)
+        pieChart.setCenterText("Categorias")
+        pieChart.animate()
 
 
 

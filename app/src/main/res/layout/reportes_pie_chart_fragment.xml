@@ -12,8 +12,7 @@
         android:clipToPadding="false"
         android:paddingTop="10dp"
         android:orientation="vertical"
-        android:background="@color/blueBackground"
-        tools:context=".ui.reportes.ReportesDateChartFragment">
+        android:background="@color/blueBackground">
 
         <TextView
             android:layout_width="wrap_content"
