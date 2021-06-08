@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/my_nav"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
     app:startDestination="@id/mainFragment">
 
     <fragment
@@ -71,5 +73,50 @@
         <action
             android:id="@+id/action_reportesFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_reportesFragment_to_reportesBarChartFragment"
+            app:destination="@id/reportesBarChartFragment" />
+        <action
+            android:id="@+id/action_reportesFragment_to_reportesMapChartFragment"
+            app:destination="@id/reportesMapChartFragment" />
+        <action
+            android:id="@+id/action_reportesFragment_to_reportesPieChartFragment"
+            app:destination="@id/reportesPieChartFragment" />
+        <action
+            android:id="@+id/action_reportesFragment_to_actualDateChartFragment"
+            app:destination="@id/actualDateChartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportesBarChartFragment"
+        android:name="com.example.saveit.ui.reportes.ReportesBarChartFragment"
+        android:label="ReportesBarChartFragment" >
+        <action
+            android:id="@+id/action_reportesBarChartFragment_to_reportesFragment"
+            app:destination="@id/reportesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportesMapChartFragment"
+        android:name="com.example.saveit.ui.reportes.ReportesMapChartFragment"
+        android:label="ReportesMapChartFragment" >
+        <action
+            android:id="@+id/action_reportesMapChartFragment_to_reportesFragment"
+            app:destination="@id/reportesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportesPieChartFragment"
+        android:name="com.example.saveit.ui.reportes.ReportesPieChartFragment"
+        android:label="ReportesPieChartFragment" >
+        <action
+            android:id="@+id/action_reportesPieChartFragment_to_reportesFragment"
+            app:destination="@id/reportesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/actualDateChartFragment"
+        android:name="com.example.saveit.ui.reportes.ActualDateChartFragment"
+        android:label="actual_date_chart_fragment"
+        tools:layout="@layout/actual_date_chart_fragment" >
+        <action
+            android:id="@+id/action_actualDateChartFragment_to_reportesFragment"
+            app:destination="@id/reportesFragment" />
     </fragment>
 </navigation>

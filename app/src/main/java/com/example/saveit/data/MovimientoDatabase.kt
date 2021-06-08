@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.saveit.model.Movimiento
 
-@Database(entities = [Movimiento::class], version = 1, exportSchema = false)
+@Database(entities = [Movimiento::class], version = 2, exportSchema = false)
 abstract class MovimientoDatabase : RoomDatabase() {
     abstract fun movimientoDao(): MovimientoDao
 
