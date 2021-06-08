@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.saveit.NavegacionInterface
+import com.example.saveit.R
 import com.example.saveit.databinding.ReportesFragmentBinding
-import com.example.saveit.ui.ahorro.AhorroFragment
 
 class ReportesFragment : Fragment() {
     private var _binding: ReportesFragmentBinding? = null
@@ -16,7 +17,7 @@ class ReportesFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    //private var listener: OnFragmentInteractionListener? = null
+    private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -46,27 +47,30 @@ class ReportesFragment : Fragment() {
     }
 
     fun onButtonPieChartPressed() {
-        (activity as NavegacionInterface).showFragment(ReportesPieChartFragment(), true)
+        //(activity as NavegacionInterface).showFragment(ReportesPieChartFragment(), true)
         //   listener?.showFragment(AhorroFragment())
+        findNavController().navigate(R.id.action_reportesFragment_to_reportesPieChartFragment)
     }
 
 
     fun onButtonBarChartPressed() {
-        (activity as NavegacionInterface).showFragment(ReportesBarChartFragment(), true)
+        //(activity as NavegacionInterface).showFragment(ReportesBarChartFragment(), true)
         //   listener?.showFragment(AhorroFragment())
+        findNavController().navigate(R.id.action_reportesFragment_to_reportesBarChartFragment)
     }
 
     fun onButtonMapChartPressed() {
-        (activity as NavegacionInterface).showFragment(ReportesMapChartFragment(), true)
+        //(activity as NavegacionInterface).showFragment(ReportesMapChartFragment(), true)
         //   listener?.showFragment(AhorroFragment())
+        findNavController().navigate(R.id.action_reportesFragment_to_reportesMapChartFragment)
     }
 
     fun onButtonDateChartPressed() {
-        (activity as NavegacionInterface).showFragment(ReportesDateChartFragment(), true)
+        //(activity as NavegacionInterface).showFragment(ReportesDateChartFragment(), true)
         //   listener?.showFragment(AhorroFragment())
+        findNavController().navigate(R.id.action_reportesFragment_to_actualDateChartFragment)
     }
 
-    /*override fun onAttach(context: Context) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
@@ -93,6 +97,7 @@ class ReportesFragment : Fragment() {
      * (http://developer.android.com/training/basics/fragments/communicating.html)
      * for more information.
      */
+
     interface OnFragmentInteractionListener {
         fun showFragment(fragment: Fragment)
     }
