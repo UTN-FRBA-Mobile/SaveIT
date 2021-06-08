@@ -13,4 +13,54 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="410dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp"
+        android:background="@color/lightBlue">
+
+        <ImageButton
+            android:id="@+id/pieChartButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/pie_chart" />
+
+        <ImageButton
+            android:id="@+id/barChartButton"
+            android:layout_centerHorizontal="true"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_below="@+id/pieChartButton"
+            android:layout_weight="1"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/column_chart" />
+
+        <ImageButton
+            android:id="@+id/dateChartButton"
+            android:layout_centerHorizontal="true"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_below="@+id/barChartButton"
+            android:layout_weight="1"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/calendar_img" />
+
+        <ImageButton
+            android:id="@+id/mapChartButton"
+            android:layout_centerHorizontal="true"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+
+            android:layout_below="@+id/dateChartButton"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/globe_img" />
+    </RelativeLayout>
 </LinearLayout>
