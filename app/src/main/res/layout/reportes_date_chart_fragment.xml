@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,14 +9,15 @@
         android:clipToPadding="false"
         android:paddingTop="10dp"
         android:orientation="vertical"
-        android:background="@color/blueBackground">
+        android:background="@color/blueBackground"
+        tools:context=".ui.reportes.ReportesDateChartFragment">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="10dp"
-            android:text="@string/titulo_grafico_de_torta" />
+            android:text="@string/titulo_reportes_por_fecha" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -41,12 +39,28 @@
                 android:orientation="vertical"
                 >
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/categoria"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="@string/dropdown_reportes_por_fecha_categoria"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+                <AutoCompleteTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/seleccion_anio"
+                    android:id="@+id/medio_de_pago"
                     android:layout_width="fill_parent"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="@string/dropdown_grafico_de_torta_Anio"
+                    android:hint="@string/dropdown_reportes_por_fecha_medio_de_pago"
                     app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
@@ -58,11 +72,11 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/seleccion_mes"
+                    android:id="@+id/moneda"
                     android:layout_width="fill_parent"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="@string/dropdown_grafico_de_torta_Mes"
+                    android:hint="@string/dropdown_reportes_por_fecha_moneda"
                     app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
@@ -73,57 +87,53 @@
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/periodo_de_tiempo"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:hint="@string/dropdown_reportes_por_fecha_periodo"
+                    app:errorEnabled="true"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
-                    <Button
-                        android:id="@+id/boton_generar_reporte"
-                        android:layout_width="wrap_content"
+                    <AutoCompleteTextView
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="Generar"
-                        android:layout_marginRight="10dp"
-                        app:backgroundTint="#43A047"
-                        android:layout_weight=".5"
+                        android:inputType="none"
                         />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    <Button
-                        android:id="@+id/boton_limpiar_formulario"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Limpiar"
-                        android:layout_marginLeft="10dp"
-                        app:backgroundTint="#E64A19"
-                        android:layout_weight=".5"
-                        />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                </LinearLayout>
+                <Button
+                    android:id="@+id/boton_generar_reporte"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Generar"
+                    android:layout_marginRight="10dp"
+                    app:backgroundTint="#43A047"
+                    android:layout_weight=".5"
+                    />
+
+                <Button
+                    android:id="@+id/boton_limpiar_formulario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Limpiar"
+                    android:layout_marginLeft="10dp"
+                    app:backgroundTint="#E64A19"
+                    android:layout_weight=".5"
+                    />
+
+            </LinearLayout>
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:cardBackgroundColor="#E3F2FD"
-            app:cardElevation="2dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:checkable="false"
-            android:paddingHorizontal="10dp"
-            app:cardCornerRadius="28dp"
-            app:contentPadding="20dp"
-            app:strokeWidth="10dp"
-            app:strokeColor="@color/blueBackground">
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pieChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-        </com.github.mikephil.charting.charts.PieChart>
 
-        </com.google.android.material.card.MaterialCardView>
+
 
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>

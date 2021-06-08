@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.saveit.NavegacionInterface
 import com.example.saveit.databinding.ReportesFragmentBinding
+import com.example.saveit.ui.ahorro.AhorroFragment
 
 class ReportesFragment : Fragment() {
     private var _binding: ReportesFragmentBinding? = null
@@ -14,7 +16,7 @@ class ReportesFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var listener: OnFragmentInteractionListener? = null
+    //private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -25,8 +27,46 @@ class ReportesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
           binding.mButton.setText("mButton")
+
+        binding.pieChartButton.setOnClickListener {
+            onButtonPieChartPressed()
+        }
+
+        binding.barChartButton.setOnClickListener {
+            onButtonBarChartPressed()
+        }
+
+        binding.mapChartButton.setOnClickListener {
+            onButtonMapChartPressed()
+        }
+
+        binding.dateChartButton.setOnClickListener {
+            onButtonDateChartPressed()
+        }
     }
 
+    fun onButtonPieChartPressed() {
+        (activity as NavegacionInterface).showFragment(ReportesPieChartFragment(), true)
+        //   listener?.showFragment(AhorroFragment())
+    }
+
+
+    fun onButtonBarChartPressed() {
+        (activity as NavegacionInterface).showFragment(ReportesBarChartFragment(), true)
+        //   listener?.showFragment(AhorroFragment())
+    }
+
+    fun onButtonMapChartPressed() {
+        (activity as NavegacionInterface).showFragment(ReportesMapChartFragment(), true)
+        //   listener?.showFragment(AhorroFragment())
+    }
+
+    fun onButtonDateChartPressed() {
+        (activity as NavegacionInterface).showFragment(ReportesDateChartFragment(), true)
+        //   listener?.showFragment(AhorroFragment())
+    }
+
+    /*override fun onAttach(context: Context) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
