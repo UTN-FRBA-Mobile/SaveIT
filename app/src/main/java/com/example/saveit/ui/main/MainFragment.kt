@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.saveit.R
 import com.example.saveit.NavegacionInterface
 //import androidx.lifecycle.ViewModelProvider
 import com.example.saveit.databinding.MainFragmentBinding
 import com.example.saveit.ui.ahorro.AhorroFragment
 import com.example.saveit.ui.movimientos.agregar.AgregarMovimientosFragment
+import com.example.saveit.ui.movimientos.agregar.AgregarUsuarioFragment
 import com.example.saveit.ui.movimientos.lista.ListaMovimientosFragment
 import com.example.saveit.ui.reportes.ReportesFragment
 
@@ -22,7 +25,7 @@ class MainFragment: Fragment() {
     private val binding get() = _binding!!
 
     private var title: String? = null
-   // private var listener: OnFragmentInteractionListener? = null
+    private var listener: OnFragmentInteractionListener? = null
    // private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,23 +70,19 @@ class MainFragment: Fragment() {
    // }
 
     fun onButtonAhorroPressed() {
-        (activity as NavegacionInterface).showFragment(AhorroFragment(), true)
-     //   listener?.showFragment(AhorroFragment())
+        findNavController().navigate(R.id.action_mainFragment_to_ahorroFragment)
     }
     fun onButtonReportesPressed() {
-        (activity as NavegacionInterface).showFragment(ReportesFragment(), true)
-       // listener?.showFragment(ReportesFragment())
+        findNavController().navigate(R.id.action_mainFragment_to_reportesFragment)
     }
     fun onButtonlistaMovimientosPressed() {
-        (activity as NavegacionInterface).showFragment(ListaMovimientosFragment(), true)
-       // listener?.showFragment(ListaMovimientosFragment())
+        findNavController().navigate(R.id.action_mainFragment_to_listaMovimientosFragment2)
     }
     fun onButtonagregarMovimientosPressed() {
-        (activity as NavegacionInterface).showFragment(AgregarMovimientosFragment(), true)
-       // listener?.showFragment(AgregarMovimientosFragment())
+        findNavController().navigate(R.id.action_mainFragment_to_agregarMovimientosFragment)
     }
 
-   /* override fun onAttach(context: Context) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
@@ -97,7 +96,7 @@ class MainFragment: Fragment() {
         listener = null
     }
 
-    *//**
+    /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
@@ -107,11 +106,11 @@ class MainFragment: Fragment() {
      * See the Android Training lesson [Communicating with Other Fragments]
      * (http://developer.android.com/training/basics/fragments/communicating.html)
      * for more information.
-     *//*
+     */
     interface OnFragmentInteractionListener {
         fun showFragment(fragment: Fragment)
     }
-*/
+
     companion object {
         /**
          * Use this factory method to create a new instance of

@@ -1,15 +1,20 @@
 package com.example.saveit.ui.movimientos.lista
 
 import android.content.Context
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.saveit.MainActivity
 import com.example.saveit.R
-import com.example.saveit.data.Movimiento
+import com.example.saveit.model.Movimiento
+import kotlinx.android.synthetic.main.custom_movimiento_row.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,6 +42,11 @@ class ListaMovimientosAdapter: RecyclerView.Adapter<ListaMovimientosAdapter.MyVi
         val fecha = formatDate(currentItem.fecha)
 
         holder.itemView.findViewById<TextView>(R.id.valor_movimiento).text = currentItem.id.toString() + " - " + currentItem.monto.toString() + " " + currentItem.categoria + " - " + fecha
+
+        holder.itemView.rowLayout.setOnClickListener {
+            val action = ListaMovimientosFragmentDirections.actionListaMovimientosFragmentToActualizarMovimientoFragment(currentItem)
+            holder.itemView.findNavController().navigate(action)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -50,7 +60,7 @@ class ListaMovimientosAdapter: RecyclerView.Adapter<ListaMovimientosAdapter.MyVi
 
     fun formatDate(fecha: Long): String {
         try {
-            val sdf = SimpleDateFormat("MM/dd/yyyy")
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
             val netDate = Date(fecha)
 
             return sdf.format(netDate).toString()

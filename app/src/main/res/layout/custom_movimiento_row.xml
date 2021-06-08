@@ -5,13 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:maxHeight="100dp"
-    android:layout_marginBottom="6dp">
+    android:maxHeight="40dp"
+    android:layout_marginBottom="10dp"
+    android:id="@+id/rowLayout">
 
         <LinearLayout
             android:id="@+id/layout_movimiento"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:background="@drawable/custom_layout_green_style"
             android:orientation="vertical"
             tools:ignore="MissingConstraints">
@@ -19,7 +20,7 @@
                 android:id="@+id/valor_movimiento"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+
                 android:text="TextView"
                 android:textAlignment="center"
                 android:textStyle="bold" />

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/my_nav"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.saveit.ui.main.MainFragment"
+        android:label="Home" >
+        <action
+            android:id="@+id/action_mainFragment_to_listaMovimientosFragment2"
+            app:destination="@id/listaMovimientosFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_ahorroFragment"
+            app:destination="@id/ahorroFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_reportesFragment"
+            app:destination="@id/reportesFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_agregarMovimientosFragment"
+            app:destination="@id/agregarMovimientosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listaMovimientosFragment"
+        android:name="com.example.saveit.ui.movimientos.lista.ListaMovimientosFragment"
+        android:label="Lista Movimientos" >
+        <action
+            android:id="@+id/action_listaMovimientosFragment_to_actualizarMovimientoFragment"
+            app:destination="@id/actualizarMovimientoFragment" />
+        <action
+            android:id="@+id/action_listaMovimientosFragment_to_mainFragment2"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/agregarMovimientosFragment"
+        android:name="com.example.saveit.ui.movimientos.agregar.AgregarMovimientosFragment"
+        android:label="Agregar Movimiento" >
+        <action
+            android:id="@+id/action_agregarMovimientosFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_agregarMovimientosFragment_to_listaMovimientosFragment"
+            app:destination="@id/listaMovimientosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/actualizarMovimientoFragment"
+        android:name="com.example.saveit.ui.movimientos.actualizar.ActualizarMovimientoFragment"
+        android:label="Actualizar Movimiento" >
+        <actionsetOnNavigationItemSelectedListener
+            android:id="@+id/action_actualizarMovimientoFragment_to_listaMovimientosFragment"
+            app:destination="@id/listaMovimientosFragment" />
+        <argument
+            android:name="currentMovimiento"
+            app:argType="com.example.saveit.model.Movimiento" />
+        <action
+            android:id="@+id/action_actualizarMovimientoFragment_to_listaMovimientosFragment2"
+            app:destination="@id/listaMovimientosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ahorroFragment"
+        android:name="com.example.saveit.ui.ahorro.AhorroFragment"
+        android:label="Ahorros" >
+        <action
+            android:id="@+id/action_ahorroFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportesFragment"
+        android:name="com.example.saveit.ui.reportes.ReportesFragment"
+        android:label="Reportes" >
+        <action
+            android:id="@+id/action_reportesFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+</navigation>
