@@ -42,6 +42,40 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="15dp">
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp">
+            <Button
+                android:id="@+id/boton_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingreso"
+                app:icon="@drawable/ic_add_36dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_weight="1"
+                />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="100dp">
+            <Button
+                android:id="@+id/boton_egreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Egreso"
+                app:backgroundTint="#E64A19"
+                app:icon="@drawable/ic_remove_24dp"
+                style="@style/Widget.MaterialComponents.Button.Rounded.Icon"
+                />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -50,7 +84,7 @@
             android:hint="Ingresar Monto"
             android:paddingRight="24dp"
             app:errorEnabled="true"
-            app:startIconDrawable="@drawable/outline_paid_black_36"
+            app:startIconDrawable="@drawable/outline_paid_black_20"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -67,7 +101,7 @@
                 android:layout_height="match_parent"
                 android:hint="Moneda"
                 app:errorEnabled="true"
-                app:startIconDrawable="@drawable/outline_attach_money_black_36"
+                app:startIconDrawable="@drawable/outline_attach_money_black_20"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
             <AutoCompleteTextView
@@ -84,7 +118,7 @@
             android:layout_height="wrap_content"
             android:hint="Medio Pago"
             app:errorEnabled="true"
-            app:startIconDrawable="@drawable/outline_credit_card_black_36"
+            app:startIconDrawable="@drawable/outline_credit_card_black_20"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
             <AutoCompleteTextView
@@ -105,7 +139,7 @@
             android:layout_height="wrap_content"
             android:hint="Categoria"
             app:errorEnabled="true"
-            app:startIconDrawable="@drawable/outline_category_black_36"
+            app:startIconDrawable="@drawable/outline_category_black_20"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
             <AutoCompleteTextView
@@ -127,7 +161,7 @@
             android:focusableInTouchMode="false"
             app:errorEnabled="true"
             app:startIconDrawable="@drawable/outline_calendar_today_black_20"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+            style="@style/SaveIT.ExposedDropdownMenu.SinBotonDesplegar">
 
             <AutoCompleteTextView
                 android:id="@+id/fecha"
@@ -144,7 +178,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:startIconDrawable="@drawable/outline_insert_comment_black_36"
+            app:startIconDrawable="@drawable/outline_insert_comment_black_20"
             android:hint="Descripcion">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -161,27 +195,24 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="15dp">
-
-        <Button
-            android:id="@+id/boton_ingreso"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ingreso"
-            app:backgroundTint="#43A047"
-            app:icon="@drawable/ic_add_36dp"
-            style="@style/Widget.MaterialComponents.Button.Rounded.Icon"
-            android:layout_weight="1"
-            />
-        <Button
-            android:id="@+id/boton_egreso"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Egreso"
-            app:backgroundTint="#E64A19"
-            app:icon="@drawable/ic_remove_24dp"
-            style="@style/Widget.MaterialComponents.Button.Rounded.Icon"
-            android:layout_weight="1"
-            />
+            <Button
+                android:id="@+id/boton_aceptar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Aceptar"
+                    app:icon="@drawable/outline_check_circle_black_20"
+                    style="@style/Widget.MaterialComponents.Button.Rounded.Icon"
+                    android:layout_weight="1"
+                    />
+                <Button
+                    android:id="@+id/boton_cancelar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancelar"
+                    app:icon="@drawable/outline_highlight_off_black_20"
+                    style="@style/Widget.MaterialComponents.Button.Rounded.Icon"
+                    android:layout_weight="1"
+                    />
         </LinearLayout>
 </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

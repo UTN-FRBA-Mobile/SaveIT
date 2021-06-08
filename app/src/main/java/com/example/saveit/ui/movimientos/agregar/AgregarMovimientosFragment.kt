@@ -45,26 +45,52 @@ class AgregarMovimientosFragment: Fragment() {
                               savedInstanceState: Bundle?): View? {
         _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
 
-        val itemsMedioPago = MedioPago.values().map { it.descripcion }
-        val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemsMedioPago)
+        val itemInicial = listOf<String>("Sin Medio Pago")
+        val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
         (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
 
-        val itemsCategorias = Categoria.values().map { it.descripcion }
-        val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemsCategorias)
+        val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
         (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
 
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
 
-        val itemsMonedas = Moneda.values().map { it.descripcion }
-        val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemsMonedas)
+        val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
         (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
 
         binding.botonIngreso.setOnClickListener {
+            val itemsMedioPago = MedioPago.values().map { it.descripcion }
+            val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+            (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
+
+            val itemsCategorias = Categoria.values().map { it.descripcion }
+            val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+            (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
+
+            val itemsMonedas = Moneda.values().map { it.descripcion }
+            val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+            (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+        }
+
+        binding.botonEgreso.setOnClickListener {
+            val itemsMedioPago = MedioPago.values().map { it.descripcion }
+            val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+            (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
+
+            val itemsCategorias = Categoria.values().map { it.descripcion }
+            val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+            (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
+
+            val itemsMonedas = Moneda.values().map { it.descripcion }
+            val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+            (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+        }
+
+        binding.botonAceptar.setOnClickListener {
             tipoMovimiento = TipoMovimiento.INGRESO.valor
             insertDataToDataBase()
         }
 
-        binding.botonEgreso.setOnClickListener {
+        binding.botonCancelar.setOnClickListener {
             tipoMovimiento = TipoMovimiento.EGRESO.valor
             insertDataToDataBase()
         }
