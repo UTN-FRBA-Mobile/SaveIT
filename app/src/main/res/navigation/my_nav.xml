@@ -83,8 +83,8 @@
             android:id="@+id/action_reportesFragment_to_reportesPieChartFragment"
             app:destination="@id/reportesPieChartFragment" />
         <action
-            android:id="@+id/action_reportesFragment_to_actualDateChartFragment"
-            app:destination="@id/actualDateChartFragment" />
+            android:id="@+id/action_reportesFragment_to_reportesDateChartFragment"
+            app:destination="@id/reportesDateChartFragment" />
     </fragment>
     <fragment
         android:id="@+id/reportesBarChartFragment"
@@ -114,9 +114,23 @@
         android:id="@+id/actualDateChartFragment"
         android:name="com.example.saveit.ui.reportes.ActualDateChartFragment"
         android:label="actual_date_chart_fragment"
-        tools:layout="@layout/actual_date_chart_fragment" >
+        tools:layout="@layout/actual_date_chart_fragment">
+
+        <argument
+            android:name="seleccion"
+            app:argType="string[]" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/reportesDateChartFragment"
+        android:name="com.example.saveit.ui.reportes.ReportesDateChartFragment"
+        android:label="reportes_date_chart_fragment"
+        tools:layout="@layout/reportes_date_chart_fragment" >
         <action
-            android:id="@+id/action_actualDateChartFragment_to_reportesFragment"
+            android:id="@+id/action_reportesDateChartFragment_to_reportesFragment"
             app:destination="@id/reportesFragment" />
+        <action
+            android:id="@+id/action_reportesDateChartFragment_to_actualDateChartFragment"
+            app:destination="@id/actualDateChartFragment" />
     </fragment>
 </navigation>

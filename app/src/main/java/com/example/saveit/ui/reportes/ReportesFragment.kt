@@ -68,7 +68,7 @@ class ReportesFragment : Fragment() {
     fun onButtonDateChartPressed() {
         //(activity as NavegacionInterface).showFragment(ReportesDateChartFragment(), true)
         //   listener?.showFragment(AhorroFragment())
-        findNavController().navigate(R.id.action_reportesFragment_to_actualDateChartFragment)
+        findNavController().navigate(R.id.action_reportesFragment_to_reportesDateChartFragment)
     }
 
     override fun onAttach(context: Context) {

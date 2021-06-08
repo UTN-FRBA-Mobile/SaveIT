@@ -8,9 +8,12 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.saveit.NavegacionInterface
+import androidx.navigation.fragment.findNavController
 import com.example.saveit.R
-import com.example.saveit.data.*
+import com.example.saveit.data.Categoria
+import com.example.saveit.data.MedioPago
+import com.example.saveit.data.Moneda
+import com.example.saveit.data.PeriodosDeTiempo
 import com.example.saveit.databinding.ReportesDateChartFragmentBinding
 
 class ReportesDateChartFragment: Fragment()  {
@@ -79,13 +82,16 @@ class ReportesDateChartFragment: Fragment()  {
             Toast.makeText(requireContext(), "Por favor, selecciona todos los campos", Toast.LENGTH_LONG).show()
         }
         else{
-            val seleccion = arrayListOf(medioPagoSelec?.toString(),
+            val seleccion = arrayListOf(medioPagoSelec.toString(),
                 categoriaSelec.toString(),
                 monedaSelec.toString(),
                 periodoSelec.toString())
 
-            var actualdatechartfragment = ActualDateChartFragment.newInstance(seleccion)
-            (activity as NavegacionInterface).showFragment(actualdatechartfragment, true)
+            //var actualdatechartfragment = ActualDateChartFragment.newInstance(seleccion)
+            //(activity as NavegacionInterface).showFragment(actualdatechartfragment, true)
+            //findNavController().navigate(R.id.action_reportesDateChartFragment_to_actualDateChartFragment)
+            val action = ReportesDateChartFragmentDirections.actionReportesDateChartFragmentToActualDateChartFragment(seleccion.toTypedArray())
+            findNavController().navigate(action)
         }
     }
 

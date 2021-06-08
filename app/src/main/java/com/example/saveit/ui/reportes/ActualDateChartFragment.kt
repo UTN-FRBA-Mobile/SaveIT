@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.example.saveit.R
 import com.example.saveit.databinding.ActualDateChartFragmentBinding
 import com.github.mikephil.charting.data.Entry
@@ -17,24 +18,25 @@ class ActualDateChartFragment: Fragment()  {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val args: ActualDateChartFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = ActualDateChartFragmentBinding.inflate(inflater, container, false)
 
-        var seleccion = arguments?.getStringArrayList("seleccion")
-
+        //var seleccion = arguments?.getStringArrayList("seleccion")
+        val seleccion = args.seleccion
         generateChartFromSelection(seleccion)
 
         return binding.root
     }
 
-    private fun generateChartFromSelection(seleccion: ArrayList<String>?) {
+    private fun generateChartFromSelection(seleccion: Array<String>) {
         //ugly way of getting parameters from another fragment
-        val medioPagoSelec = seleccion?.get(0)
-        val categoriaSelec = seleccion?.get(1)
-        val monedaSelec = seleccion?.get(2)
-        val periodoSelec = seleccion?.get(3)
+        val medioPagoSelec = seleccion[0]
+        val categoriaSelec = seleccion[1]
+        val monedaSelec = seleccion[2]
+        val periodoSelec = seleccion[3]
         val lineEgresosEntry = ArrayList<Entry>()
         val lineIngresosEntry = ArrayList<Entry>()
 
