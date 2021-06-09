@@ -122,6 +122,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
             <AutoCompleteTextView
+                android:id="@+id/medio_pago_texto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
@@ -143,6 +144,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
             <AutoCompleteTextView
+                android:id="@+id/categoriaTexto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"

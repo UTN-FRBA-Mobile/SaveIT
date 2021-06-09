@@ -3,28 +3,19 @@ package com.example.saveit.ui.movimientos.agregar
 import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.saveit.model.Movimiento
 import com.example.saveit.viewmodel.MovimientoViewModel
 import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
-import java.util.*
 import com.example.saveit.R
 import com.example.saveit.data.*
-import com.example.saveit.ui.main.MainFragment
 import com.google.android.material.datepicker.MaterialDatePicker
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import kotlin.properties.Delegates
 
 class AgregarMovimientosFragment: Fragment() {
@@ -45,44 +36,16 @@ class AgregarMovimientosFragment: Fragment() {
                               savedInstanceState: Bundle?): View? {
         _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
 
-        val itemInicial = listOf<String>("Sin Medio Pago")
-        val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-        (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
-
-        val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-        (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
+        iniciarCamposListaDesplegable()
 
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
 
-        val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-        (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
-
         binding.botonIngreso.setOnClickListener {
-            val itemsMedioPago = MedioPago.values().map { it.descripcion }
-            val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
-
-            val itemsCategorias = Categoria.values().map { it.descripcion }
-            val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
-
-            val itemsMonedas = Moneda.values().map { it.descripcion }
-            val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+            agregarItemsAListasDesplegables()
         }
 
         binding.botonEgreso.setOnClickListener {
-            val itemsMedioPago = MedioPago.values().map { it.descripcion }
-            val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
-
-            val itemsCategorias = Categoria.values().map { it.descripcion }
-            val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
-
-            val itemsMonedas = Moneda.values().map { it.descripcion }
-            val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+            agregarItemsAListasDesplegables()
         }
 
         binding.botonAceptar.setOnClickListener {
@@ -101,6 +64,27 @@ class AgregarMovimientosFragment: Fragment() {
         return binding.root
     }
 
+    private fun iniciarCamposListaDesplegable() {
+        val itemInicial = listOf<String>("Sin items")
+        agregarItemsALista(itemInicial, binding.medioPago.editText)
+        agregarItemsALista(itemInicial, binding.moneda.editText)
+        agregarItemsALista(itemInicial, binding.categoria.editText)
+    }
+
+    private fun agregarItemsAListasDesplegables() {
+        val itemsMedioPago = MedioPago.values().map { it.descripcion }
+        agregarItemsALista(itemsMedioPago, binding.medioPago.editText)
+        val itemsCategorias = Categoria.values().map { it.descripcion }
+        agregarItemsALista(itemsCategorias, binding.categoria.editText)
+        val itemsMonedas = Moneda.values().map { it.descripcion }
+        agregarItemsALista(itemsMonedas, binding.moneda.editText)
+    }
+
+    private fun agregarItemsALista(items: List<String>,componenteLista: EditText?) {
+        val adapter = ArrayAdapter(requireContext(), R.layout.lista_items, items)
+        (componenteLista as? AutoCompleteTextView)?.setAdapter(adapter)
+    }
+
     private fun insertDataToDataBase() {
 //        if (inputCheck(firstName, lastName, age)) {
             val movimiento = Movimiento(0,
@@ -117,10 +101,19 @@ class AgregarMovimientosFragment: Fragment() {
             // Add Data to Database
             mMovimientoViewModel.addMovimiento(movimiento)
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
+            limpiarContenidoControles()
 //        }
 //        else {
 //            Toast.makeText(requireContext(), "Please fill out all fields", Toast.LENGTH_LONG).show()
 //        }
+    }
+
+    private fun limpiarContenidoControles() {
+        iniciarCamposListaDesplegable()
+        binding.categoriaTexto.clearListSelection()
+        binding.monto.setText("")
+        binding.descripcion.setText("")
+        binding.fecha.setText("")
     }
 
 //    private fun inputCheck(firstName: String, lastName: String, age: Editable): Boolean {
