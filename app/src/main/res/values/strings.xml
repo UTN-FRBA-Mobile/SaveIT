@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SaveIT</string>
     <string name="titulo_principal">SaveIT</string>
-    <string name="titulo_ahorro">Ahorro</string>
+    <string name="titulo_ahorro">Ahorros</string>
     <string name="titulo_movimientos">Movimientos</string>
     <string name="titulo_reportes">Reportes</string>
     <string name="titulo_reportes_por_fecha">Reportes Por Fecha</string>
