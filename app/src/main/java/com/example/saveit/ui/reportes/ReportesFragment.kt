@@ -27,7 +27,7 @@ class ReportesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-          binding.mButton.setText("mButton")
+
 
         binding.pieChartButton.setOnClickListener {
             onButtonPieChartPressed()

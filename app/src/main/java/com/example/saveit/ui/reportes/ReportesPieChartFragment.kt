@@ -16,6 +16,7 @@ import com.example.saveit.R
 import com.example.saveit.data.Meses
 import com.example.saveit.data.PeriodosDeTiempo
 import com.example.saveit.databinding.ReportesPieChartFragmentBinding
+import com.example.saveit.model.Movimiento
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -60,6 +61,7 @@ class ReportesPieChartFragment: Fragment()  {
         var pieChart = binding.pieChart
 
         var categorias = ArrayList<PieEntry>()
+
         categorias.add(PieEntry(2.0f,"Servicios"))
         categorias.add(PieEntry(3.0f,"Comida"))
         categorias.add(PieEntry(5.0f,"Alquiler"))
@@ -79,8 +81,7 @@ class ReportesPieChartFragment: Fragment()  {
         pieChart.setCenterText("Categorias")
         pieChart.animate()
 
-
-
     }
+
 
 }

@@ -12,63 +12,152 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
-
-        <RelativeLayout
-            android:layout_width="220dp"
-            android:layout_height="200dp"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:layout_marginLeft="95dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/lightBlue"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true">
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#E3F2FD"
+            app:cardElevation="2dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:checkable="false"
+            android:paddingHorizontal="10dp"
+            app:cardCornerRadius="28dp"
+            app:contentPadding="20dp"
+            app:strokeWidth="10dp"
+            app:strokeColor="@color/blueBackground"
+            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/balanceMesTextView"
-                    android:text="Balance Abril 2021"
-                    android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal" />
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="15dp">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewTituloBalance"
+                        android:text="Balance Abril 2021"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="25dp"
+                        app:counterEnabled="true"
+                        android:textStyle="bold"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        app:counterMaxLength="50"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:orientation="horizontal">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="Ingresos = "
+                        android:layout_centerHorizontal="true"
+                        android:gravity="right"
+                        android:textAlignment="gravity"                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewMontoIngresos"
+                        android:text="$300000"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50"/>
 
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/ingresosTextView"
-                    android:text="Ingresos: + $100.000"
-                    android:layout_marginTop="15dp"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:orientation="horizontal">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="Gastos = "
+                        android:layout_centerHorizontal="true"
+                        android:gravity="right"
+                        android:textAlignment="gravity"                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewMontoGastos"
+                        android:text="$100000"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50"/>
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/gastosTextView"
-                    android:text="Gastos:   -    $60.000"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal" />
+                <View
+                    android:layout_width="260dp"
+                    android:layout_height="1dp"
+                    android:background="#575454"
 
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="20dp"
-                    android:text="------------------------------------"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:orientation="horizontal">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="Total = "
+                        android:layout_centerHorizontal="true"
+                        android:gravity="right"
+                        android:textAlignment="gravity"                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewMontoTotal"
+                        android:text="$200000"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50"/>
 
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/saldoTextView"
-                    android:text="Saldo:        + $40.000"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal" />
+                </LinearLayout>
+
             </LinearLayout>
-        </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
 
         <RelativeLayout
             android:layout_width="220dp"
@@ -78,6 +167,7 @@
             android:layout_marginLeft="95dp"
             android:layout_marginTop="70dp"
             android:background="@color/lightBlue">
+
 
             <ImageButton
                 android:id="@+id/ahorroButton"

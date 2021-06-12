@@ -1,66 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/titulo_reportes" />
-    <Button android:id="@+id/mButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
 
-    <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_height="410dp"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="70dp"
-        android:background="@color/lightBlue">
 
-        <ImageButton
-            android:id="@+id/pieChartButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="1"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/pie_chart" />
 
-        <ImageButton
-            android:id="@+id/barChartButton"
-            android:layout_centerHorizontal="true"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_below="@+id/pieChartButton"
-            android:layout_weight="1"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/column_chart" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="#E3F2FD"
+            app:cardElevation="2dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:checkable="false"
+            android:paddingHorizontal="10dp"
+            app:cardCornerRadius="28dp"
+            app:contentPadding="20dp"
+            app:strokeWidth="10dp"
+            app:strokeColor="@color/blueBackground">
 
-        <ImageButton
-            android:id="@+id/dateChartButton"
-            android:layout_centerHorizontal="true"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_below="@+id/barChartButton"
-            android:layout_weight="1"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/calendar_img" />
 
-        <ImageButton
-            android:id="@+id/mapChartButton"
-            android:layout_centerHorizontal="true"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent" android:layout_height="fill_parent"
+                android:gravity="center_horizontal">
 
-            android:layout_below="@+id/dateChartButton"
-            android:layout_marginTop="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/globe_img" />
-    </RelativeLayout>
+            <ImageButton
+                    android:id="@+id/pieChartButton"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="100dp"
+                    android:background="@drawable/pie_chart"
+                tools:ignore="NotSibling" />
+
+
+            <ImageButton
+                android:id="@+id/barChartButton"
+                android:layout_centerHorizontal="true"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:layout_marginTop="50dp"
+                android:layout_below="@+id/pieChartButton"
+                android:background="@drawable/column_chart" />
+
+            <ImageButton
+                android:id="@+id/dateChartButton"
+                android:layout_centerHorizontal="true"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:layout_below="@+id/barChartButton"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/calendar_img" />
+
+            <ImageButton
+                android:id="@+id/mapChartButton"
+                android:layout_centerHorizontal="true"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"    android:layout_below="@+id/dateChartButton"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/globe_img" />
+
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
 </LinearLayout>
