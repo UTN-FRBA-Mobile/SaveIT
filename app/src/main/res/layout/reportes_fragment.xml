@@ -27,15 +27,17 @@
                 android:layout_width="fill_parent" android:layout_height="fill_parent"
                 android:gravity="center_horizontal">
 
-            <ImageButton
+                <ImageButton
                     android:id="@+id/pieChartButton"
                     android:layout_centerHorizontal="true"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_marginTop="100dp"
-                    android:background="@drawable/pie_chart"
-                tools:ignore="NotSibling" />
+                    android:background="@drawable/roundcorner"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/column_chart"
+                 />
 
 
             <ImageButton
