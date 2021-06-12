@@ -7,6 +7,10 @@ import com.example.saveit.model.Movimiento
 class MovimientoRepository(private val movimientoDao: MovimientoDao) {
     val readAllData: LiveData<List<Movimiento>> = movimientoDao.readAllData()
 
+    fun readIngresos(desde: Long, hasta: Long): LiveData<Double> = movimientoDao.readIngresos(desde, hasta)
+
+    val readGastos: LiveData<Double> = movimientoDao.readGastos()
+
     suspend fun addMovimiento(movimiento: Movimiento) {
         movimientoDao.addMovimiento(movimiento)
     }

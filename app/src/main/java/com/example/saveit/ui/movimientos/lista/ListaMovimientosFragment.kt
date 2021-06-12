@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -38,6 +39,9 @@ class ListaMovimientosFragment: Fragment() {
         // UserViewModel
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
         mMovimientoViewModel.readAllData.observe(viewLifecycleOwner, Observer { user ->
+            if (user.size == 0)
+                Toast.makeText(requireContext(), "No hay movimientos cargados", Toast.LENGTH_LONG).show()
+
             adapter.setData(user)
         })
 

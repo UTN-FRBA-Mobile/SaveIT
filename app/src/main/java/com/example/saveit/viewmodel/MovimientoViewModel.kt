@@ -24,6 +24,14 @@ class MovimientoViewModel(application: Application): AndroidViewModel(applicatio
         return repository.readAllData
     }
 
+    fun readIngresos(desde: Long, hasta: Long): LiveData<Double> {
+        return repository.readIngresos(desde, hasta)
+    }
+
+    fun readGastos(): LiveData<Double> {
+        return repository.readGastos
+    }
+
     fun addMovimiento(movimiento: Movimiento){
         viewModelScope.launch(Dispatchers.IO) {
             repository.addMovimiento(movimiento)

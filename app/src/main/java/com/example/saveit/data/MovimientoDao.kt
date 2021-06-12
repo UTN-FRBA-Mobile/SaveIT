@@ -14,4 +14,10 @@ interface MovimientoDao {
 
     @Query("SELECT * FROM movimiento_table ORDER BY id ASC")
     fun readAllData(): LiveData<List<Movimiento>>
+
+    @Query("SELECT SUM(monto) FROM movimiento_table WHERE tipoMovimiento = 0 AND fecha BETWEEN :desde AND :hasta ORDER BY id ASC")
+    fun readIngresos(desde: Long, hasta: Long): LiveData<Double>
+
+    @Query("SELECT SUM(monto) FROM movimiento_table WHERE tipoMovimiento = 1 ORDER BY id ASC")
+    fun readGastos(): LiveData<Double>
 }
