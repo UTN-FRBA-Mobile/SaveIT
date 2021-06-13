@@ -1,116 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:background="@color/blueBackground"
     tools:context=".MainFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
         android:orientation="vertical"
-        tools:ignore="MissingConstraints">
+        android:paddingHorizontal="30dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
-        <RelativeLayout
-            android:layout_width="220dp"
-            android:layout_height="200dp"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:layout_marginLeft="95dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/lightBlue"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true">
+        <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checkable="false"
+            android:clickable="false"
+            android:focusable="false"
+            app:cardBackgroundColor="#E3F2FD"
+            app:cardCornerRadius="28dp"
+            app:contentPadding="20dp"
+            app:strokeColor="@color/blueBackground"
+            android:layout_marginBottom="20dp"
+            >
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/balanceMesTextView"
-                    android:text="Balance Abril 2021"
-                    android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="15dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewTituloBalance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text="Balance Abril 2021"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_weight="50"
+                        android:gravity="right"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text="Ingresos = "
+                        android:textAlignment="gravity"
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewMontoIngresos"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_weight="50"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_weight="50"
+                        android:gravity="right"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text="Gastos = "
+                        android:textAlignment="gravity"
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewMontoGastos"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_weight="50"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="260dp"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="50dp"
+
+                    android:layout_marginRight="50dp"
+                    android:background="#575454"
                     android:gravity="center_horizontal" />
 
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/ingresosTextView"
-                    android:layout_marginTop="15dp"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="15dp">
 
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/gastosTextView"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_weight="50"
+                        android:gravity="right"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text="Total = "
+                        android:textAlignment="gravity"
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50" />
 
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="20dp"
-                    android:text="------------------------------------"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewMontoTotal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_weight="50"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50" />
 
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/saldoTextView"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal" />
+                </LinearLayout>
+
             </LinearLayout>
-        </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-        <RelativeLayout
-            android:layout_width="220dp"
-            android:layout_height="200dp"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:layout_marginLeft="95dp"
-            android:layout_marginTop="70dp"
-            android:background="@color/lightBlue">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checkable="false"
+            android:clickable="false"
+            android:focusable="false"
+            android:paddingHorizontal="10dp"
+            app:cardBackgroundColor="#E3F2FD"
+            app:cardCornerRadius="28dp"
+            app:contentPadding="20dp"
+            app:strokeColor="@color/blueBackground"
+            >
 
-            <ImageButton
-                android:id="@+id/ahorroButton"
-                android:layout_width="60dp"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/ahorro_icon_chico" />
+                android:layout_margin="20dp"
+                android:background="#E3F2FD"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
 
-            <ImageButton
-                android:id="@+id/agregarMovimientosButton"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:layout_toRightOf="@+id/ahorroButton"
-                android:layout_weight="1"
-                android:background="@drawable/agregar_movimiento_icon_chico" />
+                <ImageButton
+                    android:id="@+id/ahorroButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="20dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/roundcorner"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ahorro_icon_chico" />
 
-            <ImageButton
-                android:id="@+id/reportesButton"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ahorroButton"
-                android:layout_marginTop="60dp"
-                android:layout_weight="1"
-                android:background="@drawable/reportes_icon_chico" />
+                <ImageButton
+                    android:id="@+id/agregarMovimientosButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="20dp"
+                    android:layout_toRightOf="@+id/ahorroButton"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/roundcorner"
+                    android:scaleType="centerInside"
 
-            <ImageButton
-                android:id="@+id/listaMovimientosButton"
-                android:layout_width="60dp"
+                    android:src="@drawable/agregar_movimiento_icon_chico" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/agregarMovimientosButton"
-                android:layout_marginLeft="60dp"
-                android:layout_marginTop="60dp"
-                android:layout_toRightOf="@+id/reportesButton"
-                android:layout_weight="1"
-                android:background="@drawable/lista_movimientos_icon_chico" />
-        </RelativeLayout>
+                android:layout_margin="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <ImageButton
+                    android:id="@+id/reportesButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="140dp"
+                    android:layout_marginRight="20dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/roundcorner"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/reportes_icon_chico" />
+
+                <ImageButton
+                    android:id="@+id/listaMovimientosButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/agregarMovimientosButton"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="140dp"
+                    android:layout_toRightOf="@+id/reportesButton"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/roundcorner"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/lista_movimientos_icon_chico" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
