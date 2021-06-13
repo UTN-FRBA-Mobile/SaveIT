@@ -11,43 +11,47 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:paddingTop="10dp"
+        android:paddingHorizontal="30dp"
         android:orientation="vertical"
         android:background="@color/blueBackground">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:text="@string/titulo_grafico_de_torta" />
+
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingHorizontal="30dp"
+            android:layout_marginBottom="10dp"
             app:cardBackgroundColor="#E3F2FD"
             app:cardElevation="2dp"
             android:clickable="false"
             android:focusable="false"
             android:checkable="false"
-            android:paddingHorizontal="10dp"
             app:cardCornerRadius="28dp"
             app:contentPadding="20dp"
-            app:strokeWidth="10dp"
             app:strokeColor="@color/blueBackground">
 
             <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
                 >
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/seleccion_anio"
-                    android:layout_width="fill_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="50"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
                     android:hint="@string/dropdown_grafico_de_torta_Anio"
                     app:errorEnabled="true"
+                    android:gravity="center"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
                     <AutoCompleteTextView
@@ -59,11 +63,13 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/seleccion_mes"
-                    android:layout_width="fill_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="50"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
                     android:hint="@string/dropdown_grafico_de_torta_Mes"
                     app:errorEnabled="true"
+                    android:gravity="center"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
                     <AutoCompleteTextView
@@ -72,11 +78,16 @@
                         android:inputType="none"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
                 <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_marginTop="45dp"
+                    >
 
                     <Button
                         android:id="@+id/boton_generar_reporte"
@@ -98,7 +109,6 @@
                         android:layout_weight=".5"
                         />
 
-                </LinearLayout>
 
             </LinearLayout>
 
@@ -114,7 +124,7 @@
             android:paddingHorizontal="10dp"
             app:cardCornerRadius="28dp"
             app:contentPadding="20dp"
-            app:strokeWidth="10dp"
+            android:layout_marginBottom="60dp"
             app:strokeColor="@color/blueBackground">
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChart"
