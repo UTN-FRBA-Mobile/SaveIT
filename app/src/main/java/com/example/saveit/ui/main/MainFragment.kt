@@ -104,7 +104,7 @@ class MainFragment: Fragment() {
 
             binding.textViewMontoIngresos.text = "+ \$" + ingresosDisplay
 
-            mMovimientoViewModel.readGastos().observe(viewLifecycleOwner, Observer { gastos ->
+            mMovimientoViewModel.readGastos(desde, hasta).observe(viewLifecycleOwner, Observer { gastos ->
                 if (gastos != null)
                     gastosDisplay = gastos
 

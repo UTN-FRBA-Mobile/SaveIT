@@ -105,10 +105,9 @@ class AgregarMovimientosFragment: Fragment() {
 //        if (inputCheck(firstName, lastName, age)) {
             val movimiento = Movimiento(0,
                 binding.monto.text.toString().toDouble(),
-                /*(Moneda.values().filter { m -> m.descripcion.equals(binding.moneda.editText?.text.toString())}).get(0).valor,
+                (Moneda.values().filter { m -> m.descripcion.equals(binding.moneda.editText?.text.toString())}).get(0).valor,
                 (MedioPago.values().filter { mp -> mp.descripcion.equals(binding.medioPago.editText?.text.toString()) }).get(0).valor,
-                (Categoria.values().filter { c -> c.descripcion.equals(binding.categoria.editText?.text.toString()) }).get(0).valor,*/
-                1,1,1,
+                (Categoria.values().filter { c -> c.descripcion.equals(binding.categoria.editText?.text.toString()) }).get(0).valor,
                 SimpleDateFormat("dd/MM/yyyy").parse(binding.fecha.text.toString()).time,
                 binding.descripcion.text.toString(),
                 "Ubicacion",

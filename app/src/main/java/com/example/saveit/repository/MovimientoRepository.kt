@@ -9,7 +9,7 @@ class MovimientoRepository(private val movimientoDao: MovimientoDao) {
 
     fun readIngresos(desde: Long, hasta: Long): LiveData<Double> = movimientoDao.readIngresos(desde, hasta)
 
-    val readGastos: LiveData<Double> = movimientoDao.readGastos()
+    fun readGastos(desde: Long, hasta: Long): LiveData<Double> = movimientoDao.readGastos(desde, hasta)
 
     suspend fun addMovimiento(movimiento: Movimiento) {
         movimientoDao.addMovimiento(movimiento)

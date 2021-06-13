@@ -28,8 +28,8 @@ class MovimientoViewModel(application: Application): AndroidViewModel(applicatio
         return repository.readIngresos(desde, hasta)
     }
 
-    fun readGastos(): LiveData<Double> {
-        return repository.readGastos
+    fun readGastos(desde: Long, hasta: Long): LiveData<Double> {
+        return repository.readGastos(desde, hasta)
     }
 
     fun addMovimiento(movimiento: Movimiento){
