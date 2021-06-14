@@ -1,11 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/blueBackground">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingHorizontal="30dp"
+        android:layout_marginBottom="10dp"
+        app:cardBackgroundColor="#E3F2FD"
+        app:cardElevation="2dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:checkable="false"
+        app:cardCornerRadius="28dp"
+        app:contentPadding="20dp"
+        app:strokeColor="@color/blueBackground"
+        android:layout_marginTop="50dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            >
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/seleccion_anio"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:hint="@string/dropdown_grafico_de_torta_Anio"
+                app:errorEnabled="true"
+                android:gravity="center"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+                <AutoCompleteTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/seleccion_mes"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:hint="@string/dropdown_grafico_de_torta_Mes"
+                app:errorEnabled="true"
+                android:gravity="center"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+                <AutoCompleteTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:inputType="none"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginTop="45dp"
+            >
+
+            <Button
+                android:id="@+id/boton_buscar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Buscar"
+                android:layout_marginRight="10dp"
+                app:backgroundTint="#43A047"
+                android:layout_weight=".5"
+                />
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
     <FrameLayout
         android:layout_width="220dp"
         android:layout_height="400dp"

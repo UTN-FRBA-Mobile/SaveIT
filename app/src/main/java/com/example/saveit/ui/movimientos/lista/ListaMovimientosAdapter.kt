@@ -39,7 +39,10 @@ class ListaMovimientosAdapter: RecyclerView.Adapter<ListaMovimientosAdapter.MyVi
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = movimientoList[position]
 
-        if (currentItem.tipoMovimiento == 1) {
+        if (currentItem.tipoMovimiento == 0) {
+            holder.itemView.findViewById<LinearLayout>(R.id.layout_movimiento).setBackground(ContextCompat.getDrawable(context, R.drawable.custom_layout_green_style))
+        }
+        else {
             holder.itemView.findViewById<LinearLayout>(R.id.layout_movimiento).setBackground(ContextCompat.getDrawable(context, R.drawable.custom_layout_red_style))
         }
 

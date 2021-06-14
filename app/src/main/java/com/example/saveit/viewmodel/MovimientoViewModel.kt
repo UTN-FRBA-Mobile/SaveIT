@@ -24,6 +24,10 @@ class MovimientoViewModel(application: Application): AndroidViewModel(applicatio
         return repository.readAllData
     }
 
+    fun readAllDataBetween(desde: Long, hasta: Long): LiveData<List<Movimiento>> {
+        return repository.readAllDataBetween(desde, hasta)
+    }
+
     fun readIngresos(desde: Long, hasta: Long): LiveData<Double> {
         return repository.readIngresos(desde, hasta)
     }
