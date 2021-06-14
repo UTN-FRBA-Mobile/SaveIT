@@ -111,7 +111,7 @@ class AgregarMovimientosFragment: Fragment() {
                 SimpleDateFormat("dd/MM/yyyy").parse(binding.fecha.text.toString()).time,
                 binding.descripcion.text.toString(),
                 "Ubicacion",
-                tipoMovimiento
+                0
             )
 
             // Add Data to Database

@@ -16,5 +16,11 @@ enum class CategoriasGasto(val valor: Int, val descripcion: String)  {
     SALUD(13, "Salud"),
     SERVICIOS(14, "Servicios"),
     TRANSPORTE(15, "Transporte"),
-    OTROS(16, "Otros")
+    OTROS(16, "Otros");
+
+    companion object {
+        fun getByValor(valor: Int): String {
+            return values().filter { it.valor == valor }.first().descripcion
+        }
+    }
 }

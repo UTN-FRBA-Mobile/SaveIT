@@ -67,19 +67,18 @@ class MainFragment: Fragment() {
 
         setSummaryValues()
 
-        //binding.ahorroButton.text = "Ahorro"
         binding.ahorroButton.setOnClickListener {
             onButtonAhorroPressed()
         }
-        //binding.reportesButton.text = "Reportes"
+
         binding.reportesButton.setOnClickListener {
             onButtonReportesPressed()
         }
-        //binding.listaMovimientosButton.text = "Lista Movimientos"
+
         binding.listaMovimientosButton.setOnClickListener {
             onButtonlistaMovimientosPressed()
         }
-        //binding.agregarMovimientosButton.text = "Agregar Movimientos"
+
         binding.agregarMovimientosButton.setOnClickListener {
             onButtonagregarMovimientosPressed()
         }
@@ -115,7 +114,7 @@ class MainFragment: Fragment() {
                 if (saldo >= 0)
                     binding.textViewMontoTotal.text = "+ \$" + saldo
                 else
-                    binding.textViewMontoTotal.text = "- \$" + saldo
+                    binding.textViewMontoTotal.text = "- \$" + saldo * -1
             })
         })
     }

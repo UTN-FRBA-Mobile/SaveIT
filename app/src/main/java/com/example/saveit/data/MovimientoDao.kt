@@ -12,7 +12,7 @@ interface MovimientoDao {
     @Update
     suspend fun updateMovimiento(movimiento: Movimiento)
 
-    @Query("SELECT * FROM movimiento_table ORDER BY id ASC")
+    @Query("SELECT * FROM movimiento_table ORDER BY fecha DESC")
     fun readAllData(): LiveData<List<Movimiento>>
 
     @Query("SELECT SUM(monto) FROM movimiento_table WHERE tipoMovimiento = 0 AND fecha BETWEEN :desde AND :hasta")
