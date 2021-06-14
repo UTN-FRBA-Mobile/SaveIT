@@ -89,7 +89,7 @@
     <fragment
         android:id="@+id/reportesBarChartFragment"
         android:name="com.example.saveit.ui.reportes.ReportesBarChartFragment"
-        android:label="ReportesBarChartFragment" >
+        android:label="Reportes Barras" >
         <action
             android:id="@+id/action_reportesBarChartFragment_to_reportesFragment"
             app:destination="@id/reportesFragment" />
@@ -97,7 +97,7 @@
     <fragment
         android:id="@+id/reportesMapChartFragment"
         android:name="com.example.saveit.ui.reportes.ReportesMapChartFragment"
-        android:label="ReportesMapChartFragment" >
+        android:label="Reportes Mapa" >
         <action
             android:id="@+id/action_reportesMapChartFragment_to_reportesFragment"
             app:destination="@id/reportesFragment" />
@@ -105,7 +105,7 @@
     <fragment
         android:id="@+id/reportesPieChartFragment"
         android:name="com.example.saveit.ui.reportes.ReportesPieChartFragment"
-        android:label="ReportesPieChartFragment" >
+        android:label="Reportes Pie" >
         <action
             android:id="@+id/action_reportesPieChartFragment_to_reportesFragment"
             app:destination="@id/reportesFragment" />
@@ -113,7 +113,7 @@
     <fragment
         android:id="@+id/actualDateChartFragment"
         android:name="com.example.saveit.ui.reportes.ActualDateChartFragment"
-        android:label="actual_date_chart_fragment"
+        android:label="Reportes Fecha"
         tools:layout="@layout/actual_date_chart_fragment">
 
         <argument
@@ -124,7 +124,7 @@
     <fragment
         android:id="@+id/reportesDateChartFragment"
         android:name="com.example.saveit.ui.reportes.ReportesDateChartFragment"
-        android:label="reportes_date_chart_fragment"
+        android:label="Reportes Fecha"
         tools:layout="@layout/reportes_date_chart_fragment" >
         <action
             android:id="@+id/action_reportesDateChartFragment_to_reportesFragment"

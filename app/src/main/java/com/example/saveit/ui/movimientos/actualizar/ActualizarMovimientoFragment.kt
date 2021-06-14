@@ -8,15 +8,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.saveit.R
+import com.example.saveit.data.Categoria
+import com.example.saveit.data.MedioPago
+import com.example.saveit.data.Moneda
 import com.example.saveit.databinding.ActualizarMovimientoFragmentBinding
 import com.example.saveit.model.Movimiento
 import com.example.saveit.viewmodel.MovimientoViewModel
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.android.synthetic.main.actualizar_movimiento_fragment.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class ActualizarMovimientoFragment : Fragment() {
@@ -25,9 +33,13 @@ class ActualizarMovimientoFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
 
-  //  private val args by navArgs<ActualizarMovimientoFragmentArgs>()
+    private val args by navArgs<ActualizarMovimientoFragmentArgs>()
 
     private lateinit var mMovimientoViewModel: MovimientoViewModel
+
+    val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Fecha de Movimiento")
+            .build()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -35,19 +47,69 @@ class ActualizarMovimientoFragment : Fragment() {
 
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
 
-//        binding.updateFirstNameEt.setText(args.currentMovimiento.monto.toString())
-//        binding.updateLastNameEt.setText(args.currentMovimiento.monto.toString())
-//        binding.updateAgeEt.setText(args.currentMovimiento.monto.toString())
+        setAutoCompleteTextViews()
 
-        binding.updateBtn.setOnClickListener {
+        binding.actualizarMonto.setText(args.currentMovimiento.monto.toString())
+        binding.moneda.editText!!.setText(Moneda.getByValor(args.currentMovimiento.moneda))
+        binding.medioPago.editText!!.setText(MedioPago.getByValor(args.currentMovimiento.medioDePago))
+        binding.categoria.editText!!.setText(Categoria.getByValor(args.currentMovimiento.categoria))
+
+        val fecha = formatDate(args.currentMovimiento.fecha)
+
+        binding.actualizarFecha.setText(fecha)
+
+        binding.actualizarDescripcion.setText(args.currentMovimiento.descripcion)
+
+        binding.botonActualizar.setOnClickListener {
             updateMovimiento()
         }
 
         return binding.root
     }
 
+    private fun setAutoCompleteTextViews() {
+        val itemInicial = listOf<String>("Sin Medio Pago")
+
+        val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+        (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
+
+        val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+        (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
+
+        val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+        (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+
+        binding.botonIngreso.setOnClickListener {
+            val itemsMedioPago = MedioPago.values().map { it.descripcion }
+            val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+            (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
+
+            val itemsCategorias = Categoria.values().map { it.descripcion }
+            val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+            (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
+
+            val itemsMonedas = Moneda.values().map { it.descripcion }
+            val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+            (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+        }
+
+        binding.botonEgreso.setOnClickListener {
+            val itemsMedioPago = MedioPago.values().map { it.descripcion }
+            val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+            (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
+
+            val itemsCategorias = Categoria.values().map { it.descripcion }
+            val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+            (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
+
+            val itemsMonedas = Moneda.values().map { it.descripcion }
+            val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
+            (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+        }
+    }
+
     private fun updateMovimiento() {
-        val firstName = updateFirstName_et.text.toString()
+        /*val firstName = updateFirstName_et.text.toString()
         val lastName = updateLastName_et.text.toString()
         val age = updateAge_et.text
 
@@ -61,11 +123,38 @@ class ActualizarMovimientoFragment : Fragment() {
         }
         else {
             Toast.makeText(requireContext(), "Please fill out all fields", Toast.LENGTH_LONG).show()
+        }*/
+    }
+
+    private fun formatDate(fecha: Long): String {
+        try {
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
+            val netDate = Date(fecha)
+
+            return sdf.format(netDate).toString()
+        } catch (e: Exception) {
+            return e.toString()
         }
     }
 
     private fun inputCheck(firstName: String, lastName: String, age: Editable): Boolean {
         return !(TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || age.isEmpty())
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        datePicker.addOnPositiveButtonClickListener {
+            (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(android.icu.text.SimpleDateFormat("dd/MM/yyyy").format(android.icu.text.SimpleDateFormat("MMM dd, yyyy").parse(datePicker.headerText)).toString())
+        }
+
+        binding.actualizarFecha.setOnClickListener {
+            onFechaMovimientoPressed()
+        }
+    }
+
+    private fun onFechaMovimientoPressed() {
+        datePicker.show((activity as AppCompatActivity).supportFragmentManager , "tag")
     }
 
     override fun onAttach(context: Context) {
