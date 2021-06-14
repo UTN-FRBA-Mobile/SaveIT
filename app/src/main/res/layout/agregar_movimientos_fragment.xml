@@ -45,9 +45,11 @@
             android:orientation="horizontal"
             android:paddingBottom="15dp">
             <com.google.android.material.button.MaterialButtonToggleGroup
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp">
+                android:paddingLeft="10dp"
+                android:id="@+id/grupo_botones_tipo_movimiento"
+                app:singleSelection="true">
             <Button
                 android:id="@+id/boton_ingreso"
                 android:layout_width="wrap_content"
@@ -57,19 +59,14 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_weight="1"
                 />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="100dp">
             <Button
                 android:id="@+id/boton_egreso"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Egreso"
-                app:backgroundTint="#E64A19"
                 app:icon="@drawable/ic_remove_24dp"
-                style="@style/Widget.MaterialComponents.Button.Rounded.Icon"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
         </com.google.android.material.button.MaterialButtonToggleGroup>
         </LinearLayout>
@@ -105,6 +102,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
             <AutoCompleteTextView
+                android:id="@+id/tipo_moneda"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
@@ -112,9 +110,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/medio_pago"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="Medio Pago"
             app:errorEnabled="true"
@@ -122,11 +124,26 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
             <AutoCompleteTextView
+                android:id="@+id/medio_pago_texto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
                 />
         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp">
+            <Button
+                android:id="@+id/boton_ubicacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/outline_location_on_black_36"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                android:layout_weight="1"
+                />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+        </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -143,6 +160,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
             <AutoCompleteTextView
+                android:id="@+id/categoria_texto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"

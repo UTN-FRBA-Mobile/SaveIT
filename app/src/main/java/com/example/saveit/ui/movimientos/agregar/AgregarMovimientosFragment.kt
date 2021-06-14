@@ -1,30 +1,31 @@
 package com.example.saveit.ui.movimientos.agregar
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.TextView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.saveit.model.Movimiento
 import com.example.saveit.viewmodel.MovimientoViewModel
 import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
-import java.util.*
 import com.example.saveit.R
 import com.example.saveit.data.*
-import com.example.saveit.ui.main.MainFragment
+import com.google.android.gms.location.*
 import com.google.android.material.datepicker.MaterialDatePicker
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import kotlin.properties.Delegates
 
 class AgregarMovimientosFragment: Fragment() {
@@ -32,11 +33,13 @@ class AgregarMovimientosFragment: Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var clienteUbicacion: FusedLocationProviderClient
 
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var mMovimientoViewModel: MovimientoViewModel
     private var tipoMovimiento by Delegates.notNull<Int>()
+    private lateinit var ubicacion: Location
 
     val datePicker = MaterialDatePicker.Builder.datePicker()
        .setTitleText("Fecha de Movimiento")
@@ -44,65 +47,119 @@ class AgregarMovimientosFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
+        clienteUbicacion = LocationServices.getFusedLocationProviderClient(activity)
 
-        val itemInicial = listOf<String>("Sin Medio Pago")
-        val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-        (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
-
-        val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-        (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
+        iniciarCamposListaDesplegable()
 
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
 
-        val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-        (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
-
         binding.botonIngreso.setOnClickListener {
-            val itemsMedioPago = MedioPago.values().map { it.descripcion }
-            val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
-
-            val itemsCategorias = Categoria.values().map { it.descripcion }
-            val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
-
-            val itemsMonedas = Moneda.values().map { it.descripcion }
-            val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+            tipoMovimiento = TipoMovimiento.INGRESO.valor
+            agregarItemsAListasDesplegables()
         }
 
         binding.botonEgreso.setOnClickListener {
-            val itemsMedioPago = MedioPago.values().map { it.descripcion }
-            val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
-
-            val itemsCategorias = Categoria.values().map { it.descripcion }
-            val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
-
-            val itemsMonedas = Moneda.values().map { it.descripcion }
-            val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+            tipoMovimiento = TipoMovimiento.EGRESO.valor
+            agregarItemsAListasDesplegables()
         }
 
         binding.botonAceptar.setOnClickListener {
-            tipoMovimiento = TipoMovimiento.INGRESO.valor
             insertDataToDataBase()
         }
 
         binding.botonCancelar.setOnClickListener {
-            tipoMovimiento = TipoMovimiento.EGRESO.valor
-            insertDataToDataBase()
+            limpiarContenidoControles()
         }
-       // binding.medioPago.setOnClickListener {
-         //   insertDataToDataBase()
-        //}
 
+        binding.botonUbicacion.setOnClickListener {
+            if(activity?.let { it1 -> ContextCompat.checkSelfPermission(it1, android.Manifest.permission.ACCESS_FINE_LOCATION) } == PackageManager.PERMISSION_GRANTED ||
+                activity?.let { it1 -> ContextCompat.checkSelfPermission(it1, android.Manifest.permission.ACCESS_COARSE_LOCATION) } == PackageManager.PERMISSION_GRANTED) {
+                obtenerUbicacionActual()
+            } else {
+                Toast.makeText(requireContext(), "Dio FALSO", Toast.LENGTH_LONG).show()
+            }
+        }
         return binding.root
     }
 
+    private fun limpiarContenidoControles() {
+        iniciarCamposListaDesplegable()
+        binding.grupoBotonesTipoMovimiento.clearChecked()
+        binding.categoriaTexto.text.clear()
+        binding.categoriaTexto.clearFocus()
+        binding.medioPagoTexto.text.clear()
+        binding.medioPagoTexto.clearFocus()
+        binding.tipoMoneda.text.clear()
+        binding.tipoMoneda.clearFocus()
+        binding.monto.setText("")
+        binding.monto.clearFocus()
+        binding.descripcion.setText("")
+        binding.descripcion.clearFocus()
+        binding.fecha.setText("")
+        binding.fecha.clearFocus()
+    }
+
+    private fun iniciarCamposListaDesplegable() {
+        val itemInicial = listOf<String>("Sin items")
+        agregarItemsALista(itemInicial, binding.medioPago.editText)
+        agregarItemsALista(itemInicial, binding.moneda.editText)
+        agregarItemsALista(itemInicial, binding.categoria.editText)
+    }
+
+    private fun agregarItemsAListasDesplegables() {
+        val itemsMedioPago = MedioPago.values().map { it.descripcion }
+        agregarItemsALista(itemsMedioPago, binding.medioPago.editText)
+        val itemsCategorias = Categoria.values().map { it.descripcion }
+        agregarItemsALista(itemsCategorias, binding.categoria.editText)
+        val itemsMonedas = Moneda.values().map { it.descripcion }
+        agregarItemsALista(itemsMonedas, binding.moneda.editText)
+    }
+
+    private fun agregarItemsALista(items: List<String>,componenteLista: EditText?) {
+        val adapter = ArrayAdapter(requireContext(), R.layout.lista_items, items)
+        (componenteLista as? AutoCompleteTextView)?.setAdapter(adapter)
+    }
+
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            ubicacion = locationResult.lastLocation
+            System.out.println("###################" + ubicacion.toString())
+            System.out.println("############Latitud" + ubicacion.latitude)
+            System.out.println("############Longitud" + ubicacion.longitude)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun obtenerUbicacionActual() {
+        var locationManager: LocationManager =
+            activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+                LocationManager.NETWORK_PROVIDER
+            )
+        ) {
+            var mLocationRequest = LocationRequest()
+            mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            mLocationRequest.interval = 0
+            mLocationRequest.fastestInterval = 0
+            mLocationRequest.numUpdates = 1
+            clienteUbicacion!!.requestLocationUpdates(
+                mLocationRequest, mLocationCallback,
+                Looper.myLooper()
+            )
+        } else {
+
+        }
+    }
+
+
     private fun insertDataToDataBase() {
-//        if (inputCheck(firstName, lastName, age)) {
+        if (binding.monto.text.isNullOrEmpty()
+            || binding.moneda.editText?.text.isNullOrEmpty()
+            || binding.medioPago.editText?.text.isNullOrEmpty()
+            || binding.categoria.editText?.text.isNullOrEmpty()){
+            Toast.makeText(requireContext(), "Por favor, selecciona todos los campos", Toast.LENGTH_LONG).show()
+        }
+        else{
             val movimiento = Movimiento(0,
                 binding.monto.text.toString().toDouble(),
                 (Moneda.values().filter { m -> m.descripcion.equals(binding.moneda.editText?.text.toString())}).get(0).valor,
@@ -117,10 +174,8 @@ class AgregarMovimientosFragment: Fragment() {
             // Add Data to Database
             mMovimientoViewModel.addMovimiento(movimiento)
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
-//        }
-//        else {
-//            Toast.makeText(requireContext(), "Please fill out all fields", Toast.LENGTH_LONG).show()
-//        }
+            limpiarContenidoControles()
+        }
     }
 
 //    private fun inputCheck(firstName: String, lastName: String, age: Editable): Boolean {
