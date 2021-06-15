@@ -41,7 +41,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/seleccion_anio"
+                    android:id="@+id/seleccion_anio_pieChart"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -58,7 +58,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/seleccion_mes"
+                    android:id="@+id/seleccion_mes_pieChart"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
