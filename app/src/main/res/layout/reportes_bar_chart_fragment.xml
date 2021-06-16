@@ -44,7 +44,7 @@
                 >
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/seleccion_anio"
+                    android:id="@+id/seleccion_anio_barChart"
                     android:layout_width="0dp"
                     android:layout_weight="50"
                     android:layout_height="match_parent"
@@ -56,13 +56,13 @@
 
                     <AutoCompleteTextView
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="60dp"
                         android:inputType="none"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/seleccion_mes"
+                    android:id="@+id/seleccion_mes_barChart"
                     android:layout_width="0dp"
                     android:layout_weight="50"
                     android:layout_height="match_parent"
@@ -74,7 +74,7 @@
 
                     <AutoCompleteTextView
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="60dp"
                         android:inputType="none"
                         />
                 </com.google.android.material.textfield.TextInputLayout>

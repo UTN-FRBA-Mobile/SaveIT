@@ -44,18 +44,19 @@
                     android:id="@+id/seleccion_anio_pieChart"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
+                    android:layout_weight="50"
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
-                    android:layout_weight="50"
                     android:gravity="center"
                     android:hint="@string/dropdown_grafico_de_torta_Anio"
                     app:errorEnabled="true">
 
                     <AutoCompleteTextView
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="60dp"
                         android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/seleccion_mes_pieChart"
@@ -70,7 +71,7 @@
 
                     <AutoCompleteTextView
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="60dp"
                         android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>

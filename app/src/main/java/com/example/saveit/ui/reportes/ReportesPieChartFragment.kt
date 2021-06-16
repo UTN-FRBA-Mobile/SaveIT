@@ -87,6 +87,9 @@ class ReportesPieChartFragment: Fragment()  {
             }
         }
 
+        binding.botonLimpiarFormulario.setOnClickListener {
+            cleanForm()
+        }
 
         return binding.root
     }
@@ -95,6 +98,12 @@ class ReportesPieChartFragment: Fragment()  {
         super.onViewCreated(view, savedInstanceState)
 
     }
+
+    private fun cleanForm() {
+        (binding.seleccionMesPieChart.editText as? AutoCompleteTextView)?.setText("")
+        (binding.seleccionAnioPieChart.editText as? AutoCompleteTextView)?.setText("")
+    }
+
 
     private fun cargarGrafico(movimientos : List<Movimiento> ) {
         var pieChart = binding.pieChart
