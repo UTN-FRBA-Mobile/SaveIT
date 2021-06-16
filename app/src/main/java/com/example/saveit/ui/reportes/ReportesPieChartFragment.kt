@@ -127,8 +127,16 @@ class ReportesPieChartFragment: Fragment()  {
 
         var pieDataSet = PieDataSet(categoriasPieEntry, "Categorias")
         pieDataSet.setColors(
-            Color.rgb(193, 37, 82), Color.rgb(255, 102, 0), Color.rgb(245, 199, 0),
-            Color.rgb(106, 150, 31), Color.rgb(179, 100, 53))
+
+            Color.rgb(196, 76, 48),
+            Color.rgb(150, 48, 196),
+            Color.rgb(196, 113, 48),
+            Color.rgb(168, 196, 48),
+            Color.rgb(23, 83, 99),
+            Color.rgb(23, 45, 99),
+            Color.rgb(77, 23, 99),
+            Color.rgb(99, 23, 45),
+            Color.rgb(45, 99, 23))
 
         pieDataSet.setValueTextSize(16F)
 

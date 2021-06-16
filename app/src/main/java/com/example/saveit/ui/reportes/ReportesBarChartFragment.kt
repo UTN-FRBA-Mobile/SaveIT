@@ -92,12 +92,14 @@ class ReportesBarChartFragment : Fragment() {
 
 
     private fun cargarGrafico(){
+
         var barChart = binding.barChart
 
         var categorias1 = ArrayList<BarEntry>()
         categorias1.add(BarEntry(1f,100f))
         var barDataSet1 = BarDataSet(categorias1, "Delivery")
-        barDataSet1.setColors(Color.rgb(193, 37, 82))
+        barDataSet1.setColors(Color.rgb(193, 37, 82), Color.rgb(255, 102, 0), Color.rgb(245, 199, 0),
+            Color.rgb(106, 150, 31), Color.rgb(179, 100, 53))
 
         var categorias2 = ArrayList<BarEntry>()
         categorias2.add(BarEntry(2f,200f))
@@ -112,9 +114,6 @@ class ReportesBarChartFragment : Fragment() {
 
         var barData = BarData()
         barData.addDataSet(barDataSet1)
-        barData.addDataSet(barDataSet2)
-        barData.addDataSet(barDataSet3)
-
 
         barChart.setData(barData)
         barChart.animate()
@@ -139,11 +138,25 @@ class ReportesBarChartFragment : Fragment() {
         }
 
         var barData = BarData()
+
+        val colores = arrayOf(
+            Color.rgb(23, 83, 99),
+            Color.rgb(23, 45, 99),
+            Color.rgb(77, 23, 99),
+            Color.rgb(99, 23, 45),
+            Color.rgb(45, 99, 23),
+            Color.rgb(196, 76, 48),
+            Color.rgb(150, 48, 196),
+            Color.rgb(196, 113, 48),
+            Color.rgb(168, 196, 48))
+
+
         for(i in 0..categorias.size-1) {
             if(total_x_categoria[i] > 0){
                 var categorias = ArrayList<BarEntry>()
-                categorias.add(BarEntry(1f,100f))
+                categorias.add(BarEntry(i.toFloat(),total_x_categoria[i]))
                 var barDataSet = BarDataSet(categorias, CategoriasGasto.getByValor(i+1))
+                barDataSet.setColors(colores[i])
                 barData.addDataSet(barDataSet)
             }
         }
