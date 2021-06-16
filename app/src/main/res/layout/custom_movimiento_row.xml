@@ -11,14 +11,14 @@
 
         <LinearLayout
             android:id="@+id/layout_movimiento"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/custom_layout_green_style"
             android:orientation="vertical"
             tools:ignore="MissingConstraints">
             <TextView
                 android:id="@+id/valor_movimiento"
-                android:layout_width="180dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 android:text="TextView"
@@ -27,7 +27,7 @@
 
             <TextView
                 android:id="@+id/fecha_movimiento"
-                android:layout_width="180dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textAlignment="center" />
