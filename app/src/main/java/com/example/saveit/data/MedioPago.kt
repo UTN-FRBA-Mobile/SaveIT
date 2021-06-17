@@ -10,5 +10,9 @@ enum class MedioPago(val valor: Int, val descripcion: String) {
         fun getByValor(valor: Int): String {
             return values().filter { it.valor == valor }.first().descripcion
         }
+
+        fun getByDescripcion(descripcion: String): MedioPago {
+            return MedioPago.values().filter { it.descripcion == descripcion }.first()
+        }
     }
 }

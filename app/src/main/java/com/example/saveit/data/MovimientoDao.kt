@@ -3,6 +3,7 @@ package com.example.saveit.data
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.saveit.model.Movimiento
+import com.example.saveit.model.ResultadoReporte
 
 @Dao
 interface MovimientoDao {
@@ -23,4 +24,56 @@ interface MovimientoDao {
 
     @Query("SELECT SUM(monto) FROM movimiento_table WHERE tipoMovimiento = 1 AND fecha BETWEEN :desde AND :hasta")
     fun readGastos(desde: Long, hasta: Long): LiveData<Double>
+
+    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value " +
+            "FROM movimiento_table " +
+            "WHERE moneda = :moneda " +
+            "AND categoria = :categoria " +
+            "AND medioDePago = :medioDePago " +
+            "AND tipoMovimiento = :tipoMovimiento " +
+            "AND fecha >= strftime('%s', DATETIME('NOW', :desde)) * 1000 " +
+            "GROUP BY day " +
+            "ORDER BY day asc")
+    fun readSpecificTimeDataCategoryPayment(moneda: Int,
+                                            categoria: Int,
+                                            medioDePago: Int,
+                                            tipoMovimiento: Int,
+                                            desde: String): LiveData<List<ResultadoReporte>>
+
+    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value " +
+            "FROM movimiento_table " +
+            "WHERE moneda = :moneda " +
+            "AND medioDePago = :medioDePago " +
+            "AND tipoMovimiento = :tipoMovimiento " +
+            "AND fecha >= strftime('%s', DATETIME('NOW', :desde)) * 1000 " +
+            "GROUP BY day " +
+            "ORDER BY day asc")
+    fun readSpecificTimeDataCategoryAll(moneda: Int,
+                                        medioDePago: Int,
+                                        tipoMovimiento: Int,
+                                        desde: String): LiveData<List<ResultadoReporte>>
+
+    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value " +
+            "FROM movimiento_table " +
+            "WHERE moneda = :moneda " +
+            "AND categoria = :categoria " +
+            "AND tipoMovimiento = :tipoMovimiento " +
+            "AND fecha >= strftime('%s', DATETIME('NOW', :desde)) * 1000 " +
+            "GROUP BY day " +
+            "ORDER BY day asc")
+    fun readSpecificTimeDataPaymentAll(moneda: Int,
+                                       categoria: Int,
+                                       tipoMovimiento: Int,
+                                       desde: String): LiveData<List<ResultadoReporte>>
+
+    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value " +
+            "FROM movimiento_table " +
+            "WHERE moneda = :moneda " +
+            "AND tipoMovimiento = :tipoMovimiento " +
+            "AND fecha >= strftime('%s', DATETIME('NOW', :desde)) * 1000 " +
+            "GROUP BY day " +
+            "ORDER BY day asc")
+    fun readSpecificTimeData(moneda: Int,
+                             tipoMovimiento: Int,
+                             desde: String): LiveData<List<ResultadoReporte>>
 }
