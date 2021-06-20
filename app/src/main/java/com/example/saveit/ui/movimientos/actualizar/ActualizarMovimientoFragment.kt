@@ -104,8 +104,8 @@ class ActualizarMovimientoFragment : Fragment() {
         if (textoVoz.contains("ingreso")) {
             return "ingreso"
         }
-        else if (textoVoz.contains("salida")) {
-            return "salida"
+        else if (textoVoz.contains("gasto")) {
+            return "gasto"
         }
 
         return ""
