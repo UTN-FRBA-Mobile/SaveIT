@@ -214,7 +214,7 @@ class ActualizarMovimientoFragment : Fragment() {
 
             i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es-ES")
-            i.putExtra(RecognizerIntent.EXTRA_PROMPT, "El formato es: 'Ingreso/Gasto de X pesos/dolares'")
+            i.putExtra(RecognizerIntent.EXTRA_PROMPT, "El formato es: 'Ingreso/Gasto de X pesos con medio de pago X con categoría X y descripción X'")
 
             startActivityForResult(i, RQ_SPEECH_REC)
         }
