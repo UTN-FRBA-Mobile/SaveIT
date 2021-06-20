@@ -1,7 +1,11 @@
 package com.example.saveit.ui.movimientos.actualizar
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.text.Editable
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -13,17 +17,16 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.saveit.R
 import com.example.saveit.data.Categoria
 import com.example.saveit.data.MedioPago
 import com.example.saveit.data.Moneda
 import com.example.saveit.databinding.ActualizarMovimientoFragmentBinding
-import com.example.saveit.model.Movimiento
 import com.example.saveit.viewmodel.MovimientoViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.android.synthetic.main.actualizar_movimiento_fragment.*
+import kotlinx.android.synthetic.main.ahorro_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,6 +39,8 @@ class ActualizarMovimientoFragment : Fragment() {
     private val args by navArgs<ActualizarMovimientoFragmentArgs>()
 
     private lateinit var mMovimientoViewModel: MovimientoViewModel
+
+    private val RQ_SPEECH_REC = 102
 
     val datePicker = MaterialDatePicker.Builder.datePicker()
             .setTitleText("Fecha de Movimiento")
@@ -64,7 +69,81 @@ class ActualizarMovimientoFragment : Fragment() {
             updateMovimiento()
         }
 
+        binding.botonVoz.setOnClickListener {
+            askSpeechInput()
+        }
+
         return binding.root
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RQ_SPEECH_REC && resultCode == Activity.RESULT_OK) {
+            val result = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+
+            val textoVoz = result?.get(0).toString().toLowerCase()
+            val listaPalabrasVoz = textoVoz.split(" ").toList()
+
+            val tipoMovimiento = getTipoMovimientoVoz(textoVoz)
+
+            val monto = getMontoVoz(listaPalabrasVoz)
+            binding.actualizarMonto.setText(monto)
+
+            val medioDePago = getMedioDePagoVoz(textoVoz)
+            binding.medioPago.editText!!.setText(medioDePago)
+
+            val categoria = getCategoriaVoz(textoVoz)
+            binding.categoria.editText!!.setText(categoria)
+
+            val descripcion = getDescripcionVoz(textoVoz)
+            binding.actualizarDescripcion.setText(descripcion)
+        }
+    }
+
+    private fun getTipoMovimientoVoz(textoVoz: String): String {
+        if (textoVoz.contains("ingreso")) {
+            return "ingreso"
+        }
+        else if (textoVoz.contains("salida")) {
+            return "salida"
+        }
+
+        return ""
+    }
+
+    private fun getMontoVoz(listaPalabrasVoz: List<String>): String {
+        var monto = listaPalabrasVoz.filter { x -> x.contains("$") }
+
+        if (monto.isNotEmpty()) {
+            return monto.first().split("$")[1]
+        }
+
+        return ""
+    }
+
+    private fun getMedioDePagoVoz(textoVoz: String): String {
+        MedioPago.values().forEach { m -> if (textoVoz.contains(m.descripcion.toLowerCase())) { return m.descripcion } }
+
+        return ""
+    }
+
+    private fun getCategoriaVoz(textoVoz: String): String {
+        Categoria.values().forEach { m -> if (textoVoz.contains(m.descripcion.toLowerCase())) { return m.descripcion } }
+
+        return ""
+    }
+
+    private fun getDescripcionVoz(textoVoz: String): String {
+        var descripcion = textoVoz.split("descripción")
+
+        if (descripcion.size > 1) {
+            var descripcionReturn = descripcion[1].trim()
+
+            return descripcionReturn[0].toUpperCase() + descripcionReturn.substring(1, descripcionReturn.length)
+        }
+
+        return ""
     }
 
     private fun setAutoCompleteTextViews() {
@@ -124,6 +203,21 @@ class ActualizarMovimientoFragment : Fragment() {
         else {
             Toast.makeText(requireContext(), "Please fill out all fields", Toast.LENGTH_LONG).show()
         }*/
+    }
+
+    private fun askSpeechInput() {
+        if (!SpeechRecognizer.isRecognitionAvailable(requireContext())) {
+            Toast.makeText(requireContext(), "El reconocimiento de voz no está disponible", Toast.LENGTH_LONG).show()
+        }
+        else {
+            val i = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+
+            i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es-ES")
+            i.putExtra(RecognizerIntent.EXTRA_PROMPT, "El formato es: 'Ingreso/Gasto de X pesos/dolares'")
+
+            startActivityForResult(i, RQ_SPEECH_REC)
+        }
     }
 
     private fun formatDate(fecha: Long): String {
