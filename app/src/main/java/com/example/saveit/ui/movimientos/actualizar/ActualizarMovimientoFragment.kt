@@ -83,11 +83,10 @@ class ActualizarMovimientoFragment : Fragment() {
             val result = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
 
             val textoVoz = result?.get(0).toString().toLowerCase()
-            val listaPalabrasVoz = textoVoz.split(" ").toList()
 
             val tipoMovimiento = getTipoMovimientoVoz(textoVoz)
 
-            val monto = getMontoVoz(listaPalabrasVoz)
+            val monto = getMontoVoz(textoVoz)
             binding.actualizarMonto.setText(monto)
 
             val medioDePago = getMedioDePagoVoz(textoVoz)
@@ -112,7 +111,9 @@ class ActualizarMovimientoFragment : Fragment() {
         return ""
     }
 
-    private fun getMontoVoz(listaPalabrasVoz: List<String>): String {
+    private fun getMontoVoz(textoVoz: String): String {
+        val listaPalabrasVoz = textoVoz.split(" ").toList()
+
         var monto = listaPalabrasVoz.filter { x -> x.contains("$") }
 
         if (monto.isNotEmpty()) {
@@ -135,10 +136,10 @@ class ActualizarMovimientoFragment : Fragment() {
     }
 
     private fun getDescripcionVoz(textoVoz: String): String {
-        var descripcion = textoVoz.split("descripción")
+        var listaPalabrasDescripcion = textoVoz.split("descripción")
 
-        if (descripcion.size > 1) {
-            var descripcionReturn = descripcion[1].trim()
+        if (listaPalabrasDescripcion.size > 1) {
+            var descripcionReturn = listaPalabrasDescripcion[1].trim()
 
             return descripcionReturn[0].toUpperCase() + descripcionReturn.substring(1, descripcionReturn.length)
         }
