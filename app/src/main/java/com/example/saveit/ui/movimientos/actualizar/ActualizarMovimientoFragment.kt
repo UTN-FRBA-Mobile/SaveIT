@@ -112,9 +112,9 @@ class ActualizarMovimientoFragment : Fragment() {
     }
 
     private fun getMontoVoz(textoVoz: String): String {
-        val listaPalabrasVoz = textoVoz.split(" ").toList()
+        val listaPalabrasMontoVoz = textoVoz.split(" ").toList()
 
-        var monto = listaPalabrasVoz.filter { x -> x.contains("$") }
+        var monto = listaPalabrasMontoVoz.filter { x -> x.contains("$") }
 
         if (monto.isNotEmpty()) {
             return monto.first().split("$")[1]
@@ -141,7 +141,7 @@ class ActualizarMovimientoFragment : Fragment() {
         if (listaPalabrasDescripcion.size > 1) {
             var descripcionReturn = listaPalabrasDescripcion[1].trim()
 
-            return descripcionReturn[0].toUpperCase() + descripcionReturn.substring(1, descripcionReturn.length)
+            return descripcionReturn.capitalize()
         }
 
         return ""
