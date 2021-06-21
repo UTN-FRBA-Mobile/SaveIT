@@ -51,12 +51,7 @@ class ReportesPieChartFragment: Fragment()  {
             adapter.setData(user)
         })
 
-        binding.botonGenerarReporte.setOnClickListener {
-            cargarGrafico()
-        }
-
         loadYearsAndMonths()
-        //cargarGrafico()
 
         binding.botonGenerarReporte.setOnClickListener {
             val anio = binding.seleccionAnioPieChart.findViewById<TextInputLayout>(R.id.seleccion_anio_pieChart).editText!!.text.toString()
@@ -146,7 +141,10 @@ class ReportesPieChartFragment: Fragment()  {
 
         pieChart.setData(pieData)
         pieChart.setCenterText("Categorias")
-        pieChart.animate()
+        pieChart.animateXY(1500, 1500)
+
+        binding.pieChart.notifyDataSetChanged()
+        binding.pieChart.invalidate()
 
     }
 
@@ -172,7 +170,10 @@ class ReportesPieChartFragment: Fragment()  {
 
         pieChart.setData(pieData)
         pieChart.setCenterText("Categorias")
-        pieChart.animate()
+        pieChart.animateXY(1500, 1500)
+
+        binding.pieChart.notifyDataSetChanged()
+        binding.pieChart.invalidate()
 
     }
 

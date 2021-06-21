@@ -46,7 +46,6 @@ class ReportesBarChartFragment : Fragment() {
             adapter.setData(user)
         })
         loadYearsAndMonths()
-        cargarGrafico()
 
         binding.botonGenerarReporte.setOnClickListener {
             val anio = binding.seleccionAnioBarChart.findViewById<TextInputLayout>(R.id.seleccion_anio_barChart).editText!!.text.toString()
@@ -116,7 +115,10 @@ class ReportesBarChartFragment : Fragment() {
         barData.addDataSet(barDataSet1)
 
         barChart.setData(barData)
-        barChart.animate()
+        barChart.animateXY(1500, 1500)
+
+        binding.barChart.notifyDataSetChanged()
+        binding.barChart.invalidate()
 
     }
 
@@ -163,7 +165,10 @@ class ReportesBarChartFragment : Fragment() {
 
         //barData.addDataSet()
         barChart.setData(barData)
-        barChart.animate()
+        barChart.animateXY(1500, 1500)
+
+        binding.barChart.notifyDataSetChanged()
+        binding.barChart.invalidate()
 
     }
 

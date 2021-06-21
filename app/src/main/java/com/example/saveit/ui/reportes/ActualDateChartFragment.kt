@@ -86,7 +86,7 @@ class ActualDateChartFragment: Fragment()  {
                                 val data = LineData(linedataset1, linedataset2)
                                 binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
                                 binding.lineChart.data = data
-                                binding.lineChart.animateXY(3000, 3000)
+                                binding.lineChart.animateXY(1500, 1500)
                             }
                         }
                     })
@@ -134,7 +134,7 @@ class ActualDateChartFragment: Fragment()  {
                                 val data = LineData(linedataset1, linedataset2)
                                 binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
                                 binding.lineChart.data = data
-                                binding.lineChart.animateXY(3000, 3000)
+                                binding.lineChart.animateXY(1500, 1500)
                             }
                         }
                     })
@@ -182,7 +182,7 @@ class ActualDateChartFragment: Fragment()  {
                                 val data = LineData(linedataset1, linedataset2)
                                 binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
                                 binding.lineChart.data = data
-                                binding.lineChart.animateXY(3000, 3000)
+                                binding.lineChart.animateXY(1500, 1500)
                             }
                         }
                     })
@@ -232,7 +232,7 @@ class ActualDateChartFragment: Fragment()  {
                                 val data = LineData(linedataset1, linedataset2)
                                 binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
                                 binding.lineChart.data = data
-                                binding.lineChart.animateXY(3000, 3000)
+                                binding.lineChart.animateXY(1500, 1500)
                             }
                         }
                     })
