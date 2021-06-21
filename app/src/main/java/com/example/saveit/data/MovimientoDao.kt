@@ -19,6 +19,12 @@ interface MovimientoDao {
     @Query("SELECT * FROM movimiento_table WHERE fecha BETWEEN :desde AND :hasta ORDER BY fecha DESC")
     fun readAllDataBetween(desde: Long, hasta: Long): LiveData<List<Movimiento>>
 
+    @Query("SELECT * FROM movimiento_table WHERE categoria = 1 ORDER BY fecha DESC")
+    fun readAhorros(): LiveData<List<Movimiento>>
+
+    @Query("SELECT * FROM movimiento_table WHERE categoria = 1 AND fecha BETWEEN :desde AND :hasta ORDER BY fecha DESC")
+    fun readAhorrosBetween(desde: Long, hasta: Long): LiveData<List<Movimiento>>
+
     @Query("SELECT SUM(monto) FROM movimiento_table WHERE tipoMovimiento = 0 AND fecha BETWEEN :desde AND :hasta")
     fun readIngresos(desde: Long, hasta: Long): LiveData<Double>
 

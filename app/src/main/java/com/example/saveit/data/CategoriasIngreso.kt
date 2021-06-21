@@ -1,11 +1,12 @@
 package com.example.saveit.data
 
 enum class CategoriasIngreso(val valor: Int, val descripcion: String) {
-    PLAZOFIJO(1, "Plazo Fijo"),
-    PRESTAMO(2, "Prestamo"),
-    SUELDO(3, "Sueldo"),
-    VENTAS(4, "Ventas"),
-    OTRO(5, "Otro");
+    AHORRO(1, "Ahorro"),
+    PLAZOFIJO(2, "Plazo Fijo"),
+    PRESTAMO(3, "Prestamo"),
+    SUELDO(4, "Sueldo"),
+    VENTAS(5, "Ventas"),
+    OTRO(6, "Otro");
 
     companion object {
         fun getByValor(valor: Int): String {

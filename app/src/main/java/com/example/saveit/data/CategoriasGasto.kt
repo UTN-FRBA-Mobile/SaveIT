@@ -1,22 +1,23 @@
 package com.example.saveit.data
 
 enum class CategoriasGasto(val valor: Int, val descripcion: String)  {
-    ALQUILE(1, "Alquiler"),
-    CASA(2, "Casa"),
-    COMIDA(3, "Comida"),
-    DELIVERY(4, "Delivery"),
-    EDUCACION(5, "Educacion"),
-    ENTRETENIMIENTO(6, "Entretenimiento"),
-    GASOLINA(7, "Gasolina"),
-    MASCOTA(8, "Mascota"),
-    MERCADERIA(9, "Mercadera"),
-    PERSONALES(10, "Personales"),
-    RESTAURANTE(11, "Restaurante"),
-    ROPA(12, "Ropa"),
-    SALUD(13, "Salud"),
-    SERVICIOS(14, "Servicios"),
-    TRANSPORTE(15, "Transporte"),
-    OTROS(16, "Otros");
+    AHORRO(1, "Ahorro"),
+    ALQUILE(2, "Alquiler"),
+    CASA(3, "Casa"),
+    COMIDA(4, "Comida"),
+    DELIVERY(5, "Delivery"),
+    EDUCACION(6, "Educacion"),
+    ENTRETENIMIENTO(7, "Entretenimiento"),
+    GASOLINA(8, "Gasolina"),
+    MASCOTA(9, "Mascota"),
+    MERCADERIA(10, "Mercadera"),
+    PERSONALES(11, "Personales"),
+    RESTAURANTE(12, "Restaurante"),
+    ROPA(13, "Ropa"),
+    SALUD(14, "Salud"),
+    SERVICIOS(15, "Servicios"),
+    TRANSPORTE(16, "Transporte"),
+    OTROS(17, "Otros");
 
     companion object {
         fun getByValor(valor: Int): String {

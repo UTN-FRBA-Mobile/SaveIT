@@ -30,7 +30,7 @@ class ListaMovimientosAdapter: RecyclerView.Adapter<ListaMovimientosAdapter.MyVi
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaMovimientosAdapter.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         context = parent.context
 
         return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_movimiento_row, parent, false))
@@ -66,7 +66,7 @@ class ListaMovimientosAdapter: RecyclerView.Adapter<ListaMovimientosAdapter.MyVi
         notifyDataSetChanged()
     }
 
-    fun formatDate(fecha: Long): String {
+    private fun formatDate(fecha: Long): String {
         try {
             val sdf = SimpleDateFormat("dd/MM/yyyy")
             val netDate = Date(fecha)

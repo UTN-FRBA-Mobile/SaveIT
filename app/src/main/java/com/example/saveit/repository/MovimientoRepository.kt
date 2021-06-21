@@ -10,6 +10,10 @@ class MovimientoRepository(private val movimientoDao: MovimientoDao) {
 
     fun readAllDataBetween(desde: Long, hasta: Long): LiveData<List<Movimiento>> = movimientoDao.readAllDataBetween(desde, hasta)
 
+    val readAhorros: LiveData<List<Movimiento>> = movimientoDao.readAhorros()
+
+    fun readAhorrosBetween(desde: Long, hasta: Long): LiveData<List<Movimiento>> = movimientoDao.readAhorrosBetween(desde, hasta)
+
     fun readIngresos(desde: Long, hasta: Long): LiveData<Double> = movimientoDao.readIngresos(desde, hasta)
 
     fun readGastos(desde: Long, hasta: Long): LiveData<Double> = movimientoDao.readGastos(desde, hasta)

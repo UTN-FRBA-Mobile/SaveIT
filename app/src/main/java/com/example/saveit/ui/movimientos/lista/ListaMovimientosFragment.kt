@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -46,7 +45,7 @@ class ListaMovimientosFragment: Fragment() {
         // UserViewModel
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
         mMovimientoViewModel.readAllData.observe(viewLifecycleOwner, Observer { user ->
-            if (user.size == 0)
+            if (user.isEmpty())
                 Toast.makeText(requireContext(), "No hay movimientos cargados", Toast.LENGTH_LONG).show()
 
             adapter.setData(user)
@@ -86,7 +85,7 @@ class ListaMovimientosFragment: Fragment() {
         return binding.root
     }
 
-    fun loadYearsAndMonths() {
+    private fun loadYearsAndMonths() {
         val asc = Array(10) { i -> (Calendar.getInstance().get(Calendar.YEAR)- i).toString() }
         val itemsSeleccionAnios = asc.map { it }
         val adapterSeleccionAnios = ArrayAdapter(requireContext(), R.layout.lista_items, itemsSeleccionAnios)
@@ -97,7 +96,7 @@ class ListaMovimientosFragment: Fragment() {
         (binding.seleccionMes.editText as? AutoCompleteTextView)?.setAdapter(adapterSeleccionMeses)
     }
 
-    fun getFirstDayOfMonth(year: Int, month: Int): Long {
+    private fun getFirstDayOfMonth(year: Int, month: Int): Long {
         // get today and clear time of day
         val cal = Calendar.getInstance()
         cal[Calendar.HOUR_OF_DAY] = 0 // ! clear would not reset the hour of day !
@@ -117,7 +116,7 @@ class ListaMovimientosFragment: Fragment() {
         return SimpleDateFormat("dd/MM/yyyy").parse(fecha).time
     }
 
-    fun getLastDayOfMonth(year: Int, month: Int): Long {
+    private fun getLastDayOfMonth(year: Int, month: Int): Long {
         // get today and clear time of day
         val cal = Calendar.getInstance()
         cal[Calendar.HOUR_OF_DAY] = 0 // ! clear would not reset the hour of day !
@@ -137,7 +136,7 @@ class ListaMovimientosFragment: Fragment() {
         return SimpleDateFormat("dd/MM/yyyy").parse(fecha).time
     }
 
-    fun formatDate(fecha: Long): String {
+    private fun formatDate(fecha: Long): String {
         try {
             val sdf = java.text.SimpleDateFormat("dd/MM/yyyy")
             val netDate = Date(fecha)
@@ -148,16 +147,13 @@ class ListaMovimientosFragment: Fragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//          binding.textField.setTextColor(Color.WHITE)
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
         if (context is OnFragmentInteractionListener) {
             listener = context
-        } else {
+        }
+        else {
             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
     }
