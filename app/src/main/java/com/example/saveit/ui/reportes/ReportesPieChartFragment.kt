@@ -44,12 +44,6 @@ class ReportesPieChartFragment: Fragment()  {
         val adapter = ListaMovimientosAdapter()
 
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
-        mMovimientoViewModel.readAllData.observe(viewLifecycleOwner, Observer { user ->
-            if (user.size == 0)
-                Toast.makeText(requireContext(), "No hay movimientos cargados", Toast.LENGTH_LONG).show()
-
-            adapter.setData(user)
-        })
 
         loadYearsAndMonths()
 
