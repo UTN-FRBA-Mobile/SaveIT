@@ -1,5 +1,6 @@
 package com.example.saveit.model
 
+import android.location.Location
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -17,6 +18,7 @@ data class Movimiento(
     val categoria: Int,
     val fecha: Long,
     val descripcion: String,
-    val ubicacion: String,
+    val latitud: Double,
+    val longitud: Double,
     val tipoMovimiento: Int
 ): Parcelable

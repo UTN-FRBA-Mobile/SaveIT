@@ -1,33 +1,51 @@
 package com.example.saveit.ui.movimientos.agregar
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Context.LOCATION_SERVICE
+import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.saveit.model.Movimiento
-import com.example.saveit.viewmodel.MovimientoViewModel
-import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
 import com.example.saveit.R
 import com.example.saveit.data.*
+import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
+import com.example.saveit.model.Movimiento
+import com.example.saveit.viewmodel.MovimientoViewModel
+import com.google.android.gms.location.*
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlin.properties.Delegates
+
 
 class AgregarMovimientosFragment: Fragment() {
     private var _binding: AgregarMovimientosFragmentBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var clienteUbicacion: FusedLocationProviderClient
 
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var mMovimientoViewModel: MovimientoViewModel
     private var tipoMovimiento by Delegates.notNull<Int>()
+    private var latitud: Double = 0.0
+    private var longitud: Double = 0.0
 
     val datePicker = MaterialDatePicker.Builder.datePicker()
        .setTitleText("Fecha de Movimiento")
@@ -35,33 +53,96 @@ class AgregarMovimientosFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
+        clienteUbicacion =  LocationServices.getFusedLocationProviderClient(requireActivity())
 
         iniciarCamposListaDesplegable()
 
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
 
         binding.botonIngreso.setOnClickListener {
+            tipoMovimiento = TipoMovimiento.INGRESO.valor
             agregarItemsAListasDesplegables()
         }
 
         binding.botonEgreso.setOnClickListener {
+            tipoMovimiento = TipoMovimiento.EGRESO.valor
             agregarItemsAListasDesplegables()
         }
 
         binding.botonAceptar.setOnClickListener {
-            tipoMovimiento = TipoMovimiento.INGRESO.valor
             insertDataToDataBase()
         }
 
         binding.botonCancelar.setOnClickListener {
-            tipoMovimiento = TipoMovimiento.EGRESO.valor
-            insertDataToDataBase()
+            limpiarContenidoControles()
         }
-       // binding.medioPago.setOnClickListener {
-         //   insertDataToDataBase()
-        //}
+
+        binding.botonUbicacion.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(requireActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) !==
+                PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    ActivityCompat.requestPermissions(requireActivity(),
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+                } else {
+                    ActivityCompat.requestPermissions(requireActivity(),
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+                }
+            } else {
+                obtenerUbicacionActual();
+            }
+        }
+        if (!tieneHardwareNecesario()) {
+            binding.botonUbicacion.visibility=View.GONE
+        }
 
         return binding.root
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
+                                            grantResults: IntArray) {
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED) {
+                    if ((ContextCompat.checkSelfPermission(
+                            requireActivity(),
+                            Manifest.permission.ACCESS_FINE_LOCATION) ===
+                                PackageManager.PERMISSION_GRANTED)) {
+                        Toast.makeText(this.context, "Permission Granted", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this.context, "Permission Denied", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+        }
+    }
+
+    private fun tieneHardwareNecesario() = (requireActivity().packageManager.hasSystemFeature(
+        PackageManager.FEATURE_LOCATION
+    ) && requireActivity().packageManager.hasSystemFeature(
+        PackageManager.FEATURE_LOCATION_GPS
+    ) && requireActivity().packageManager.hasSystemFeature(
+        PackageManager.FEATURE_LOCATION_NETWORK
+    ))
+
+    private fun limpiarContenidoControles() {
+        iniciarCamposListaDesplegable()
+        binding.grupoBotonesTipoMovimiento.clearChecked()
+        binding.categoriaTexto.text.clear()
+        binding.categoriaTexto.clearFocus()
+        binding.medioPagoTexto.text.clear()
+        binding.medioPagoTexto.clearFocus()
+        binding.tipoMoneda.text.clear()
+        binding.tipoMoneda.clearFocus()
+        binding.monto.setText("")
+        binding.monto.clearFocus()
+        binding.descripcion.setText("")
+        binding.descripcion.clearFocus()
+        binding.fecha.setText("")
+        binding.fecha.clearFocus()
     }
 
     private fun iniciarCamposListaDesplegable() {
@@ -85,8 +166,29 @@ class AgregarMovimientosFragment: Fragment() {
         (componenteLista as? AutoCompleteTextView)?.setAdapter(adapter)
     }
 
+    @SuppressLint("MissingPermission")
+    private fun obtenerUbicacionActual() {
+        clienteUbicacion.lastLocation
+            .addOnSuccessListener { u ->
+                if (u != null) {
+                    // use your location object
+                    // get latitude , longitude and other info from this
+                    latitud = u.latitude
+                    longitud = u.longitude
+                    Toast.makeText(this.context, "Latitud: "+ u.latitude.toString()+"Longitud: "+u.longitude.toString(), Toast.LENGTH_SHORT).show()
+                }
+
+            }
+    }
+
     private fun insertDataToDataBase() {
-//        if (inputCheck(firstName, lastName, age)) {
+        if (binding.monto.text.isNullOrEmpty()
+            || binding.moneda.editText?.text.isNullOrEmpty()
+            || binding.medioPago.editText?.text.isNullOrEmpty()
+            || binding.categoria.editText?.text.isNullOrEmpty()){
+            Toast.makeText(requireContext(), "Por favor, selecciona todos los campos", Toast.LENGTH_LONG).show()
+        }
+        else{
             val movimiento = Movimiento(0,
                 binding.monto.text.toString().toDouble(),
                 (Moneda.values().filter { m -> m.descripcion.equals(binding.moneda.editText?.text.toString())}).get(0).valor,
@@ -94,7 +196,8 @@ class AgregarMovimientosFragment: Fragment() {
                 (Categoria.values().filter { c -> c.descripcion.equals(binding.categoria.editText?.text.toString()) }).get(0).valor,
                 SimpleDateFormat("dd/MM/yyyy").parse(binding.fecha.text.toString()).time,
                 binding.descripcion.text.toString(),
-                "Ubicacion",
+                latitud,
+                longitud,
                 tipoMovimiento
             )
 
@@ -102,38 +205,17 @@ class AgregarMovimientosFragment: Fragment() {
             mMovimientoViewModel.addMovimiento(movimiento)
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
             limpiarContenidoControles()
-//        }
-//        else {
-//            Toast.makeText(requireContext(), "Please fill out all fields", Toast.LENGTH_LONG).show()
-//        }
+        }
     }
-
-    private fun limpiarContenidoControles() {
-        iniciarCamposListaDesplegable()
-        binding.categoriaTexto.clearListSelection()
-        binding.monto.setText("")
-        binding.descripcion.setText("")
-        binding.fecha.setText("")
-    }
-
-//    private fun inputCheck(firstName: String, lastName: String, age: Editable): Boolean {
-//        return !(TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || age.isEmpty())
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         datePicker.addOnPositiveButtonClickListener {
-//            var fecha: String = LocalDate.parse(datePicker.headerText, DateTimeFormatter.ofPattern("MMM dd, yyyy", SimpleDateFormat("dd/MM/yyyy"))).toString()
-//            (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(fecha)
             (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(SimpleDateFormat("dd/MM/yyyy").format(SimpleDateFormat("MMM dd, yyyy").parse(datePicker.headerText)).toString())
         }
         binding.fecha.setOnClickListener {
             onFechaMovimientoPressed()
-            //datePicker.show((activity as AppCompatActivity).supportFragmentManager , "tag")
         }
-
-
-//          binding.textField.setTextColor(Color.WHITE)
     }
 
         fun onFechaMovimientoPressed() {
