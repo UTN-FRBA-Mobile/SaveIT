@@ -1,13 +1,16 @@
 package com.example.saveit.ui.movimientos.agregar
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,17 +19,19 @@ import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.saveit.model.Movimiento
-import com.example.saveit.viewmodel.MovimientoViewModel
-import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
 import com.example.saveit.R
 import com.example.saveit.data.*
+import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
+import com.example.saveit.model.Movimiento
+import com.example.saveit.viewmodel.MovimientoViewModel
 import com.google.android.gms.location.*
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlin.properties.Delegates
+
 
 class AgregarMovimientosFragment: Fragment() {
     private var _binding: AgregarMovimientosFragmentBinding? = null
@@ -39,7 +44,8 @@ class AgregarMovimientosFragment: Fragment() {
 
     private lateinit var mMovimientoViewModel: MovimientoViewModel
     private var tipoMovimiento by Delegates.notNull<Int>()
-    private lateinit var ubicacion: Location
+    private var latitud: Double = 0.0
+    private var longitud: Double = 0.0
 
     val datePicker = MaterialDatePicker.Builder.datePicker()
        .setTitleText("Fecha de Movimiento")
@@ -47,7 +53,7 @@ class AgregarMovimientosFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
-        clienteUbicacion = LocationServices.getFusedLocationProviderClient(activity)
+        clienteUbicacion =  LocationServices.getFusedLocationProviderClient(requireActivity())
 
         iniciarCamposListaDesplegable()
 
@@ -72,15 +78,55 @@ class AgregarMovimientosFragment: Fragment() {
         }
 
         binding.botonUbicacion.setOnClickListener {
-            if(activity?.let { it1 -> ContextCompat.checkSelfPermission(it1, android.Manifest.permission.ACCESS_FINE_LOCATION) } == PackageManager.PERMISSION_GRANTED ||
-                activity?.let { it1 -> ContextCompat.checkSelfPermission(it1, android.Manifest.permission.ACCESS_COARSE_LOCATION) } == PackageManager.PERMISSION_GRANTED) {
-                obtenerUbicacionActual()
+            if (ContextCompat.checkSelfPermission(requireActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) !==
+                PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    ActivityCompat.requestPermissions(requireActivity(),
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+                } else {
+                    ActivityCompat.requestPermissions(requireActivity(),
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+                }
             } else {
-                Toast.makeText(requireContext(), "Dio FALSO", Toast.LENGTH_LONG).show()
+                obtenerUbicacionActual();
             }
         }
+        if (!tieneHardwareNecesario()) {
+            binding.botonUbicacion.visibility=View.GONE
+        }
+
         return binding.root
     }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
+                                            grantResults: IntArray) {
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED) {
+                    if ((ContextCompat.checkSelfPermission(
+                            requireActivity(),
+                            Manifest.permission.ACCESS_FINE_LOCATION) ===
+                                PackageManager.PERMISSION_GRANTED)) {
+                        Toast.makeText(this.context, "Permission Granted", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this.context, "Permission Denied", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+        }
+    }
+
+    private fun tieneHardwareNecesario() = (requireActivity().packageManager.hasSystemFeature(
+        PackageManager.FEATURE_LOCATION
+    ) && requireActivity().packageManager.hasSystemFeature(
+        PackageManager.FEATURE_LOCATION_GPS
+    ) && requireActivity().packageManager.hasSystemFeature(
+        PackageManager.FEATURE_LOCATION_NETWORK
+    ))
 
     private fun limpiarContenidoControles() {
         iniciarCamposListaDesplegable()
@@ -120,37 +166,20 @@ class AgregarMovimientosFragment: Fragment() {
         (componenteLista as? AutoCompleteTextView)?.setAdapter(adapter)
     }
 
-    private val mLocationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult) {
-            ubicacion = locationResult.lastLocation
-            System.out.println("###################" + ubicacion.toString())
-            System.out.println("############Latitud" + ubicacion.latitude)
-            System.out.println("############Longitud" + ubicacion.longitude)
-        }
-    }
-
     @SuppressLint("MissingPermission")
     private fun obtenerUbicacionActual() {
-        var locationManager: LocationManager =
-            activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-                LocationManager.NETWORK_PROVIDER
-            )
-        ) {
-            var mLocationRequest = LocationRequest()
-            mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            mLocationRequest.interval = 0
-            mLocationRequest.fastestInterval = 0
-            mLocationRequest.numUpdates = 1
-            clienteUbicacion!!.requestLocationUpdates(
-                mLocationRequest, mLocationCallback,
-                Looper.myLooper()
-            )
-        } else {
+        clienteUbicacion.lastLocation
+            .addOnSuccessListener { u ->
+                if (u != null) {
+                    // use your location object
+                    // get latitude , longitude and other info from this
+                    latitud = u.latitude
+                    longitud = u.longitude
+                    Toast.makeText(this.context, "Latitud: "+ u.latitude.toString()+"Longitud: "+u.longitude.toString(), Toast.LENGTH_SHORT).show()
+                }
 
-        }
+            }
     }
-
 
     private fun insertDataToDataBase() {
         if (binding.monto.text.isNullOrEmpty()
@@ -167,7 +196,8 @@ class AgregarMovimientosFragment: Fragment() {
                 (Categoria.values().filter { c -> c.descripcion.equals(binding.categoria.editText?.text.toString()) }).get(0).valor,
                 SimpleDateFormat("dd/MM/yyyy").parse(binding.fecha.text.toString()).time,
                 binding.descripcion.text.toString(),
-                "Ubicacion",
+                latitud,
+                longitud,
                 tipoMovimiento
             )
 
@@ -178,24 +208,14 @@ class AgregarMovimientosFragment: Fragment() {
         }
     }
 
-//    private fun inputCheck(firstName: String, lastName: String, age: Editable): Boolean {
-//        return !(TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || age.isEmpty())
-//    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         datePicker.addOnPositiveButtonClickListener {
-//            var fecha: String = LocalDate.parse(datePicker.headerText, DateTimeFormatter.ofPattern("MMM dd, yyyy", SimpleDateFormat("dd/MM/yyyy"))).toString()
-//            (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(fecha)
             (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(SimpleDateFormat("dd/MM/yyyy").format(SimpleDateFormat("MMM dd, yyyy").parse(datePicker.headerText)).toString())
         }
         binding.fecha.setOnClickListener {
             onFechaMovimientoPressed()
-            //datePicker.show((activity as AppCompatActivity).supportFragmentManager , "tag")
         }
-
-
-//          binding.textField.setTextColor(Color.WHITE)
     }
 
         fun onFechaMovimientoPressed() {
