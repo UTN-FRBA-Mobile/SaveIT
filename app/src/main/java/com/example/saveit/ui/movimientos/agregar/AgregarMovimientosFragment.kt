@@ -3,15 +3,11 @@ package com.example.saveit.ui.movimientos.agregar
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
-import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -31,7 +27,6 @@ import com.example.saveit.viewmodel.MovimientoViewModel
 import com.google.android.gms.location.*
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlin.properties.Delegates
-
 
 class AgregarMovimientosFragment: Fragment() {
     private var _binding: AgregarMovimientosFragmentBinding? = null
@@ -53,7 +48,7 @@ class AgregarMovimientosFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
-        clienteUbicacion =  LocationServices.getFusedLocationProviderClient(requireActivity())
+        clienteUbicacion = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         iniciarCamposListaDesplegable()
 
@@ -77,29 +72,84 @@ class AgregarMovimientosFragment: Fragment() {
             limpiarContenidoControles()
         }
 
+//        binding.botonUbicacion.setOnTouchListener(object : View.OnTouchListener {
+//            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+//                Toast.makeText(
+//                    this.context,
+//                    "Boton Presionado: " + event?.action.toString(),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//                when (event?.action) {
+//                    MotionEvent.ACTION_DOWN -> botonUbicacionPresionado()
+//                        MotionEvent.ACTION_UP -> botonUbicacionArriba()
+//                }
+//
+//                return v?.onTouchEvent(event) ?: true
+//            }
+//        })
+
         binding.botonUbicacion.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(requireActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION) !==
-                PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                        Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    ActivityCompat.requestPermissions(requireActivity(),
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            Toast.makeText(this.context, "Boton Presionado: "+ binding.botonUbicacion.isPressed.toString(), Toast.LENGTH_SHORT).show()
+            if(binding.botonUbicacion.isPressed){
+                if (ContextCompat.checkSelfPermission(
+                        requireActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) !==
+                    PackageManager.PERMISSION_GRANTED
+                ) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                            requireActivity(),
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        )
+                    ) {
+                        ActivityCompat.requestPermissions(
+                            requireActivity(),
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+                        )
+                    } else {
+                        ActivityCompat.requestPermissions(
+                            requireActivity(),
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+                        )
+                    }
                 } else {
-                    ActivityCompat.requestPermissions(requireActivity(),
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+                    obtenerUbicacionActual();
                 }
             } else {
-                obtenerUbicacionActual();
+                Toast.makeText(
+                    this.context,
+                    "Boton Presionado: " + binding.botonUbicacion.isPressed.toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
+                longitud = 0.0
+                latitud = 0.0
+                Toast.makeText(
+                    this.context,
+                    "Latitud: " + latitud + "Longitud: " + longitud,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-        }
+    }
         if (!tieneHardwareNecesario()) {
             binding.botonUbicacion.visibility=View.GONE
         }
 
         return binding.root
     }
-
+//    private fun botonUbicacionArriba() {
+//        Toast.makeText(
+//            this.context,
+//            "Boton Presionado: " + binding.botonUbicacion.isPressed.toString(),
+//            Toast.LENGTH_SHORT
+//        ).show()
+//        longitud = 0.0
+//        latitud = 0.0
+//        Toast.makeText(
+//            this.context,
+//            "Latitud: " + latitud + "Longitud: " + longitud,
+//            Toast.LENGTH_SHORT
+//        ).show()
+//    }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
                                             grantResults: IntArray) {
         when (requestCode) {
@@ -119,6 +169,34 @@ class AgregarMovimientosFragment: Fragment() {
             }
         }
     }
+
+//    private fun botonUbicacionPresionado() {
+//        if (ContextCompat.checkSelfPermission(
+//                requireActivity(),
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) !==
+//            PackageManager.PERMISSION_GRANTED
+//        ) {
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(
+//                    requireActivity(),
+//                    Manifest.permission.ACCESS_FINE_LOCATION
+//                )
+//            ) {
+//                ActivityCompat.requestPermissions(
+//                    requireActivity(),
+//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+//                )
+//            } else {
+//                ActivityCompat.requestPermissions(
+//                    requireActivity(),
+//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+//                )
+//            }
+//        } else {
+//            obtenerUbicacionActual();
+//        }
+////            } else {
+//    }
 
     private fun tieneHardwareNecesario() = (requireActivity().packageManager.hasSystemFeature(
         PackageManager.FEATURE_LOCATION
@@ -175,7 +253,7 @@ class AgregarMovimientosFragment: Fragment() {
                     // get latitude , longitude and other info from this
                     latitud = u.latitude
                     longitud = u.longitude
-                    Toast.makeText(this.context, "Latitud: "+ u.latitude.toString()+"Longitud: "+u.longitude.toString(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this.context, "Latitud1: "+ u.latitude.toString()+"Longitud1: "+u.longitude.toString(), Toast.LENGTH_SHORT).show()
                 }
 
             }
