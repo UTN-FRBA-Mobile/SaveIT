@@ -23,5 +23,9 @@ enum class CategoriasGasto(val valor: Int, val descripcion: String)  {
         fun getByValor(valor: Int): String {
             return values().filter { it.valor == valor }.first().descripcion
         }
+
+        fun getByDescripcion(descripcion: String): CategoriasGasto {
+            return CategoriasGasto.values().filter { it.descripcion == descripcion }.first()
+        }
     }
 }

@@ -16,8 +16,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.saveit.R
 import com.example.saveit.data.Meses
-import com.example.saveit.viewmodel.MovimientoViewModel
 import com.example.saveit.databinding.ListaMovimientosFragmentBinding
+import com.example.saveit.viewmodel.MovimientoViewModel
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 

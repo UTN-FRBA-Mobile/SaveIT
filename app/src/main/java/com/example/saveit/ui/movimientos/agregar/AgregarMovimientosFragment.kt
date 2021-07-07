@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -30,7 +29,8 @@ import com.example.saveit.model.Movimiento
 import com.example.saveit.retrofit.DolarService
 import com.example.saveit.retrofit.Respuesta
 import com.example.saveit.viewmodel.MovimientoViewModel
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.datepicker.MaterialDatePicker
 import retrofit2.Call
 import retrofit2.Callback
@@ -328,8 +328,12 @@ class AgregarMovimientosFragment: Fragment() {
     private fun agregarItemsAListasDesplegables() {
         val itemsMedioPago = MedioPago.values().map { it.descripcion }
         agregarItemsALista(itemsMedioPago, binding.medioPago.editText)
-        val itemsCategorias = Categoria.values().map { it.descripcion }
+
+        val itemsCategorias = if (tipoMovimiento == TipoMovimiento.INGRESO.valor) CategoriasIngreso.values().map { it.descripcion } else CategoriasGasto.values().map { it.descripcion }
         agregarItemsALista(itemsCategorias, binding.categoria.editText)
+
+        binding.categoriaTexto.setText(itemsCategorias.first(), false)
+
         val itemsMonedas = Moneda.values().map { it.descripcion }
         agregarItemsALista(itemsMonedas, binding.moneda.editText)
     }
@@ -358,16 +362,24 @@ class AgregarMovimientosFragment: Fragment() {
         if (validateFields()) {
             var monto = binding.monto.text.toString().toDouble()
             val moneda = Moneda.getByDescripcion(binding.moneda.editText?.text.toString()).valor
+            var categoria = 0
 
             if (moneda == Moneda.PESO.valor) {
                 cotizacionDolar = 1.0
+            }
+
+            if (tipoMovimiento == TipoMovimiento.INGRESO.valor) {
+                categoria = CategoriasIngreso.getByDescripcion(binding.categoria.editText?.text.toString()).valor
+            }
+            else {
+                categoria = CategoriasGasto.getByDescripcion(binding.categoria.editText?.text.toString()).valor
             }
 
             val movimiento = Movimiento(0,
                 monto,
                 moneda,
                 MedioPago.getByDescripcion(binding.medioPago.editText?.text.toString()).valor,
-                Categoria.getByDescripcion(binding.categoria.editText?.text.toString()).valor,
+                categoria,
                 SimpleDateFormat("dd/MM/yyyy").parse(binding.fecha.text.toString()).time,
                 binding.descripcion.text.toString(),
                 latitud,
@@ -387,7 +399,8 @@ class AgregarMovimientosFragment: Fragment() {
         if (binding.monto.text.isNullOrEmpty()
             || binding.moneda.editText?.text.isNullOrEmpty()
             || binding.medioPago.editText?.text.isNullOrEmpty()
-            || binding.categoria.editText?.text.isNullOrEmpty()) {
+            || binding.categoria.editText?.text.isNullOrEmpty()
+            || binding.fechaMovimiento.editText?.text.isNullOrEmpty()) {
             Toast.makeText(requireContext(), "Por favor, selecciona todos los campos", Toast.LENGTH_LONG).show()
 
             return false

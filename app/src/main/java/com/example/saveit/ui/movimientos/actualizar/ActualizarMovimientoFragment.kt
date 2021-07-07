@@ -9,9 +9,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
-import android.text.Editable
-import android.text.TextUtils
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,25 +19,18 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.saveit.R
-import com.example.saveit.data.Categoria
-import com.example.saveit.data.MedioPago
-import com.example.saveit.data.Moneda
-import com.example.saveit.data.TipoMovimiento
+import com.example.saveit.data.*
 import com.example.saveit.databinding.ActualizarMovimientoFragmentBinding
 import com.example.saveit.model.Movimiento
-import com.example.saveit.retrofit.DolarService
-import com.example.saveit.retrofit.Respuesta
 import com.example.saveit.viewmodel.MovimientoViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.android.synthetic.main.actualizar_movimiento_fragment.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
@@ -61,8 +51,6 @@ class ActualizarMovimientoFragment : Fragment() {
     private var longitud: Double = 0.0
 
     private val RQ_SPEECH_REC = 102
-
-    private var cotizacionDolar: Double = 0.0
 
     val datePicker = MaterialDatePicker.Builder.datePicker()
             .setTitleText("Fecha de Movimiento")
@@ -133,22 +121,6 @@ class ActualizarMovimientoFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        val result: Call<Respuesta> = DolarService().getDolarValue("USD_ARS", "ultra", "175657d7d9f194e9f441")
-
-        result.enqueue(object: Callback<Respuesta> {
-            override fun onResponse(call: Call<Respuesta>, response: Response<Respuesta>) {
-                cotizacionDolar = response.body()!!.USD_ARS
-            }
-
-            override fun onFailure(call: Call<Respuesta>, error: Throwable) {
-                Toast.makeText(activity, "No se pudo obtener el valor del dólar", Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -254,7 +226,6 @@ class ActualizarMovimientoFragment : Fragment() {
         binding.actualizarMonto.setText(args.currentMovimiento.monto.toString())
         binding.actualizarMoneda.setText(Moneda.getByValor(args.currentMovimiento.moneda), false)
         binding.actualizarMedioPago.setText(MedioPago.getByValor(args.currentMovimiento.medioDePago), false)
-        binding.actualizarCategoria.setText(Categoria.getByValor(args.currentMovimiento.categoria), false)
 
         val fecha = formatDate(args.currentMovimiento.fecha)
 
@@ -264,9 +235,13 @@ class ActualizarMovimientoFragment : Fragment() {
 
         if (args.currentMovimiento.tipoMovimiento == TipoMovimiento.INGRESO.valor) {
             binding.botonIngresoActualizar.performClick()
+
+            binding.actualizarCategoria.setText(CategoriasIngreso.getByValor(args.currentMovimiento.categoria), false)
         }
         else {
             binding.botonEgresoActualizar.performClick()
+
+            binding.actualizarCategoria.setText(CategoriasGasto.getByValor(args.currentMovimiento.categoria), false)
         }
     }
 
@@ -308,8 +283,10 @@ class ActualizarMovimientoFragment : Fragment() {
         val itemsMedioPago = MedioPago.values().map { it.descripcion }
         agregarItemsALista(itemsMedioPago, binding.medioPago.editText)
 
-        val itemsCategorias = Categoria.values().map { it.descripcion }
+        val itemsCategorias = if (tipoMovimiento == TipoMovimiento.INGRESO.valor) CategoriasIngreso.values().map { it.descripcion } else CategoriasGasto.values().map { it.descripcion }
         agregarItemsALista(itemsCategorias, binding.categoria.editText)
+
+        binding.actualizarCategoria.setText(itemsCategorias.first(), false)
 
         val itemsMonedas = Moneda.values().map { it.descripcion }
         agregarItemsALista(itemsMonedas, binding.moneda.editText)
@@ -339,12 +316,20 @@ class ActualizarMovimientoFragment : Fragment() {
         if (validateFields()) {
             var monto = binding.actualizarMonto.text.toString().toDouble()
             val moneda = Moneda.getByDescripcion(binding.moneda.editText?.text.toString()).valor
+            var categoria = 0
+
+            if (tipoMovimiento == TipoMovimiento.INGRESO.valor) {
+                categoria = CategoriasIngreso.getByDescripcion(binding.categoria.editText?.text.toString()).valor
+            }
+            else {
+                categoria = CategoriasGasto.getByDescripcion(binding.categoria.editText?.text.toString()).valor
+            }
 
             val movimiento = Movimiento(args.currentMovimiento.id,
                 monto,
                 moneda,
                 MedioPago.getByDescripcion(binding.medioPago.editText?.text.toString()).valor,
-                Categoria.getByDescripcion(binding.categoria.editText?.text.toString()).valor,
+                categoria,
                 SimpleDateFormat("dd/MM/yyyy").parse(binding.actualizarFecha.text.toString()).time,
                 binding.actualizarDescripcion.text.toString(),
                 latitud,
@@ -362,7 +347,8 @@ class ActualizarMovimientoFragment : Fragment() {
         if (binding.actualizarMonto.text.isNullOrEmpty()
             || binding.moneda.editText?.text.isNullOrEmpty()
             || binding.medioPago.editText?.text.isNullOrEmpty()
-            || binding.categoria.editText?.text.isNullOrEmpty()) {
+            || binding.categoria.editText?.text.isNullOrEmpty()
+            || binding.fechaMovimiento.editText?.text.isNullOrEmpty()) {
             Toast.makeText(requireContext(), "Por favor, selecciona todos los campos", Toast.LENGTH_LONG).show()
 
             return false

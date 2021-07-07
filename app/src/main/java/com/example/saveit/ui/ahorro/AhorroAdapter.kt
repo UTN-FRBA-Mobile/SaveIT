@@ -7,16 +7,12 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.saveit.R
 import com.example.saveit.data.CategoriasGasto
 import com.example.saveit.data.CategoriasIngreso
 import com.example.saveit.data.TipoMovimiento
 import com.example.saveit.model.Movimiento
-import com.example.saveit.ui.movimientos.lista.ListaMovimientosAdapter
-import com.example.saveit.ui.movimientos.lista.ListaMovimientosFragmentDirections
-import kotlinx.android.synthetic.main.custom_movimiento_row.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -5,8 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.saveit.data.MovimientoDatabase
-import com.example.saveit.repository.MovimientoRepository
 import com.example.saveit.model.Movimiento
+import com.example.saveit.repository.MovimientoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

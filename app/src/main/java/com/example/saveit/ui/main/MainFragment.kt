@@ -1,6 +1,5 @@
 package com.example.saveit.ui.main
 
-//import androidx.lifecycle.ViewModelProvider
 import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
@@ -15,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.saveit.R
 import com.example.saveit.databinding.MainFragmentBinding
 import com.example.saveit.viewmodel.MovimientoViewModel
-import java.time.temporal.TemporalAdjusters
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -28,7 +26,6 @@ class MainFragment: Fragment() {
 
     private var title: String? = null
     private var listener: OnFragmentInteractionListener? = null
-   // private lateinit var viewModel: MainViewModel
 
     private var monthsDictionary: HashMap<Int, String> = HashMap()
 

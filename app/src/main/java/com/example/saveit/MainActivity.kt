@@ -1,16 +1,15 @@
 package com.example.saveit
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.saveit.ui.main.MainFragment
 import com.example.saveit.databinding.ActivityMainBinding
 import com.example.saveit.ui.ahorro.AhorroFragment
+import com.example.saveit.ui.main.MainFragment
 import com.example.saveit.ui.movimientos.actualizar.ActualizarMovimientoFragment
 import com.example.saveit.ui.movimientos.agregar.AgregarMovimientosFragment
-import com.example.saveit.ui.movimientos.agregar.AgregarUsuarioFragment
 import com.example.saveit.ui.movimientos.lista.ListaMovimientosFragment
 import com.example.saveit.ui.reportes.ReportesFragment
 

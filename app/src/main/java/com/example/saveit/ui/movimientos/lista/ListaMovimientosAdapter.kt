@@ -1,22 +1,17 @@
 package com.example.saveit.ui.movimientos.lista
 
 import android.content.Context
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.saveit.MainActivity
 import com.example.saveit.R
 import com.example.saveit.data.CategoriasGasto
 import com.example.saveit.data.CategoriasIngreso
-import com.example.saveit.data.TipoMovimiento
 import com.example.saveit.model.Movimiento
 import kotlinx.android.synthetic.main.custom_movimiento_row.view.*
 import java.text.SimpleDateFormat

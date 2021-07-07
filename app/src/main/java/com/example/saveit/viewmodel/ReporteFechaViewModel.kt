@@ -3,13 +3,10 @@ package com.example.saveit.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
 import com.example.saveit.data.MovimientoDatabase
-import com.example.saveit.repository.MovimientoRepository
 import com.example.saveit.model.Movimiento
 import com.example.saveit.model.ResultadoReporte
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.saveit.repository.MovimientoRepository
 
 class ReporteFechaViewModel(application: Application): AndroidViewModel(application) {
     private val readAllData: LiveData<List<Movimiento>>
