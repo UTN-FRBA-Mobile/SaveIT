@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.saveit.ui.main.MainFragment"
-        android:label="Home" >
+        android:label="SaveIT" >
         <action
             android:id="@+id/action_mainFragment_to_listaMovimientosFragment2"
             app:destination="@id/listaMovimientosFragment" />

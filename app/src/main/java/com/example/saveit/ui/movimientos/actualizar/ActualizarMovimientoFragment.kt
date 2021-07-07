@@ -1,8 +1,11 @@
 package com.example.saveit.ui.movimientos.actualizar
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
@@ -14,33 +17,52 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.saveit.R
 import com.example.saveit.data.Categoria
 import com.example.saveit.data.MedioPago
 import com.example.saveit.data.Moneda
+import com.example.saveit.data.TipoMovimiento
 import com.example.saveit.databinding.ActualizarMovimientoFragmentBinding
+import com.example.saveit.model.Movimiento
+import com.example.saveit.retrofit.DolarService
+import com.example.saveit.retrofit.Respuesta
 import com.example.saveit.viewmodel.MovimientoViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.android.synthetic.main.actualizar_movimiento_fragment.*
-import kotlinx.android.synthetic.main.ahorro_fragment.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.properties.Delegates
 
 class ActualizarMovimientoFragment : Fragment() {
     private var _binding: ActualizarMovimientoFragmentBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var clienteUbicacion: FusedLocationProviderClient
 
     private var listener: OnFragmentInteractionListener? = null
 
     private val args by navArgs<ActualizarMovimientoFragmentArgs>()
 
     private lateinit var mMovimientoViewModel: MovimientoViewModel
+    private var tipoMovimiento by Delegates.notNull<Int>()
+    private var latitud: Double = 0.0
+    private var longitud: Double = 0.0
 
     private val RQ_SPEECH_REC = 102
+
+    private var cotizacionDolar: Double = 0.0
 
     val datePicker = MaterialDatePicker.Builder.datePicker()
             .setTitleText("Fecha de Movimiento")
@@ -50,30 +72,100 @@ class ActualizarMovimientoFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         _binding = ActualizarMovimientoFragmentBinding.inflate(inflater, container, false)
 
+        clienteUbicacion = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        iniciarCamposListaDesplegable()
+
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
 
-        setAutoCompleteTextViews()
+        binding.botonIngresoActualizar.setOnClickListener {
+            tipoMovimiento = TipoMovimiento.INGRESO.valor
+            agregarItemsAListasDesplegables()
+        }
 
-        binding.actualizarMonto.setText(args.currentMovimiento.monto.toString())
-        binding.moneda.editText!!.setText(Moneda.getByValor(args.currentMovimiento.moneda))
-        binding.medioPago.editText!!.setText(MedioPago.getByValor(args.currentMovimiento.medioDePago))
-        binding.categoria.editText!!.setText(Categoria.getByValor(args.currentMovimiento.categoria))
+        binding.botonEgresoActualizar.setOnClickListener {
+            tipoMovimiento = TipoMovimiento.EGRESO.valor
+            agregarItemsAListasDesplegables()
+        }
 
-        val fecha = formatDate(args.currentMovimiento.fecha)
+        setValuesToFields()
 
-        binding.actualizarFecha.setText(fecha)
-
-        binding.actualizarDescripcion.setText(args.currentMovimiento.descripcion)
-
-        binding.botonActualizar.setOnClickListener {
+        binding.botonAceptarActualizar.setOnClickListener {
             updateMovimiento()
+        }
+
+        binding.botonCancelarActualizar.setOnClickListener {
+            limpiarContenidoControles()
         }
 
         binding.botonVoz.setOnClickListener {
             askSpeechInput()
         }
 
+        binding.botonUbicacion.setOnClickListener {
+            Toast.makeText(this.context, "Boton Presionado: "+ binding.botonUbicacion.isPressed.toString(), Toast.LENGTH_SHORT).show()
+
+            if(binding.botonUbicacion.isPressed) {
+                if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+                    }
+                    else {
+                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+                    }
+                }
+                else {
+                    obtenerUbicacionActual();
+                }
+            }
+            else {
+                Toast.makeText(this.context, "Boton Presionado: " + binding.botonUbicacion.isPressed.toString(), Toast.LENGTH_SHORT).show()
+
+                longitud = 0.0
+                latitud = 0.0
+
+                Toast.makeText(this.context, "Latitud: " + latitud + "Longitud: " + longitud, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        if (!tieneHardwareNecesario()) {
+            binding.botonUbicacion.visibility = View.GONE
+        }
+
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val result: Call<Respuesta> = DolarService().getDolarValue("USD_ARS", "ultra", "175657d7d9f194e9f441")
+
+        result.enqueue(object: Callback<Respuesta> {
+            override fun onResponse(call: Call<Respuesta>, response: Response<Respuesta>) {
+                cotizacionDolar = response.body()!!.USD_ARS
+            }
+
+            override fun onFailure(call: Call<Respuesta>, error: Throwable) {
+                Toast.makeText(activity, "No se pudo obtener el valor del dólar", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if ((ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) === PackageManager.PERMISSION_GRANTED)) {
+                        Toast.makeText(this.context, "Permission Granted", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else {
+                    Toast.makeText(this.context, "Permission Denied", Toast.LENGTH_SHORT).show()
+                }
+
+                return
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -84,16 +176,27 @@ class ActualizarMovimientoFragment : Fragment() {
 
             val textoVoz = result?.get(0).toString().toLowerCase()
 
-            val tipoMovimiento = getTipoMovimientoVoz(textoVoz)
+            val tipoMovimientoVoz = getTipoMovimientoVoz(textoVoz)
+
+            if (tipoMovimientoVoz == "ingreso") {
+                if (tipoMovimiento != TipoMovimiento.INGRESO.valor) {
+                    botonIngresoActualizar.performClick()
+                }
+            }
+            else if (tipoMovimientoVoz == "gasto") {
+                if (tipoMovimiento != TipoMovimiento.EGRESO.valor) {
+                    botonEgresoActualizar.performClick()
+                }
+            }
 
             val monto = getMontoVoz(textoVoz)
             binding.actualizarMonto.setText(monto)
 
             val medioDePago = getMedioDePagoVoz(textoVoz)
-            binding.medioPago.editText!!.setText(medioDePago)
+            binding.actualizarMedioPago.setText(medioDePago, false)
 
             val categoria = getCategoriaVoz(textoVoz)
-            binding.categoria.editText!!.setText(categoria)
+            binding.actualizarCategoria.setText(categoria, false)
 
             val descripcion = getDescripcionVoz(textoVoz)
             binding.actualizarDescripcion.setText(descripcion)
@@ -147,63 +250,125 @@ class ActualizarMovimientoFragment : Fragment() {
         return ""
     }
 
-    private fun setAutoCompleteTextViews() {
-        val itemInicial = listOf<String>("Sin Medio Pago")
+    private fun setValuesToFields() {
+        binding.actualizarMonto.setText(args.currentMovimiento.monto.toString())
+        binding.actualizarMoneda.setText(Moneda.getByValor(args.currentMovimiento.moneda), false)
+        binding.actualizarMedioPago.setText(MedioPago.getByValor(args.currentMovimiento.medioDePago), false)
+        binding.actualizarCategoria.setText(Categoria.getByValor(args.currentMovimiento.categoria), false)
 
-        val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-        (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
+        val fecha = formatDate(args.currentMovimiento.fecha)
 
-        val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-        (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
+        binding.actualizarFecha.setText(fecha)
 
-        val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-        (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+        binding.actualizarDescripcion.setText(args.currentMovimiento.descripcion)
 
-        binding.botonIngreso.setOnClickListener {
-            val itemsMedioPago = MedioPago.values().map { it.descripcion }
-            val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
-
-            val itemsCategorias = Categoria.values().map { it.descripcion }
-            val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
-
-            val itemsMonedas = Moneda.values().map { it.descripcion }
-            val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+        if (args.currentMovimiento.tipoMovimiento == TipoMovimiento.INGRESO.valor) {
+            binding.botonIngresoActualizar.performClick()
         }
-
-        binding.botonEgreso.setOnClickListener {
-            val itemsMedioPago = MedioPago.values().map { it.descripcion }
-            val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.medioPago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
-
-            val itemsCategorias = Categoria.values().map { it.descripcion }
-            val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
-
-            val itemsMonedas = Moneda.values().map { it.descripcion }
-            val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemInicial)
-            (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
+        else {
+            binding.botonEgresoActualizar.performClick()
         }
     }
 
+    private fun tieneHardwareNecesario() = (requireActivity().packageManager.hasSystemFeature(
+        PackageManager.FEATURE_LOCATION
+    ) && requireActivity().packageManager.hasSystemFeature(
+        PackageManager.FEATURE_LOCATION_GPS
+    ) && requireActivity().packageManager.hasSystemFeature(
+        PackageManager.FEATURE_LOCATION_NETWORK
+    ))
+
+    private fun limpiarContenidoControles() {
+        iniciarCamposListaDesplegable()
+
+        binding.grupoBotonesTipoMovimiento.clearChecked()
+        binding.actualizarCategoria.text.clear()
+        binding.actualizarCategoria.clearFocus()
+        binding.actualizarMedioPago.text.clear()
+        binding.actualizarMedioPago.clearFocus()
+        binding.actualizarMoneda.text.clear()
+        binding.actualizarMoneda.clearFocus()
+        binding.actualizarMonto.setText("")
+        binding.actualizarMonto.clearFocus()
+        binding.actualizarDescripcion.setText("")
+        binding.actualizarDescripcion.clearFocus()
+        binding.actualizarFecha.setText("")
+        binding.actualizarFecha.clearFocus()
+    }
+
+    private fun iniciarCamposListaDesplegable() {
+        val itemInicial = listOf<String>("Sin items")
+
+        agregarItemsALista(itemInicial, binding.medioPago.editText)
+        agregarItemsALista(itemInicial, binding.moneda.editText)
+        agregarItemsALista(itemInicial, binding.categoria.editText)
+    }
+
+    private fun agregarItemsAListasDesplegables() {
+        val itemsMedioPago = MedioPago.values().map { it.descripcion }
+        agregarItemsALista(itemsMedioPago, binding.medioPago.editText)
+
+        val itemsCategorias = Categoria.values().map { it.descripcion }
+        agregarItemsALista(itemsCategorias, binding.categoria.editText)
+
+        val itemsMonedas = Moneda.values().map { it.descripcion }
+        agregarItemsALista(itemsMonedas, binding.moneda.editText)
+    }
+
+    private fun agregarItemsALista(items: List<String>, componenteLista: EditText?) {
+        val adapter = ArrayAdapter(requireContext(), R.layout.lista_items, items)
+        (componenteLista as? AutoCompleteTextView)?.setAdapter(adapter)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun obtenerUbicacionActual() {
+        clienteUbicacion.lastLocation
+            .addOnSuccessListener { u ->
+                if (u != null) {
+                    // use your location object
+                    // get latitude , longitude and other info from this
+                    latitud = u.latitude
+                    longitud = u.longitude
+
+                    Toast.makeText(this.context, "Latitud1: " + u.latitude.toString() + "Longitud1: " + u.longitude.toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
     private fun updateMovimiento() {
-        /*val firstName = updateFirstName_et.text.toString()
-        val lastName = updateLastName_et.text.toString()
-        val age = updateAge_et.text
+        if (validateFields()) {
+            var monto = binding.actualizarMonto.text.toString().toDouble()
+            val moneda = Moneda.getByDescripcion(binding.moneda.editText?.text.toString()).valor
 
-        if (inputCheck(firstName, lastName, age)) {
-//            val updatedMovimiento = Movimiento(args.currentMovimiento.id, firstName.toDouble(), firstName.toInt(), firstName.toInt(), Date().time, firstName, firstName, firstName.toInt())
+            val movimiento = Movimiento(args.currentMovimiento.id,
+                monto,
+                moneda,
+                MedioPago.getByDescripcion(binding.medioPago.editText?.text.toString()).valor,
+                Categoria.getByDescripcion(binding.categoria.editText?.text.toString()).valor,
+                SimpleDateFormat("dd/MM/yyyy").parse(binding.actualizarFecha.text.toString()).time,
+                binding.actualizarDescripcion.text.toString(),
+                latitud,
+                longitud,
+                tipoMovimiento,
+                args.currentMovimiento.cotizacionDolar
+            )
 
-//            mMovimientoViewModel.updateMovimiento(updatedMovimiento)
-            Toast.makeText(requireContext(), "Successfully updated!", Toast.LENGTH_LONG).show()
-
-            findNavController().navigate(R.id.action_actualizarMovimientoFragment_to_listaMovimientosFragment2)
+            mMovimientoViewModel.updateMovimiento(movimiento)
+            Toast.makeText(requireContext(), "El movimiento fue actualizado correctamente!", Toast.LENGTH_LONG).show()
         }
-        else {
-            Toast.makeText(requireContext(), "Please fill out all fields", Toast.LENGTH_LONG).show()
-        }*/
+    }
+
+    private fun validateFields(): Boolean {
+        if (binding.actualizarMonto.text.isNullOrEmpty()
+            || binding.moneda.editText?.text.isNullOrEmpty()
+            || binding.medioPago.editText?.text.isNullOrEmpty()
+            || binding.categoria.editText?.text.isNullOrEmpty()) {
+            Toast.makeText(requireContext(), "Por favor, selecciona todos los campos", Toast.LENGTH_LONG).show()
+
+            return false
+        }
+
+        return true
     }
 
     private fun askSpeechInput() {
@@ -232,20 +397,18 @@ class ActualizarMovimientoFragment : Fragment() {
         }
     }
 
-    private fun inputCheck(firstName: String, lastName: String, age: Editable): Boolean {
-        return !(TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || age.isEmpty())
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         datePicker.addOnPositiveButtonClickListener {
-            (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(android.icu.text.SimpleDateFormat("dd/MM/yyyy").format(android.icu.text.SimpleDateFormat("MMM dd, yyyy").parse(datePicker.headerText)).toString())
+            (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(SimpleDateFormat("dd/MM/yyyy").format(SimpleDateFormat("MMM dd, yyyy").parse(datePicker.headerText)).toString())
         }
 
         binding.actualizarFecha.setOnClickListener {
             onFechaMovimientoPressed()
         }
+
+        binding.actualizarMoneda.isEnabled = false
     }
 
     private fun onFechaMovimientoPressed() {

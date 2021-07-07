@@ -20,5 +20,6 @@ data class Movimiento(
     val descripcion: String,
     val latitud: Double,
     val longitud: Double,
-    val tipoMovimiento: Int
+    val tipoMovimiento: Int,
+    val cotizacionDolar: Double
 ): Parcelable

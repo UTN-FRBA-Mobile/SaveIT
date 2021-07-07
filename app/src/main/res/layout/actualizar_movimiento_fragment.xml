@@ -9,16 +9,7 @@
     android:orientation="vertical"
     android:background="@color/blueBackground"
     android:paddingTop="30dp"
-    tools:context=".ui.movimientos.agregar.AgregarUsuarioFragment">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="40dp"
-        android:text="@string/titulo_movimientos"
-        android:textAppearance="@style/TextAppearance.Title" />
-
+    tools:context=".ui.movimientos.actualizar.ActualizarMovimientoFragment" >
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -28,55 +19,50 @@
         android:clickable="false"
         android:focusable="false"
         android:checkable="false"
+        android:layout_marginTop="80dp"
         android:paddingHorizontal="10dp"
         app:cardCornerRadius="28dp"
         app:contentPadding="20dp"
         app:strokeWidth="10dp"
-        app:strokeColor="@color/blueBackground"
-        >
+        app:strokeColor="@color/blueBackground" >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical" >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="15dp">
+                android:paddingBottom="15dp" >
                 <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp">
+                    android:paddingLeft="10dp"
+                    android:id="@+id/grupo_botones_tipo_movimiento"
+                    app:singleSelection="true" >
                     <Button
-                        android:id="@+id/boton_ingreso"
+                        android:id="@+id/botonIngresoActualizar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ingreso"
                         app:icon="@drawable/ic_add_36dp"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_weight="1"
-                        />
-                </com.google.android.material.button.MaterialButtonToggleGroup>
-                <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="100dp">
+                        android:layout_weight="1" />
                     <Button
-                        android:id="@+id/boton_egreso"
+                        android:id="@+id/botonEgresoActualizar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Egreso"
-                        app:backgroundTint="#E64A19"
                         app:icon="@drawable/ic_remove_24dp"
-                        style="@style/Widget.MaterialComponents.Button.Rounded.Icon"
-                        />
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal" >
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -85,7 +71,7 @@
                     android:paddingRight="24dp"
                     app:errorEnabled="true"
                     app:startIconDrawable="@drawable/outline_paid_black_20"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox" >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/actualizarMonto"
@@ -94,6 +80,7 @@
                         android:inputType="numberDecimal"
                         android:maxLines="1"/>
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/moneda"
                     android:layout_width="300dp"
@@ -102,37 +89,52 @@
                     android:hint="Moneda"
                     app:errorEnabled="true"
                     app:startIconDrawable="@drawable/outline_attach_money_black_20"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
-
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu" >
                     <AutoCompleteTextView
                         android:id="@+id/actualizarMoneda"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="none"
-                        />
+                        android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
-
             </LinearLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/medio_pago"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Medio Pago"
-                app:errorEnabled="true"
-                app:startIconDrawable="@drawable/outline_credit_card_black_20"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
-                <AutoCompleteTextView
-                    android:id="@+id/actualizarMedioDePago"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal" >
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/medio_pago"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Medio Pago"
+                    app:errorEnabled="true"
+                    app:startIconDrawable="@drawable/outline_credit_card_black_20"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu" >
+                    <AutoCompleteTextView
+                        android:id="@+id/actualizarMedioPago"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp" >
+                    <Button
+                        android:id="@+id/boton_ubicacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/outline_location_on_black_36"
+                        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                        android:layout_weight="1" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/categoria"
@@ -142,14 +144,12 @@
                     android:hint="Categoria"
                     app:errorEnabled="true"
                     app:startIconDrawable="@drawable/outline_category_black_20"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
-
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu" >
                     <AutoCompleteTextView
                         android:id="@+id/actualizarCategoria"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="none"
-                        />
+                        android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -164,8 +164,7 @@
                     android:focusableInTouchMode="false"
                     app:errorEnabled="true"
                     app:startIconDrawable="@drawable/outline_calendar_today_black_20"
-                    style="@style/SaveIT.ExposedDropdownMenu.SinBotonDesplegar">
-
+                    style="@style/SaveIT.ExposedDropdownMenu.SinBotonDesplegar" >
                     <AutoCompleteTextView
                         android:id="@+id/actualizarFecha"
                         android:layout_width="match_parent"
@@ -173,8 +172,7 @@
                         android:inputType="none|date"
                         android:cursorVisible="false"
                         android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        />
+                        android:focusableInTouchMode="false" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -182,8 +180,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:startIconDrawable="@drawable/outline_insert_comment_black_20"
-                android:hint="Descripcion">
-
+                android:hint="Descripcion" >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/actualizarDescripcion"
                     android:layout_width="match_parent"
@@ -191,31 +188,30 @@
                     android:inputType="text"
                     android:maxLines="1"
                     app:counterEnabled="true"
-                    app:counterMaxLength="50"/>
+                    app:counterMaxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingTop="15dp">
+                android:paddingTop="15dp" >
                 <Button
-                    android:id="@+id/boton_actualizar"
+                    android:id="@+id/botonAceptarActualizar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Actualizar"
+                    android:text="Aceptar"
                     app:icon="@drawable/outline_check_circle_black_20"
                     style="@style/Widget.MaterialComponents.Button.Rounded.Icon"
-                    android:layout_weight="1"
-                    />
+                    android:layout_weight="1" />
                 <Button
-                    android:id="@+id/boton_cancelar"
+                    android:id="@+id/botonCancelarActualizar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cancelar"
                     app:icon="@drawable/outline_highlight_off_black_20"
                     style="@style/Widget.MaterialComponents.Button.Rounded.Icon"
-                    android:layout_weight="1"
-                    />
+                    android:layout_weight="1" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
