@@ -130,6 +130,7 @@
                     android:layout_height="match_parent"
                     android:id="@+id/myGoogleMap"
                     tools:context=".MapsActivity"
+
                     android:name="com.google.android.gms.maps.SupportMapFragment" />
                 </com.google.android.material.card.MaterialCardView>
 

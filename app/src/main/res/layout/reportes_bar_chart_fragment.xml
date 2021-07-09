@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
@@ -116,7 +115,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="400dp"
             app:cardBackgroundColor="#E3F2FD"
             app:cardElevation="2dp"
             android:clickable="false"
@@ -124,17 +123,145 @@
             android:checkable="false"
             android:paddingHorizontal="10dp"
             app:cardCornerRadius="28dp"
-            app:contentPadding="20dp"
-            android:layout_marginBottom="60dp"
+            app:contentPadding="0dp"
+            android:layout_marginBottom="-30dp"
             app:strokeColor="@color/blueBackground">
-            <com.github.mikephil.charting.charts.HorizontalBarChart
+            <com.github.mikephil.charting.charts.BarChart
+                android:layout_marginTop="-10dp"
                 android:id="@+id/barChart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
-            </com.github.mikephil.charting.charts.HorizontalBarChart>
+            </com.github.mikephil.charting.charts.BarChart>
 
         </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            app:cardBackgroundColor="#E3F2FD"
+            app:cardElevation="2dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:checkable="false"
+            android:paddingHorizontal="10dp"
+            app:cardCornerRadius="0dp"
+            app:contentPadding="1dp"
+            app:strokeColor="@color/blueBackground">
+
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin = "10dp"
+                android:paddingHorizontal="16dp"
+                app:chipSpacingHorizontal="10dp"
+                app:chipSpacingVertical="0dp">
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ahorro"
+                    app:chipBackgroundColor="#ff1744"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alquiler"
+                    app:chipBackgroundColor="#ffd600"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Casa"
+                    app:chipBackgroundColor="#d500f9"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Otros"
+                    app:chipBackgroundColor="#004d40"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Comida"
+                    app:chipBackgroundColor="#651fff"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delivery"
+                    app:chipBackgroundColor="#304ffe"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Eduacion"
+                    app:chipBackgroundColor="#f57f17"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gasolina"
+                    app:chipBackgroundColor="#29b6f6"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Personales"
+                    app:chipBackgroundColor="#00830e"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Servicios"
+                    app:chipBackgroundColor="#26a69a"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+
+            </com.google.android.material.chip.ChipGroup>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
