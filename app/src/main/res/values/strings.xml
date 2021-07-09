@@ -10,6 +10,7 @@
     <string name="titulo_reportes_por_fecha_detalle">Reportes Por Fecha - Detalle</string>
     <string name="dropdown_reportes_por_fecha_periodo">Período</string>
     <string name="dropdown_reportes_por_fecha_categoria">Categoría</string>
+    <string name="dropdown_reportes_por_fecha_tipodemovimiento">Tipo de Movimiento</string>
     <string name="dropdown_reportes_por_fecha_medio_de_pago">Medio de Pago</string>
     <string name="dropdown_reportes_por_fecha_moneda">Moneda</string>
     <string name="dropdown_grafico_de_torta_Mes">Mes</string>

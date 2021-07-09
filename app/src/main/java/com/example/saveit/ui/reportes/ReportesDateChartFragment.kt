@@ -10,10 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.saveit.R
-import com.example.saveit.data.Categoria
-import com.example.saveit.data.MedioPago
-import com.example.saveit.data.Moneda
-import com.example.saveit.data.PeriodosDeTiempo
+import com.example.saveit.data.*
 import com.example.saveit.databinding.ReportesDateChartFragmentBinding
 
 class ReportesDateChartFragment: Fragment()  {
@@ -25,6 +22,10 @@ class ReportesDateChartFragment: Fragment()  {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = ReportesDateChartFragmentBinding.inflate(inflater, container, false)
+
+        var itemsTipoDeMovimiento = TipoMovimiento.values().map { it.descripcion }
+        val adapterTipoDeMovimiento = ArrayAdapter(requireContext(), R.layout.lista_items, itemsTipoDeMovimiento)
+        (binding.tipoMovimiento.editText as? AutoCompleteTextView)?.setAdapter(adapterTipoDeMovimiento)
 
         var itemsMedioPago = MedioPago.values().map { it.descripcion }
         itemsMedioPago = itemsMedioPago.toMutableList()
@@ -46,10 +47,11 @@ class ReportesDateChartFragment: Fragment()  {
         val adapterPeriodosDeTiempo = ArrayAdapter(requireContext(), R.layout.lista_items, itemsPeriodosDeTiempo)
         (binding.periodoDeTiempo.editText as? AutoCompleteTextView)?.setAdapter(adapterPeriodosDeTiempo)
 
-        (binding.medioDePago.editText as? AutoCompleteTextView)?.setText(adapterMedioPago.getItem(0).toString(), false)
-        (binding.categoria.editText as? AutoCompleteTextView)?.setText(adapterCategoria.getItem(0).toString(), false)
-        (binding.moneda.editText as? AutoCompleteTextView)?.setText(adapterMonedas.getItem(0).toString(), false)
-        (binding.periodoDeTiempo.editText as? AutoCompleteTextView)?.setText(adapterPeriodosDeTiempo.getItem(0).toString(), false)
+        //(binding.tipoMovimiento.editText as? AutoCompleteTextView)?.setText(adapterTipoDeMovimiento.getItem(0).toString(), false)
+        //(binding.medioDePago.editText as? AutoCompleteTextView)?.setText(adapterMedioPago.getItem(0).toString(), false)
+        //(binding.categoria.editText as? AutoCompleteTextView)?.setText(adapterCategoria.getItem(0).toString(), false)
+        //(binding.moneda.editText as? AutoCompleteTextView)?.setText(adapterMonedas.getItem(0).toString(), false)
+        //(binding.periodoDeTiempo.editText as? AutoCompleteTextView)?.setText(adapterPeriodosDeTiempo.getItem(0).toString(), false)
 
         binding.botonGenerarReporte.setOnClickListener {
             openReport()
@@ -63,6 +65,7 @@ class ReportesDateChartFragment: Fragment()  {
     }
 
     private fun cleanForm() {
+        (binding.tipoMovimiento.editText as? AutoCompleteTextView)?.setText("")
         (binding.medioDePago.editText as? AutoCompleteTextView)?.setText("")
         (binding.categoria.editText as? AutoCompleteTextView)?.setText("")
         (binding.moneda.editText as? AutoCompleteTextView)?.setText("")
@@ -70,19 +73,22 @@ class ReportesDateChartFragment: Fragment()  {
     }
 
     private fun openReport() {
+        val tipoMovimiento = (binding.tipoMovimiento.editText as? AutoCompleteTextView)?.text
         val medioPagoSelec = (binding.medioDePago.editText as? AutoCompleteTextView)?.text
         val categoriaSelec = (binding.categoria.editText as? AutoCompleteTextView)?.text
         val monedaSelec = (binding.moneda.editText as? AutoCompleteTextView)?.text
         val periodoSelec = (binding.periodoDeTiempo.editText as? AutoCompleteTextView)?.text
 
-        if (medioPagoSelec.isNullOrEmpty()
+        if (tipoMovimiento.isNullOrEmpty()
+            || medioPagoSelec.isNullOrEmpty()
             || categoriaSelec.isNullOrEmpty()
             || monedaSelec.isNullOrEmpty()
             || periodoSelec.isNullOrEmpty()){
             Toast.makeText(requireContext(), "Por favor, selecciona todos los campos", Toast.LENGTH_LONG).show()
         }
         else{
-            val seleccion = arrayListOf(medioPagoSelec.toString(),
+            val seleccion = arrayListOf(tipoMovimiento.toString(),
+                medioPagoSelec.toString(),
                 categoriaSelec.toString(),
                 monedaSelec.toString(),
                 periodoSelec.toString())

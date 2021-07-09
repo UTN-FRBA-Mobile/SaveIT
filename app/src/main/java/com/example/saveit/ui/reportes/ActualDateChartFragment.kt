@@ -39,10 +39,11 @@ class ActualDateChartFragment: Fragment()  {
 
     private fun generateChartFromSelection(seleccion: Array<String>) {
         //ugly way of getting parameters from another fragment
-        val medioPagoSelec = seleccion[0]
-        val categoriaSelec = seleccion[1]
-        val monedaSelec = seleccion[2]
-        val periodoSelec = seleccion[3]
+        val tipoMovimiento = seleccion[0]
+        val medioPagoSelec = seleccion[1]
+        val categoriaSelec = seleccion[2]
+        val monedaSelec = seleccion[3]
+        val periodoSelec = seleccion[4]
         val moneda = Moneda.getByDescripcion(monedaSelec)
         val periodoDeTiempo = PeriodosDeTiempo.getByDescripcion(periodoSelec)
 
