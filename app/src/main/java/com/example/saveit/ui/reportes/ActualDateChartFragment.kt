@@ -44,258 +44,126 @@ class ActualDateChartFragment: Fragment()  {
         val categoriaSelec = seleccion[2]
         val periodoDeTiempo = PeriodosDeTiempo.getByDescripcion(seleccion[3])
 
-        //even uglier way of getting the data
-        when {
-            tipoMovimiento.equals(TipoMovimiento.INGRESO.descripcion) -> {
+        //not so ugly way of getting the data
+        when (tipoMovimiento) {
+            TipoMovimiento.INGRESO.descripcion -> {
+
                 when {(categoriaSelec == "Todas") and (medioPagoSelec == "Todos") -> {
                     reporteFechaViewModel.readSpecificTimeData(TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
-
-                        when {
-                            ingresos.isEmpty() -> {
-                                Toast.makeText(requireContext(),
-                                    "No se encontraron datos para las opciones seleccionadas",
-                                    Toast.LENGTH_LONG).show()
-                            }
-                            else -> {
-
-                                var pesifiedMap = mutableMapOf<Long, Float>()
-                                ingresos.forEach { ingreso ->
-                                    val day = pesifiedMap[ingreso.Day]
-                                    val pesifiedAmount = if (ingreso.Moneda == Moneda.PESO.valor) ingreso.Value else ingreso.Value
-                                    if (day == null){
-                                        pesifiedMap[ingreso.Day] = pesifiedAmount
-                                    }else{
-                                        val previousValue = pesifiedMap.getOrDefault(ingreso.Day, 0f)
-                                        pesifiedMap[ingreso.Day] = previousValue + pesifiedAmount
-                                    }
-                                }
-
-                                val lineIngresosEntry = pesifiedMap.map { entry -> Entry(entry.key.toFloat(), entry.value) }
-                                val linedataset1 = LineDataSet(lineIngresosEntry, "Ingresos")
-                                linedataset1.color = resources.getColor(R.color.green)
-                                linedataset1.setDrawCircles(true)
-                                linedataset1.setCircleColor(resources.getColor(R.color.green))
-                                linedataset1.circleRadius = 5f
-                                linedataset1.setDrawFilled(true)
-                                linedataset1.fillColor = resources.getColor(R.color.green)
-                                linedataset1.fillAlpha = 60
-                                linedataset1.valueTextSize = 0f
-
-                                val data = LineData(linedataset1)
-                                binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
-                                binding.lineChart.data = data
-                                binding.lineChart.animateXY(1500, 1500)
-                                binding.lineChart.description.text = ""
-                            }
-                        }
+                        processGraph(ingresos, "Ingresos")
                     })
                 }}
-            }
 
-            tipoMovimiento.equals(TipoMovimiento.EGRESO.descripcion) -> {
+                when {(categoriaSelec != "Todas") and (medioPagoSelec == "Todos") -> {
+                    reporteFechaViewModel.readSpecificTimeDataPaymentAll(CategoriasIngreso.getByDescripcion(categoriaSelec).valor,
+                        TipoMovimiento.INGRESO.valor,
+                        periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
+                        processGraph(ingresos, "Ingresos")
+                    })
+                }}
+
+                when {(categoriaSelec == "Todas") and (medioPagoSelec != "Todos") -> {
+                    reporteFechaViewModel.readSpecificTimeDataCategoryAll(MedioPago.getByDescripcion(medioPagoSelec).valor,
+                        TipoMovimiento.INGRESO.valor,
+                        periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
+                        processGraph(ingresos, "Ingresos")
+                    })
+                }}
+
+                when {(categoriaSelec != "Todas") and (medioPagoSelec != "Todos") -> {
+                    reporteFechaViewModel.readSpecificTimeDataCategoryPayment(CategoriasIngreso.getByDescripcion(categoriaSelec).valor,
+                        MedioPago.getByDescripcion(medioPagoSelec).valor,
+                        TipoMovimiento.INGRESO.valor,
+                        periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
+                        processGraph(ingresos, "Ingresos")
+                    })
+                }}
+
+            }
+            TipoMovimiento.EGRESO.descripcion -> {
+
                 when {(categoriaSelec == "Todas") and (medioPagoSelec == "Todos") -> {
                     reporteFechaViewModel.readSpecificTimeData(TipoMovimiento.EGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
-
-                        when {
-                            egresos.isEmpty() -> {
-                                Toast.makeText(requireContext(),
-                                    "No se encontraron datos para las opciones seleccionadas",
-                                    Toast.LENGTH_LONG).show()
-                            }
-                            else -> {
-
-                                var pesifiedMap = mutableMapOf<Long, Float>()
-                                egresos.forEach { egreso ->
-                                    val day = pesifiedMap[egreso.Day]
-                                    val pesifiedAmount = if (egreso.Moneda == Moneda.PESO.valor) egreso.Value else egreso.Value
-                                    if (day == null){
-                                        pesifiedMap[egreso.Day] = pesifiedAmount
-                                    }else{
-                                        val previousValue = pesifiedMap.getOrDefault(egreso.Day, 0f)
-                                        pesifiedMap[egreso.Day] = previousValue + pesifiedAmount
-                                    }
-                                }
-
-                                val lineEgresosEntry = pesifiedMap.map { entry -> Entry(entry.key.toFloat(), entry.value) }
-                                val linedataset1 = LineDataSet(lineEgresosEntry, "Egresos")
-
-                                linedataset1.color = resources.getColor(R.color.green)
-                                linedataset1.setDrawCircles(true)
-                                linedataset1.setCircleColor(resources.getColor(R.color.green))
-                                linedataset1.circleRadius = 5f
-                                linedataset1.setDrawFilled(true)
-                                linedataset1.fillColor = resources.getColor(R.color.green)
-                                linedataset1.fillAlpha = 60
-
-                                val data = LineData(linedataset1)
-                                binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
-                                binding.lineChart.data = data
-                                binding.lineChart.animateXY(1500, 1500)
-                                binding.lineChart.description.text = ""
-                            }
-                        }
+                        processGraph(egresos, "Egresos")
                     })
                 }}
+
+                when {(categoriaSelec != "Todas") and (medioPagoSelec == "Todos") -> {
+                    reporteFechaViewModel.readSpecificTimeDataPaymentAll(CategoriasIngreso.getByDescripcion(categoriaSelec).valor,
+                        TipoMovimiento.EGRESO.valor,
+                        periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
+                        processGraph(egresos, "Egresos")
+                    })
+                }}
+
+                when {(categoriaSelec == "Todas") and (medioPagoSelec != "Todos") -> {
+                    reporteFechaViewModel.readSpecificTimeDataCategoryAll(MedioPago.getByDescripcion(medioPagoSelec).valor,
+                        TipoMovimiento.EGRESO.valor,
+                        periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
+                        processGraph(egresos, "Egresos")
+                    })
+                }}
+
+                when {(categoriaSelec != "Todas") and (medioPagoSelec != "Todos") -> {
+                    reporteFechaViewModel.readSpecificTimeDataCategoryPayment(CategoriasIngreso.getByDescripcion(categoriaSelec).valor,
+                        MedioPago.getByDescripcion(medioPagoSelec).valor,
+                        TipoMovimiento.EGRESO.valor,
+                        periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
+                        processGraph(egresos, "Egresos")
+                    })
+                }}
+
             }
         }
-
-        /*when {
-            categoriaSelec.equals("Todos")
-            and medioPagoSelec.equals("Todos") -> {
-                reporteFechaViewModel.readSpecificTimeData(TipoMovimiento.EGRESO.valor,
-                    periodoDeTiempo.query_str).observe(viewLifecycleOwner, { egresos ->
-
-
-                })
-            }
-
-            categoriaSelec.equals("Todos")
-            and !medioPagoSelec.equals("Todos") -> {
-                var medioDePago = MedioPago.getByDescripcion(medioPagoSelec)
-                reporteFechaViewModel.readSpecificTimeDataCategoryAll(medioDePago.valor,
-                    TipoMovimiento.EGRESO.valor,
-                    periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
-
-                    reporteFechaViewModel.readSpecificTimeDataCategoryAll(medioDePago.valor,
-                        TipoMovimiento.INGRESO.valor,
-                        periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
-
-                        when {
-                            egresos.isEmpty() and ingresos.isEmpty() -> {
-                                Toast.makeText(requireContext(),
-                                    "No se encontraron datos para las opciones seleccionadas",
-                                    Toast.LENGTH_LONG).show()
-                            }
-                            else -> {
-                                var lineEgresosEntry = egresos.map { egreso -> Entry(egreso.Day.toFloat(), egreso.Value) }
-                                var lineIngresosEntry = ingresos.map { ingreso -> Entry(ingreso.Day.toFloat(), ingreso.Value) }
-                                val linedataset1 = LineDataSet(lineIngresosEntry, "Ingresos")
-                                linedataset1.color = resources.getColor(R.color.green)
-                                linedataset1.setDrawCircles(true)
-                                linedataset1.setCircleColor(resources.getColor(R.color.green))
-                                linedataset1.circleRadius = 5f
-                                linedataset1.setDrawFilled(true)
-                                linedataset1.fillColor = resources.getColor(R.color.green)
-                                linedataset1.fillAlpha = 60
-                                val linedataset2 = LineDataSet(lineEgresosEntry, "Egresos")
-                                linedataset2.color = resources.getColor(R.color.red)
-                                linedataset2.setDrawCircles(true)
-                                linedataset2.setCircleColor(resources.getColor(R.color.red))
-                                linedataset2.circleRadius = 5f
-                                linedataset2.setDrawFilled(true)
-                                linedataset2.fillColor = resources.getColor(R.color.red)
-                                linedataset2.fillAlpha = 60
-                                val data = LineData(linedataset1, linedataset2)
-                                binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
-                                binding.lineChart.data = data
-                                binding.lineChart.animateXY(1500, 1500)
-                            }
-                        }
-                    })
-                })
-            }
-
-            !categoriaSelec.equals("Todos")
-            and medioPagoSelec.equals("Todos") -> {
-                var categoria = Categoria.getByDescripcion(categoriaSelec)
-                reporteFechaViewModel.readSpecificTimeDataPaymentAll(categoria.valor,
-                    TipoMovimiento.EGRESO.valor,
-                    periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
-
-                    reporteFechaViewModel.readSpecificTimeDataPaymentAll(categoria.valor,
-                        TipoMovimiento.INGRESO.valor,
-                        periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
-
-                        when {
-                            egresos.isEmpty() and ingresos.isEmpty() -> {
-                                Toast.makeText(requireContext(),
-                                    "No se encontraron datos para las opciones seleccionadas",
-                                    Toast.LENGTH_LONG).show()
-                            }
-                            else -> {
-                                var lineEgresosEntry = egresos.map { egreso -> Entry(egreso.Day.toFloat(), egreso.Value) }
-                                var lineIngresosEntry = ingresos.map { ingreso -> Entry(ingreso.Day.toFloat(), ingreso.Value) }
-                                val linedataset1 = LineDataSet(lineIngresosEntry, "Ingresos")
-                                linedataset1.color = resources.getColor(R.color.green)
-                                linedataset1.setDrawCircles(true)
-                                linedataset1.setCircleColor(resources.getColor(R.color.green))
-                                linedataset1.circleRadius = 5f
-                                linedataset1.setDrawFilled(true)
-                                linedataset1.fillColor = resources.getColor(R.color.green)
-                                linedataset1.fillAlpha = 60
-                                val linedataset2 = LineDataSet(lineEgresosEntry, "Egresos")
-                                linedataset2.color = resources.getColor(R.color.red)
-                                linedataset2.setDrawCircles(true)
-                                linedataset2.setCircleColor(resources.getColor(R.color.red))
-                                linedataset2.circleRadius = 5f
-                                linedataset2.setDrawFilled(true)
-                                linedataset2.fillColor = resources.getColor(R.color.red)
-                                linedataset2.fillAlpha = 60
-                                val data = LineData(linedataset1, linedataset2)
-                                binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
-                                binding.lineChart.data = data
-                                binding.lineChart.animateXY(1500, 1500)
-                            }
-                        }
-                    })
-                })
-            }
-
-            else -> {
-                var categoria = Categoria.getByDescripcion(categoriaSelec)
-                var medioDePago = MedioPago.getByDescripcion(medioPagoSelec)
-                reporteFechaViewModel.readSpecificTimeDataCategoryPayment(categoria.valor,
-                    medioDePago.valor,
-                    TipoMovimiento.EGRESO.valor,
-                    periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
-
-                    reporteFechaViewModel.readSpecificTimeDataCategoryPayment(categoria.valor,
-                        medioDePago.valor,
-                        TipoMovimiento.INGRESO.valor,
-                        periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
-
-                        when {
-                            egresos.isEmpty() and ingresos.isEmpty() -> {
-                                Toast.makeText(requireContext(),
-                                    "No se encontraron datos para las opciones seleccionadas",
-                                    Toast.LENGTH_LONG).show()
-                            }
-                            else -> {
-                                var lineEgresosEntry = egresos.map { egreso -> Entry(egreso.Day.toFloat(), egreso.Value) }
-                                var lineIngresosEntry = ingresos.map { ingreso -> Entry(ingreso.Day.toFloat(), ingreso.Value) }
-                                val linedataset1 = LineDataSet(lineIngresosEntry, "Ingresos")
-                                linedataset1.color = resources.getColor(R.color.green)
-                                linedataset1.setDrawCircles(true)
-                                linedataset1.setCircleColor(resources.getColor(R.color.green))
-                                linedataset1.circleRadius = 5f
-                                linedataset1.setDrawFilled(true)
-                                linedataset1.fillColor = resources.getColor(R.color.green)
-                                linedataset1.fillAlpha = 60
-                                val linedataset2 = LineDataSet(lineEgresosEntry, "Egresos")
-                                linedataset2.color = resources.getColor(R.color.red)
-                                linedataset2.setDrawCircles(true)
-                                linedataset2.setCircleColor(resources.getColor(R.color.red))
-                                linedataset2.circleRadius = 5f
-                                linedataset2.setDrawFilled(true)
-                                linedataset2.fillColor = resources.getColor(R.color.red)
-                                linedataset2.fillAlpha = 60
-                                val data = LineData(linedataset1, linedataset2)
-                                binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
-                                binding.lineChart.data = data
-                                binding.lineChart.animateXY(1500, 1500)
-                            }
-                        }
-                    })
-                })
-            }
-        }*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
 
+    private fun processGraph(input: List<ResultadoReporte>, inputType: String)  {
+        when {
+            input.isEmpty() -> {
+                Toast.makeText(requireContext(),
+                    "No se encontraron datos para las opciones seleccionadas",
+                    Toast.LENGTH_LONG).show()
+            }
+            else -> {
+
+                var shiftedDataset = shiftDataset(input)
+
+                var pesifiedMap = mutableMapOf<Long, Float>()
+                shiftedDataset.forEach { ingreso ->
+                    val day = pesifiedMap[ingreso.Day]
+                    val pesifiedAmount = if (ingreso.Moneda == Moneda.PESO.valor) ingreso.Value else ingreso.Value
+                    if (day == null){
+                        pesifiedMap[ingreso.Day] = pesifiedAmount
+                    }else{
+                        val previousValue = pesifiedMap.getOrDefault(ingreso.Day, 0f)
+                        pesifiedMap[ingreso.Day] = previousValue + pesifiedAmount
+                    }
+                }
+
+                val lineIngresosEntry = pesifiedMap.map { entry -> Entry(entry.key.toFloat(), entry.value) }
+                val linedataset1 = LineDataSet(lineIngresosEntry, inputType)
+                linedataset1.color = resources.getColor(R.color.green)
+                linedataset1.setDrawCircles(true)
+                linedataset1.setCircleColor(resources.getColor(R.color.green))
+                linedataset1.circleRadius = 5f
+                linedataset1.setDrawFilled(true)
+                linedataset1.fillColor = resources.getColor(R.color.green)
+                linedataset1.fillAlpha = 60
+                linedataset1.valueTextSize = 0f
+
+                val data = LineData(linedataset1)
+                binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
+                binding.lineChart.data = data
+                binding.lineChart.animateXY(1500, 1500)
+                binding.lineChart.description.text = ""
+            }
+        }
     }
 
     private fun shiftDataset(result: List<ResultadoReporte>): List<ResultadoReporte> {
