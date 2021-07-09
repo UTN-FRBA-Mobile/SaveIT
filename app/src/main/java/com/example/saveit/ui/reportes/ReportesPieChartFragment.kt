@@ -107,11 +107,19 @@ class ReportesPieChartFragment: Fragment()  {
         }
 
         var categoriasPieEntry = ArrayList<PieEntry>()
+        var totalGastos:Double = 0.0
+
         for(i in 0..categorias.size-1) {
             if(total_x_categoria[i] > 0){
-                categoriasPieEntry.add(PieEntry(total_x_categoria[i],CategoriasGasto.getByValor(i+1)))
+                totalGastos = totalGastos + total_x_categoria[i]
             }
+        }
 
+
+        for(i in 0..categorias.size-1) {
+            if(total_x_categoria[i] > 0){
+                categoriasPieEntry.add(PieEntry(total_x_categoria[i]*100/totalGastos.toFloat(),CategoriasGasto.getByValor(i+1)))
+            }
         }
 
         var pieDataSet = PieDataSet(categoriasPieEntry, "Categorias")
