@@ -18,17 +18,17 @@ class MovimientoRepository(private val movimientoDao: MovimientoDao) {
 
     fun readGastos(desde: Long, hasta: Long): LiveData<Double> = movimientoDao.readGastos(desde, hasta)
 
-    fun readSpecificTimeDataCategoryPayment(moneda: Int, categoria: Int, medioPago: Int, tipoMovimiento: Int, desde: String):
-            LiveData<List<ResultadoReporte>> = movimientoDao.readSpecificTimeDataCategoryPayment(moneda, categoria, medioPago, tipoMovimiento, desde)
+    fun readSpecificTimeDataCategoryPayment(categoria: Int, medioPago: Int, tipoMovimiento: Int, desde: String):
+            LiveData<List<ResultadoReporte>> = movimientoDao.readSpecificTimeDataCategoryPayment(categoria, medioPago, tipoMovimiento, desde)
 
-    fun readSpecificTimeDataCategoryAll(moneda: Int, medioPago: Int, tipoMovimiento: Int, desde: String):
-            LiveData<List<ResultadoReporte>> = movimientoDao.readSpecificTimeDataCategoryAll(moneda, medioPago, tipoMovimiento, desde)
+    fun readSpecificTimeDataCategoryAll(medioPago: Int, tipoMovimiento: Int, desde: String):
+            LiveData<List<ResultadoReporte>> = movimientoDao.readSpecificTimeDataCategoryAll(medioPago, tipoMovimiento, desde)
 
-    fun readSpecificTimeDataPaymentAll(moneda: Int, categoria: Int, tipoMovimiento: Int, desde: String):
-            LiveData<List<ResultadoReporte>> = movimientoDao.readSpecificTimeDataPaymentAll(moneda, categoria, tipoMovimiento, desde)
+    fun readSpecificTimeDataPaymentAll(categoria: Int, tipoMovimiento: Int, desde: String):
+            LiveData<List<ResultadoReporte>> = movimientoDao.readSpecificTimeDataPaymentAll(categoria, tipoMovimiento, desde)
 
-    fun readSpecificTimeData(moneda: Int, tipoMovimiento: Int, desde: String):
-            LiveData<List<ResultadoReporte>> = movimientoDao.readSpecificTimeData(moneda, tipoMovimiento, desde)
+    fun readSpecificTimeData(tipoMovimiento: Int, desde: String):
+            LiveData<List<ResultadoReporte>> = movimientoDao.readSpecificTimeData(tipoMovimiento, desde)
 
     suspend fun addMovimiento(movimiento: Movimiento) {
         movimientoDao.addMovimiento(movimiento)

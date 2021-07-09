@@ -22,23 +22,23 @@ class ReporteFechaViewModel(application: Application): AndroidViewModel(applicat
         return repository.readAllData
     }
 
-    fun readSpecificTimeDataCategoryPayment(moneda: Int, categoria: Int, medioPago: Int, tipoMovimiento: Int, desde: String):
+    fun readSpecificTimeDataCategoryPayment(categoria: Int, medioPago: Int, tipoMovimiento: Int, desde: String):
             LiveData<List<ResultadoReporte>> {
-        return repository.readSpecificTimeDataCategoryPayment(moneda, categoria, medioPago, tipoMovimiento, desde)
+        return repository.readSpecificTimeDataCategoryPayment(categoria, medioPago, tipoMovimiento, desde)
     }
 
-    fun readSpecificTimeDataCategoryAll(moneda: Int, medioPago: Int, tipoMovimiento: Int, desde: String):
+    fun readSpecificTimeDataCategoryAll(medioPago: Int, tipoMovimiento: Int, desde: String):
             LiveData<List<ResultadoReporte>> {
-        return repository.readSpecificTimeDataCategoryAll(moneda, medioPago, tipoMovimiento, desde)
+        return repository.readSpecificTimeDataCategoryAll(medioPago, tipoMovimiento, desde)
     }
 
-    fun readSpecificTimeDataPaymentAll(moneda: Int, categoria: Int, tipoMovimiento: Int, desde: String):
+    fun readSpecificTimeDataPaymentAll(categoria: Int, tipoMovimiento: Int, desde: String):
             LiveData<List<ResultadoReporte>> {
-        return repository.readSpecificTimeDataPaymentAll(moneda, categoria, tipoMovimiento, desde)
+        return repository.readSpecificTimeDataPaymentAll(categoria, tipoMovimiento, desde)
     }
 
-    fun readSpecificTimeData(moneda: Int, tipoMovimiento: Int, desde: String):
+    fun readSpecificTimeData(tipoMovimiento: Int, desde: String):
             LiveData<List<ResultadoReporte>> {
-        return repository.readSpecificTimeData(moneda, tipoMovimiento, desde)
+        return repository.readSpecificTimeData(tipoMovimiento, desde)
     }
 }

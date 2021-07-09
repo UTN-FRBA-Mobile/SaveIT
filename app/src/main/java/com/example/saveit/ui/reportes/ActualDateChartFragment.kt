@@ -42,30 +42,36 @@ class ActualDateChartFragment: Fragment()  {
         val tipoMovimiento = seleccion[0]
         val medioPagoSelec = seleccion[1]
         val categoriaSelec = seleccion[2]
-        val periodoSelec = seleccion[3]
-        val periodoDeTiempo = PeriodosDeTiempo.getByDescripcion(periodoSelec)
+        val periodoDeTiempo = PeriodosDeTiempo.getByDescripcion(seleccion[3])
 
-        /*//even uglier way of getting the data
+        //even uglier way of getting the data
         when {
-            categoriaSelec.equals("Todos")
-            and medioPagoSelec.equals("Todos") -> {
-                reporteFechaViewModel.readSpecificTimeData(moneda.valor,
-                    TipoMovimiento.EGRESO.valor,
-                    periodoDeTiempo.query_str).observe(viewLifecycleOwner, { egresos ->
-
-                    reporteFechaViewModel.readSpecificTimeData(moneda.valor,
-                        TipoMovimiento.INGRESO.valor,
+            tipoMovimiento.equals(TipoMovimiento.INGRESO.descripcion) -> {
+                when {(categoriaSelec == "Todas") and (medioPagoSelec == "Todos") -> {
+                    reporteFechaViewModel.readSpecificTimeData(TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
 
                         when {
-                            egresos.isEmpty() and ingresos.isEmpty() -> {
+                            ingresos.isEmpty() -> {
                                 Toast.makeText(requireContext(),
                                     "No se encontraron datos para las opciones seleccionadas",
                                     Toast.LENGTH_LONG).show()
                             }
                             else -> {
-                                val lineEgresosEntry = egresos.map { egreso -> Entry(egreso.Day.toFloat(), egreso.Value) }
-                                val lineIngresosEntry = ingresos.map { ingreso -> Entry(ingreso.Day.toFloat(), ingreso.Value) }
+
+                                var pesifiedMap = mutableMapOf<Long, Float>()
+                                ingresos.forEach { ingreso ->
+                                    val day = pesifiedMap[ingreso.Day]
+                                    val pesifiedAmount = if (ingreso.Moneda == Moneda.PESO.valor) ingreso.Value else ingreso.Value
+                                    if (day == null){
+                                        pesifiedMap[ingreso.Day] = pesifiedAmount
+                                    }else{
+                                        val previousValue = pesifiedMap.getOrDefault(ingreso.Day, 0f)
+                                        pesifiedMap[ingreso.Day] = previousValue + pesifiedAmount
+                                    }
+                                }
+
+                                val lineIngresosEntry = pesifiedMap.map { entry -> Entry(entry.key.toFloat(), entry.value) }
                                 val linedataset1 = LineDataSet(lineIngresosEntry, "Ingresos")
                                 linedataset1.color = resources.getColor(R.color.green)
                                 linedataset1.setDrawCircles(true)
@@ -74,34 +80,85 @@ class ActualDateChartFragment: Fragment()  {
                                 linedataset1.setDrawFilled(true)
                                 linedataset1.fillColor = resources.getColor(R.color.green)
                                 linedataset1.fillAlpha = 60
-                                val linedataset2 = LineDataSet(lineEgresosEntry, "Egresos")
-                                linedataset2.color = resources.getColor(R.color.red)
-                                linedataset2.setDrawCircles(true)
-                                linedataset2.setCircleColor(resources.getColor(R.color.red))
-                                linedataset2.circleRadius = 5f
-                                linedataset2.setDrawFilled(true)
-                                linedataset2.fillColor = resources.getColor(R.color.red)
-                                linedataset2.fillAlpha = 60
-                                val data = LineData(linedataset1, linedataset2)
+                                linedataset1.valueTextSize = 0f
+
+                                val data = LineData(linedataset1)
                                 binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
                                 binding.lineChart.data = data
                                 binding.lineChart.animateXY(1500, 1500)
+                                binding.lineChart.description.text = ""
                             }
                         }
                     })
+                }}
+            }
+
+            tipoMovimiento.equals(TipoMovimiento.EGRESO.descripcion) -> {
+                when {(categoriaSelec == "Todas") and (medioPagoSelec == "Todos") -> {
+                    reporteFechaViewModel.readSpecificTimeData(TipoMovimiento.EGRESO.valor,
+                        periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
+
+                        when {
+                            egresos.isEmpty() -> {
+                                Toast.makeText(requireContext(),
+                                    "No se encontraron datos para las opciones seleccionadas",
+                                    Toast.LENGTH_LONG).show()
+                            }
+                            else -> {
+
+                                var pesifiedMap = mutableMapOf<Long, Float>()
+                                egresos.forEach { egreso ->
+                                    val day = pesifiedMap[egreso.Day]
+                                    val pesifiedAmount = if (egreso.Moneda == Moneda.PESO.valor) egreso.Value else egreso.Value
+                                    if (day == null){
+                                        pesifiedMap[egreso.Day] = pesifiedAmount
+                                    }else{
+                                        val previousValue = pesifiedMap.getOrDefault(egreso.Day, 0f)
+                                        pesifiedMap[egreso.Day] = previousValue + pesifiedAmount
+                                    }
+                                }
+
+                                val lineEgresosEntry = pesifiedMap.map { entry -> Entry(entry.key.toFloat(), entry.value) }
+                                val linedataset1 = LineDataSet(lineEgresosEntry, "Egresos")
+
+                                linedataset1.color = resources.getColor(R.color.green)
+                                linedataset1.setDrawCircles(true)
+                                linedataset1.setCircleColor(resources.getColor(R.color.green))
+                                linedataset1.circleRadius = 5f
+                                linedataset1.setDrawFilled(true)
+                                linedataset1.fillColor = resources.getColor(R.color.green)
+                                linedataset1.fillAlpha = 60
+
+                                val data = LineData(linedataset1)
+                                binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
+                                binding.lineChart.data = data
+                                binding.lineChart.animateXY(1500, 1500)
+                                binding.lineChart.description.text = ""
+                            }
+                        }
+                    })
+                }}
+            }
+        }
+
+        /*when {
+            categoriaSelec.equals("Todos")
+            and medioPagoSelec.equals("Todos") -> {
+                reporteFechaViewModel.readSpecificTimeData(TipoMovimiento.EGRESO.valor,
+                    periodoDeTiempo.query_str).observe(viewLifecycleOwner, { egresos ->
+
+
                 })
             }
 
             categoriaSelec.equals("Todos")
             and !medioPagoSelec.equals("Todos") -> {
                 var medioDePago = MedioPago.getByDescripcion(medioPagoSelec)
-                reporteFechaViewModel.readSpecificTimeDataCategoryAll(moneda.valor,
-                    medioDePago.valor,
+                reporteFechaViewModel.readSpecificTimeDataCategoryAll(medioDePago.valor,
                     TipoMovimiento.EGRESO.valor,
                     periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
 
-                    reporteFechaViewModel.readSpecificTimeDataCategoryAll(moneda.valor,
-                        medioDePago.valor,
+                    reporteFechaViewModel.readSpecificTimeDataCategoryAll(medioDePago.valor,
                         TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
 
@@ -143,13 +200,11 @@ class ActualDateChartFragment: Fragment()  {
             !categoriaSelec.equals("Todos")
             and medioPagoSelec.equals("Todos") -> {
                 var categoria = Categoria.getByDescripcion(categoriaSelec)
-                reporteFechaViewModel.readSpecificTimeDataPaymentAll(moneda.valor,
-                    categoria.valor,
+                reporteFechaViewModel.readSpecificTimeDataPaymentAll(categoria.valor,
                     TipoMovimiento.EGRESO.valor,
                     periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
 
-                    reporteFechaViewModel.readSpecificTimeDataPaymentAll(moneda.valor,
-                        categoria.valor,
+                    reporteFechaViewModel.readSpecificTimeDataPaymentAll(categoria.valor,
                         TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
 
@@ -191,14 +246,12 @@ class ActualDateChartFragment: Fragment()  {
             else -> {
                 var categoria = Categoria.getByDescripcion(categoriaSelec)
                 var medioDePago = MedioPago.getByDescripcion(medioPagoSelec)
-                reporteFechaViewModel.readSpecificTimeDataCategoryPayment(moneda.valor,
-                    categoria.valor,
+                reporteFechaViewModel.readSpecificTimeDataCategoryPayment(categoria.valor,
                     medioDePago.valor,
                     TipoMovimiento.EGRESO.valor,
                     periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
 
-                    reporteFechaViewModel.readSpecificTimeDataCategoryPayment(moneda.valor,
-                        categoria.valor,
+                    reporteFechaViewModel.readSpecificTimeDataCategoryPayment(categoria.valor,
                         medioDePago.valor,
                         TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->

@@ -31,55 +31,47 @@ interface MovimientoDao {
     @Query("SELECT SUM(monto) FROM movimiento_table WHERE tipoMovimiento = 1 AND fecha BETWEEN :desde AND :hasta")
     fun readGastos(desde: Long, hasta: Long): LiveData<Double>
 
-    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value " +
+    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda " +
             "FROM movimiento_table " +
-            "WHERE moneda = :moneda " +
-            "AND categoria = :categoria " +
+            "WHERE categoria = :categoria " +
             "AND medioDePago = :medioDePago " +
             "AND tipoMovimiento = :tipoMovimiento " +
             "AND fecha >= strftime('%s', DATETIME('NOW', :desde)) * 1000 " +
-            "GROUP BY day " +
-            "ORDER BY day asc")
-    fun readSpecificTimeDataCategoryPayment(moneda: Int,
-                                            categoria: Int,
+            "GROUP BY Day, Moneda " +
+            "ORDER BY Day asc")
+    fun readSpecificTimeDataCategoryPayment(categoria: Int,
                                             medioDePago: Int,
                                             tipoMovimiento: Int,
                                             desde: String): LiveData<List<ResultadoReporte>>
 
-    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value " +
+    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda " +
             "FROM movimiento_table " +
-            "WHERE moneda = :moneda " +
-            "AND medioDePago = :medioDePago " +
+            "WHERE medioDePago = :medioDePago " +
             "AND tipoMovimiento = :tipoMovimiento " +
             "AND fecha >= strftime('%s', DATETIME('NOW', :desde)) * 1000 " +
-            "GROUP BY day " +
-            "ORDER BY day asc")
-    fun readSpecificTimeDataCategoryAll(moneda: Int,
-                                        medioDePago: Int,
+            "GROUP BY Day, Moneda " +
+            "ORDER BY Day asc")
+    fun readSpecificTimeDataCategoryAll(medioDePago: Int,
                                         tipoMovimiento: Int,
                                         desde: String): LiveData<List<ResultadoReporte>>
 
-    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value " +
+    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda " +
             "FROM movimiento_table " +
-            "WHERE moneda = :moneda " +
-            "AND categoria = :categoria " +
+            "WHERE categoria = :categoria " +
             "AND tipoMovimiento = :tipoMovimiento " +
             "AND fecha >= strftime('%s', DATETIME('NOW', :desde)) * 1000 " +
-            "GROUP BY day " +
-            "ORDER BY day asc")
-    fun readSpecificTimeDataPaymentAll(moneda: Int,
-                                       categoria: Int,
+            "GROUP BY Day, Moneda " +
+            "ORDER BY Day asc")
+    fun readSpecificTimeDataPaymentAll(categoria: Int,
                                        tipoMovimiento: Int,
                                        desde: String): LiveData<List<ResultadoReporte>>
 
-    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value " +
+    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda " +
             "FROM movimiento_table " +
-            "WHERE moneda = :moneda " +
-            "AND tipoMovimiento = :tipoMovimiento " +
+            "WHERE tipoMovimiento = :tipoMovimiento " +
             "AND fecha >= strftime('%s', DATETIME('NOW', :desde)) * 1000 " +
-            "GROUP BY day " +
-            "ORDER BY day asc")
-    fun readSpecificTimeData(moneda: Int,
-                             tipoMovimiento: Int,
+            "GROUP BY Day, Moneda " +
+            "ORDER BY Day asc")
+    fun readSpecificTimeData(tipoMovimiento: Int,
                              desde: String): LiveData<List<ResultadoReporte>>
 }
