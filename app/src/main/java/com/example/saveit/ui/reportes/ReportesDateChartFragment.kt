@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
@@ -12,6 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.saveit.R
 import com.example.saveit.data.*
 import com.example.saveit.databinding.ReportesDateChartFragmentBinding
+import com.example.saveit.data.CategoriasIngreso
+import com.example.saveit.data.CategoriasGasto
 
 class ReportesDateChartFragment: Fragment()  {
     private var _binding: ReportesDateChartFragmentBinding? = null
@@ -27,31 +30,77 @@ class ReportesDateChartFragment: Fragment()  {
         val adapterTipoDeMovimiento = ArrayAdapter(requireContext(), R.layout.lista_items, itemsTipoDeMovimiento)
         (binding.tipoMovimiento.editText as? AutoCompleteTextView)?.setAdapter(adapterTipoDeMovimiento)
 
+        var adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, listOf<String>())
+        (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
+        binding.categoria.isEnabled = false
+
         var itemsMedioPago = MedioPago.values().map { it.descripcion }
         itemsMedioPago = itemsMedioPago.toMutableList()
         itemsMedioPago.add(0, "Todos")
         val adapterMedioPago = ArrayAdapter(requireContext(), R.layout.lista_items, itemsMedioPago)
         (binding.medioDePago.editText as? AutoCompleteTextView)?.setAdapter(adapterMedioPago)
+        binding.medioDePago.isEnabled = false
 
-        var itemsCategorias = Categoria.values().map { it.descripcion }
-        itemsCategorias = itemsCategorias.toMutableList()
-        itemsCategorias.add(0, "Todos")
-        val adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemsCategorias)
-        (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
-
-        val itemsMonedas = Moneda.values().map { it.descripcion }
-        val adapterMonedas = ArrayAdapter(requireContext(), R.layout.lista_items, itemsMonedas)
-        (binding.moneda.editText as? AutoCompleteTextView)?.setAdapter(adapterMonedas)
-
-        val itemsPeriodosDeTiempo = PeriodosDeTiempo.values().map { it.descripcion }
-        val adapterPeriodosDeTiempo = ArrayAdapter(requireContext(), R.layout.lista_items, itemsPeriodosDeTiempo)
+        val adapterPeriodosDeTiempo = ArrayAdapter(requireContext(), R.layout.lista_items, PeriodosDeTiempo.values().map { it.descripcion })
         (binding.periodoDeTiempo.editText as? AutoCompleteTextView)?.setAdapter(adapterPeriodosDeTiempo)
+        binding.periodoDeTiempo.isEnabled = false
 
-        //(binding.tipoMovimiento.editText as? AutoCompleteTextView)?.setText(adapterTipoDeMovimiento.getItem(0).toString(), false)
-        //(binding.medioDePago.editText as? AutoCompleteTextView)?.setText(adapterMedioPago.getItem(0).toString(), false)
-        //(binding.categoria.editText as? AutoCompleteTextView)?.setText(adapterCategoria.getItem(0).toString(), false)
-        //(binding.moneda.editText as? AutoCompleteTextView)?.setText(adapterMonedas.getItem(0).toString(), false)
-        //(binding.periodoDeTiempo.editText as? AutoCompleteTextView)?.setText(adapterPeriodosDeTiempo.getItem(0).toString(), false)
+        (binding.tipoMovimiento.editText as AutoCompleteTextView).onItemClickListener =
+            OnItemClickListener { _, _, position, _ ->
+                val selectedValue: String? = adapterTipoDeMovimiento.getItem(position)
+                if (selectedValue != null) {
+                    if (selectedValue == TipoMovimiento.INGRESO.descripcion) {
+
+                        adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, listOf<String>())
+                        var itemsCategorias = CategoriasIngreso.values().map { it.descripcion }
+                        itemsCategorias = itemsCategorias.toMutableList()
+                        itemsCategorias.add(0, "Todas")
+                        adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemsCategorias)
+                        (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
+                        (binding.categoria.editText as? AutoCompleteTextView)?.setText("")
+                        binding.categoria.isEnabled = true
+                        binding.medioDePago.isEnabled = false
+                        binding.periodoDeTiempo.isEnabled = false
+
+                    } else if (selectedValue == TipoMovimiento.EGRESO.descripcion) {
+
+                        adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, listOf<String>())
+                        var itemsCategorias = CategoriasGasto.values().map { it.descripcion }
+                        itemsCategorias = itemsCategorias.toMutableList()
+                        itemsCategorias.add(0, "Todas")
+                        adapterCategoria = ArrayAdapter(requireContext(), R.layout.lista_items, itemsCategorias)
+                        (binding.categoria.editText as? AutoCompleteTextView)?.setAdapter(adapterCategoria)
+                        (binding.categoria.editText as? AutoCompleteTextView)?.setText("")
+                        binding.categoria.isEnabled = true
+                        binding.medioDePago.isEnabled = false
+                        binding.periodoDeTiempo.isEnabled = false
+
+                    }
+                }
+            }
+
+        (binding.categoria.editText as AutoCompleteTextView).onItemClickListener =
+            OnItemClickListener { _, _, position, _ ->
+                val selectedValue: String? = adapterCategoria.getItem(position)
+                if (selectedValue != null) {
+
+                    (binding.medioDePago.editText as? AutoCompleteTextView)?.setText("")
+                    binding.medioDePago.isEnabled = true
+                    binding.periodoDeTiempo.isEnabled = false
+
+                }
+            }
+
+        (binding.medioDePago.editText as AutoCompleteTextView).onItemClickListener =
+            OnItemClickListener { _, _, position, _ ->
+                val selectedValue: String? = adapterMedioPago.getItem(position)
+                if (selectedValue != null) {
+
+                    (binding.periodoDeTiempo.editText as? AutoCompleteTextView)?.setText("")
+                    binding.periodoDeTiempo.isEnabled = true
+
+                }
+            }
 
         binding.botonGenerarReporte.setOnClickListener {
             openReport()
@@ -68,21 +117,21 @@ class ReportesDateChartFragment: Fragment()  {
         (binding.tipoMovimiento.editText as? AutoCompleteTextView)?.setText("")
         (binding.medioDePago.editText as? AutoCompleteTextView)?.setText("")
         (binding.categoria.editText as? AutoCompleteTextView)?.setText("")
-        (binding.moneda.editText as? AutoCompleteTextView)?.setText("")
         (binding.periodoDeTiempo.editText as? AutoCompleteTextView)?.setText("")
+        binding.medioDePago.isEnabled = false
+        binding.categoria.isEnabled = false
+        binding.periodoDeTiempo.isEnabled = false
     }
 
     private fun openReport() {
         val tipoMovimiento = (binding.tipoMovimiento.editText as? AutoCompleteTextView)?.text
         val medioPagoSelec = (binding.medioDePago.editText as? AutoCompleteTextView)?.text
         val categoriaSelec = (binding.categoria.editText as? AutoCompleteTextView)?.text
-        val monedaSelec = (binding.moneda.editText as? AutoCompleteTextView)?.text
         val periodoSelec = (binding.periodoDeTiempo.editText as? AutoCompleteTextView)?.text
 
         if (tipoMovimiento.isNullOrEmpty()
             || medioPagoSelec.isNullOrEmpty()
             || categoriaSelec.isNullOrEmpty()
-            || monedaSelec.isNullOrEmpty()
             || periodoSelec.isNullOrEmpty()){
             Toast.makeText(requireContext(), "Por favor, selecciona todos los campos", Toast.LENGTH_LONG).show()
         }
@@ -90,12 +139,8 @@ class ReportesDateChartFragment: Fragment()  {
             val seleccion = arrayListOf(tipoMovimiento.toString(),
                 medioPagoSelec.toString(),
                 categoriaSelec.toString(),
-                monedaSelec.toString(),
                 periodoSelec.toString())
 
-            //var actualdatechartfragment = ActualDateChartFragment.newInstance(seleccion)
-            //(activity as NavegacionInterface).showFragment(actualdatechartfragment, true)
-            //findNavController().navigate(R.id.action_reportesDateChartFragment_to_actualDateChartFragment)
             val action = ReportesDateChartFragmentDirections.actionReportesDateChartFragmentToActualDateChartFragment(seleccion.toTypedArray())
             findNavController().navigate(action)
         }

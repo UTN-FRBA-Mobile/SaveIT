@@ -88,22 +88,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/moneda"
-                    android:layout_width="fill_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/dropdown_reportes_por_fecha_moneda"
-                    app:errorEnabled="true"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
-
-                    <AutoCompleteTextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/periodo_de_tiempo"
                     android:layout_width="fill_parent"
                     android:layout_weight="1"

@@ -42,12 +42,10 @@ class ActualDateChartFragment: Fragment()  {
         val tipoMovimiento = seleccion[0]
         val medioPagoSelec = seleccion[1]
         val categoriaSelec = seleccion[2]
-        val monedaSelec = seleccion[3]
-        val periodoSelec = seleccion[4]
-        val moneda = Moneda.getByDescripcion(monedaSelec)
+        val periodoSelec = seleccion[3]
         val periodoDeTiempo = PeriodosDeTiempo.getByDescripcion(periodoSelec)
 
-        //even uglier way of getting the data
+        /*//even uglier way of getting the data
         when {
             categoriaSelec.equals("Todos")
             and medioPagoSelec.equals("Todos") -> {
@@ -239,7 +237,7 @@ class ActualDateChartFragment: Fragment()  {
                     })
                 })
             }
-        }
+        }*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
