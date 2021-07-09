@@ -7,17 +7,10 @@ enum class CategoriasGasto(val valor: Int, val descripcion: String)  {
     COMIDA(4, "Comida"),
     DELIVERY(5, "Delivery"),
     EDUCACION(6, "Educacion"),
-    ENTRETENIMIENTO(7, "Entretenimiento"),
-    GASOLINA(8, "Gasolina"),
-    MASCOTA(9, "Mascota"),
-    MERCADERIA(10, "Mercadera"),
-    PERSONALES(11, "Personales"),
-    RESTAURANTE(12, "Restaurante"),
-    ROPA(13, "Ropa"),
-    SALUD(14, "Salud"),
-    SERVICIOS(15, "Servicios"),
-    TRANSPORTE(16, "Transporte"),
-    OTROS(17, "Otros");
+    GASOLINA(7, "Gasolina"),
+    PERSONALES(8, "Personales"),
+    SERVICIOS(9, "Servicios"),
+    OTROS(10, "Otros");
 
     companion object {
         fun getByValor(valor: Int): String {

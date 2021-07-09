@@ -24,6 +24,9 @@ import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 import kotlin.collections.ArrayList
 import androidx.lifecycle.Observer
+import com.github.mikephil.charting.charts.RadarChart
+import com.github.mikephil.charting.components.XAxis
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 
 
 class ReportesBarChartFragment : Fragment() {
@@ -90,37 +93,6 @@ class ReportesBarChartFragment : Fragment() {
     }
 
 
-    private fun cargarGrafico(){
-
-        var barChart = binding.barChart
-
-        var categorias1 = ArrayList<BarEntry>()
-        categorias1.add(BarEntry(1f,100f))
-        var barDataSet1 = BarDataSet(categorias1, "Delivery")
-        barDataSet1.setColors(Color.rgb(193, 37, 82), Color.rgb(255, 102, 0), Color.rgb(245, 199, 0),
-            Color.rgb(106, 150, 31), Color.rgb(179, 100, 53))
-
-        var categorias2 = ArrayList<BarEntry>()
-        categorias2.add(BarEntry(2f,200f))
-        var barDataSet2 = BarDataSet(categorias2, "Servicios")
-        barDataSet2.setColors(Color.rgb(255, 255, 0))
-
-
-        var categorias3 = ArrayList<BarEntry>()
-        categorias3.add(BarEntry(3f,300f))
-        var barDataSet3 = BarDataSet(categorias3, "Diversion")
-        barDataSet3.setColors(Color.rgb(106, 150, 31))
-
-        var barData = BarData()
-        barData.addDataSet(barDataSet1)
-
-        barChart.setData(barData)
-        barChart.animateXY(1500, 1500)
-
-        binding.barChart.notifyDataSetChanged()
-        binding.barChart.invalidate()
-
-    }
 
     private fun cleanForm() {
         (binding.seleccionAnioBarChart.editText as? AutoCompleteTextView)?.setText("")
@@ -129,47 +101,99 @@ class ReportesBarChartFragment : Fragment() {
 
 
     private fun cargarGrafico(movimientos : List<Movimiento> ) {
-        var barChart = binding.barChart
 
-        val categorias = CategoriasGasto.values()
-        var cero = 0
-        var total_x_categoria =  FloatArray(CategoriasGasto.values().size)
+      var barChart = binding.barChart
 
-        for(movimiento in movimientos){
-            total_x_categoria[movimiento.categoria-1] = (total_x_categoria[movimiento.categoria-1] + movimiento.monto).toFloat()
-        }
+          var montos = ArrayList<BarEntry>()
 
-        var barData = BarData()
-
-        val colores = arrayOf(
-            Color.rgb(23, 83, 99),
-            Color.rgb(23, 45, 99),
-            Color.rgb(77, 23, 99),
-            Color.rgb(99, 23, 45),
-            Color.rgb(45, 99, 23),
-            Color.rgb(196, 76, 48),
-            Color.rgb(150, 48, 196),
-            Color.rgb(196, 113, 48),
-            Color.rgb(168, 196, 48))
+          val categorias = CategoriasGasto.values()
+          var total_x_categoria =  FloatArray(CategoriasGasto.values().size)
+          for(movimiento in movimientos){
+              total_x_categoria[movimiento.categoria-1] = (total_x_categoria[movimiento.categoria-1] + movimiento.monto).toFloat()
+          }
 
 
-        for(i in 0..categorias.size-1) {
-            if(total_x_categoria[i] > 0){
-                var categorias = ArrayList<BarEntry>()
-                categorias.add(BarEntry(i.toFloat(),total_x_categoria[i]))
-                var barDataSet = BarDataSet(categorias, CategoriasGasto.getByValor(i+1))
-                barDataSet.setColors(colores[i])
-                barData.addDataSet(barDataSet)
-            }
-        }
 
-        //barData.addDataSet()
-        barChart.setData(barData)
-        barChart.animateXY(1500, 1500)
+          for(i in 1..categorias.size) {
+                  montos.add(BarEntry(i.toFloat(),total_x_categoria[i-1]))
+          }
 
-        binding.barChart.notifyDataSetChanged()
-        binding.barChart.invalidate()
+          var barDataSet = BarDataSet(montos, "Categorias")
+          barDataSet.setColors(
+              Color.rgb(255, 23, 68),//Ahorro
+              Color.rgb(255, 214, 0),//Alquiler
+              Color.rgb(213, 0, 249),//Casa
+              Color.rgb(101, 31, 255),//Comida
+              Color.rgb(48, 79, 254),//Delivery
+              Color.rgb(245, 127, 23),//Educacion
+              Color.rgb(41, 182, 246),//Gasolina
+              Color.rgb(0, 131, 14),//Personales
+              Color.rgb(38, 166, 154)//Servicios
+              ,Color.rgb(0, 77, 64)//Otros
+          )
 
+          var barData = BarData()
+          barData.addDataSet(barDataSet)
+          barChart.setData(barData)
+          barChart.animateXY(1500, 1500)
+
+          binding.barChart.notifyDataSetChanged()
+          binding.barChart.invalidate()
+
+
+    /*
+
+
+               var barChart = binding.barChart
+
+               val categorias = CategoriasGasto.values()
+               var cero = 0
+               var total_x_categoria =  FloatArray(CategoriasGasto.values().size)
+
+               for(movimiento in movimientos){
+                   total_x_categoria[movimiento.categoria-1] = (total_x_categoria[movimiento.categoria-1] + movimiento.monto).toFloat()
+               }
+
+               var barData = BarData()
+
+               val colores = arrayOf(
+                   Color.rgb(255, 23, 68),
+                   Color.rgb(245, 0, 87),
+                   Color.rgb(213, 0, 249),
+                   Color.rgb(101, 31, 255),
+                   Color.rgb(48, 79, 254),
+                   Color.rgb(13, 71, 161),
+                   Color.rgb(41, 182, 246),
+                   Color.rgb(0, 131, 143)
+                   ,Color.rgb(38, 166, 154)
+                   ,Color.rgb(0, 77, 64)
+                   ,Color.rgb(27, 94, 32)
+                   ,Color.rgb(118, 255, 3)
+                   ,Color.rgb(238, 255, 65)
+                   ,Color.rgb(245, 127, 23)
+                   ,Color.rgb(255, 214, 0)
+                   ,Color.rgb(78, 52, 46)
+                   ,Color.rgb(120, 144, 156)
+               )
+
+
+               for(i in 0..categorias.size-1) {
+                   if(total_x_categoria[i] > 0){
+                       var categorias = ArrayList<BarEntry>()
+                       categorias.add(BarEntry(i.toFloat(),total_x_categoria[i]))
+                       var barDataSet = BarDataSet(categorias, CategoriasGasto.getByValor(i+1))
+                       barDataSet.setColors(colores[i])
+                       barData.addDataSet(barDataSet)
+                   }
+               }
+
+               //barData.addDataSet()
+               barChart.setData(barData)
+               barChart.animateXY(1500, 1500)
+
+               binding.barChart.notifyDataSetChanged()
+               binding.barChart.invalidate()
+         */
     }
 
 

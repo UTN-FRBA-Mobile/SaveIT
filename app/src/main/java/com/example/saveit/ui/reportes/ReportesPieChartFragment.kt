@@ -116,45 +116,18 @@ class ReportesPieChartFragment: Fragment()  {
 
         var pieDataSet = PieDataSet(categoriasPieEntry, "Categorias")
         pieDataSet.setColors(
+            Color.rgb(255, 23, 68),//Ahorro
+            Color.rgb(255, 214, 0),//Alquiler
+            Color.rgb(213, 0, 249),//Casa
+            Color.rgb(101, 31, 255),//Comida
+            Color.rgb(48, 79, 254),//Delivery
+            Color.rgb(245, 127, 23),//Educacion
+            Color.rgb(41, 182, 246),//Gasolina
+            Color.rgb(0, 131, 14),//Personales
+            Color.rgb(38, 166, 154)//Servicios
+            ,Color.rgb(0, 77, 64)//Otros
+        )
 
-            Color.rgb(196, 76, 48),
-            Color.rgb(150, 48, 196),
-            Color.rgb(196, 113, 48),
-            Color.rgb(168, 196, 48),
-            Color.rgb(23, 83, 99),
-            Color.rgb(23, 45, 99),
-            Color.rgb(77, 23, 99),
-            Color.rgb(99, 23, 45),
-            Color.rgb(45, 99, 23))
-
-        pieDataSet.setValueTextSize(16F)
-
-        pieDataSet.setValueTextColors(listOf(Color.BLACK))
-
-        var pieData = PieData(pieDataSet)
-
-        pieChart.setData(pieData)
-        pieChart.setCenterText("Categorias")
-        pieChart.animateXY(1500, 1500)
-
-        binding.pieChart.notifyDataSetChanged()
-        binding.pieChart.invalidate()
-
-    }
-
-    private fun cargarGrafico(){
-        var pieChart = binding.pieChart
-
-        var categorias = ArrayList<PieEntry>()
-
-        categorias.add(PieEntry(2.0f,"Servicios"))
-        categorias.add(PieEntry(3.0f,"Comida"))
-        categorias.add(PieEntry(5.0f,"Alquiler"))
-
-        var pieDataSet = PieDataSet(categorias, "Categorias")
-        pieDataSet.setColors(
-            Color.rgb(193, 37, 82), Color.rgb(255, 102, 0), Color.rgb(245, 199, 0),
-            Color.rgb(106, 150, 31), Color.rgb(179, 100, 53))
 
         pieDataSet.setValueTextSize(16F)
 
@@ -234,6 +207,8 @@ class ReportesPieChartFragment: Fragment()  {
         val itemsSeleccionMeses = Meses.values().map { it.descripcion }
         val adapterSeleccionMeses = ArrayAdapter(requireContext(), R.layout.lista_items, itemsSeleccionMeses)
         (binding.seleccionMesPieChart.editText as? AutoCompleteTextView)?.setAdapter(adapterSeleccionMeses)
+
+
     }
 
 

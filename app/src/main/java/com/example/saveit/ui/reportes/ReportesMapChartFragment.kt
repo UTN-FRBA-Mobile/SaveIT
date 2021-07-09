@@ -16,11 +16,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.loader.app.LoaderManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.saveit.R
+import com.example.saveit.data.CategoriasGasto
 import com.example.saveit.data.Meses
 import com.example.saveit.databinding.ReportesMapChartFragmentBinding
 import com.example.saveit.model.Movimiento
 import com.example.saveit.ui.ahorro.AhorroAdapter
 import com.example.saveit.viewmodel.MovimientoViewModel
+import com.github.mikephil.charting.data.PieEntry
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -96,6 +98,25 @@ class ReportesMapChartFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
+        if (movimientos != null) {
+            for(i in 0..movimientos.size-1) {
+
+                if(!movimientos.get(movimientos.size -1 -i).latitud.equals(0.0)){
+                    val coordinates = LatLng(movimientos.get(movimientos.size -1 -i).latitud, movimientos.get(movimientos.size -1 -i).longitud)
+                    mMap.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(coordinates,18f),
+                        4000,
+                        null
+                    )
+             break
+
+                }
+
+            }
+        }
+
+
+
     }
 
     private fun createMapFragment() {
@@ -107,30 +128,31 @@ class ReportesMapChartFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        val coordinates = LatLng(-34.605810144384535, -58.43575288699898)
+       /* val coordinates = LatLng(-34.605810144384535, -58.43575288699898)
         mMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(coordinates,18f),
             4000,
             null
         )
-
+*/
     }
 
     private fun createMarker(movimiento: Movimiento) {
 
+        if(!movimiento.latitud.equals(0.0)){
+            if(movimiento.tipoMovimiento == 0){
 
-        if(movimiento.tipoMovimiento == 0){
-            val coordinates = LatLng(-34.605810144384535, -58.43575288699898)
-            val marker = MarkerOptions().position(coordinates).title(movimiento.descripcion + " $" + movimiento.monto.toString()).icon(
-                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))//Verde para Ingresos
-                mMap.addMarker(marker)
-        }else{
-            val coordinates = LatLng(-34.60118340633596, -58.432715556780785)
-            val marker = MarkerOptions().position(coordinates).title(movimiento.descripcion + " $" + movimiento.monto.toString()).icon(
-                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))//Rojo para gastos
-                mMap.addMarker(marker)
+                val coordinates = LatLng(movimiento.latitud, movimiento.longitud)
+                val marker = MarkerOptions().position(coordinates).title(movimiento.descripcion + " $" + movimiento.monto.toString()).icon(
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))//Verde para Ingresos
+                    mMap.addMarker(marker)
+            }else{
+                val coordinates = LatLng(movimiento.latitud, movimiento.longitud)
+                val marker = MarkerOptions().position(coordinates).title(movimiento.descripcion + " $" + movimiento.monto.toString()).icon(
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))//Rojo para gastos
+                    mMap.addMarker(marker)
+            }
         }
-
 
 
 
