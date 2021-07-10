@@ -24,6 +24,8 @@ import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 import kotlin.collections.ArrayList
 import androidx.lifecycle.Observer
+import com.example.saveit.data.CategoriasIngreso
+import com.example.saveit.data.TipoMovimiento
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.components.XAxis
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -39,6 +41,16 @@ class ReportesBarChartFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         _binding = ReportesBarChartFragmentBinding.inflate(inflater, container, false)
 
+        var itemsTipoDeMovimiento = TipoMovimiento.values().map { it.descripcion }
+        val adapterTipoDeMovimiento = ArrayAdapter(requireContext(), R.layout.lista_items, itemsTipoDeMovimiento)
+        (binding.tipoMovimientoBarChart.editText as? AutoCompleteTextView)?.setAdapter(adapterTipoDeMovimiento)
+
+
+        var chipsEgresos = binding.barChipsEgresos
+        var chipsIngrsos = binding.barChipsIngresos
+        chipsEgresos.setVisibility(View.INVISIBLE)
+        chipsIngrsos.setVisibility(View.INVISIBLE)
+
         val adapter = ListaMovimientosAdapter()
 
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
@@ -51,31 +63,52 @@ class ReportesBarChartFragment : Fragment() {
         loadYearsAndMonths()
 
         binding.botonGenerarReporte.setOnClickListener {
-            val anio = binding.seleccionAnioBarChart.findViewById<TextInputLayout>(R.id.seleccion_anio_barChart).editText!!.text.toString()
-            val mes = binding.seleccionMesBarChart.findViewById<TextInputLayout>(R.id.seleccion_mes_barChart).editText!!.text.toString()
+            val anio =
+                binding.seleccionAnioBarChart.findViewById<TextInputLayout>(R.id.seleccion_anio_barChart).editText!!.text.toString()
+            val mes =
+                binding.seleccionMesBarChart.findViewById<TextInputLayout>(R.id.seleccion_mes_barChart).editText!!.text.toString()
+            val tipoMov =
+                binding.tipoMovimientoBarChart.findViewById<TextInputLayout>(R.id.tipoMovimientoBarChart).editText!!.text.toString()
 
-            if (anio != "") {
-                var desde: Long
-                var hasta: Long
+            if (tipoMov != "") {
+                if (anio != "") {
+                    var desde: Long
+                    var hasta: Long
 
-                if (mes != "") {
-                    desde = getFirstDayOfMonth(Integer.parseInt(anio), Meses.getByDescripcion(mes))
-                    hasta = getLastDayOfMonth(Integer.parseInt(anio), Meses.getByDescripcion(mes))
-                }
-                else {
-                    desde = getFirstDayOfMonth(Integer.parseInt(anio), Meses.getByDescripcion("Enero"))
-                    hasta = getLastDayOfMonth(Integer.parseInt(anio), Meses.getByDescripcion("Diciembre"))
-                }
-
-                mMovimientoViewModel.readAllDataBetween(desde, hasta).observe(viewLifecycleOwner, Observer { user ->
-                    if (user.size == 0){
-                        Toast.makeText(requireContext(), "No hay movimientos cargados", Toast.LENGTH_LONG).show()
+                    if (mes != "") {
+                        desde =
+                            getFirstDayOfMonth(Integer.parseInt(anio), Meses.getByDescripcion(mes))
+                        hasta =
+                            getLastDayOfMonth(Integer.parseInt(anio), Meses.getByDescripcion(mes))
+                    } else {
+                        desde = getFirstDayOfMonth(
+                            Integer.parseInt(anio),
+                            Meses.getByDescripcion("Enero")
+                        )
+                        hasta = getLastDayOfMonth(
+                            Integer.parseInt(anio),
+                            Meses.getByDescripcion("Diciembre")
+                        )
                     }
-                    cargarGrafico(user )
-                })
-            }
-            else {
-                Toast.makeText(requireContext(), "Debe seleccionar un año", Toast.LENGTH_LONG).show()
+
+                    mMovimientoViewModel.readAllDataBetween(desde, hasta)
+                        .observe(viewLifecycleOwner, Observer { user ->
+                            if (user.size == 0) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "No hay movimientos cargados",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                            cargarGrafico(user)
+                        })
+                } else {
+                    Toast.makeText(requireContext(), "Debe seleccionar un año", Toast.LENGTH_LONG)
+                        .show()
+                }
+            }else{
+                Toast.makeText(requireContext(), "Debe seleccionar un Tipo de Movimiento", Toast.LENGTH_LONG).show()
+
             }
         }
 
@@ -103,98 +136,99 @@ class ReportesBarChartFragment : Fragment() {
     private fun cargarGrafico(movimientos : List<Movimiento> ) {
 
       var barChart = binding.barChart
+        val tipoMov = binding.tipoMovimientoBarChart.findViewById<TextInputLayout>(R.id.tipoMovimientoBarChart).editText!!.text.toString()
 
-          var montos = ArrayList<BarEntry>()
+        if(tipoMov == "Ingreso") {
+            var chipsEgresos = binding.barChipsEgresos
+            var chipsIngrsos = binding.barChipsIngresos
+            chipsEgresos.setVisibility(View.INVISIBLE)
+            chipsIngrsos.setVisibility(View.VISIBLE)
 
-          val categorias = CategoriasGasto.values()
-          var total_x_categoria =  FloatArray(CategoriasGasto.values().size)
-          for(movimiento in movimientos){
-              total_x_categoria[movimiento.categoria-1] = (total_x_categoria[movimiento.categoria-1] + movimiento.monto).toFloat()
-          }
+            var montos = ArrayList<BarEntry>()
 
-
-
-          for(i in 1..categorias.size) {
-                  montos.add(BarEntry(i.toFloat(),total_x_categoria[i-1]))
-          }
-
-          var barDataSet = BarDataSet(montos, "Categorias")
-          barDataSet.setColors(
-              Color.rgb(255, 23, 68),//Ahorro
-              Color.rgb(255, 214, 0),//Alquiler
-              Color.rgb(213, 0, 249),//Casa
-              Color.rgb(101, 31, 255),//Comida
-              Color.rgb(48, 79, 254),//Delivery
-              Color.rgb(245, 127, 23),//Educacion
-              Color.rgb(41, 182, 246),//Gasolina
-              Color.rgb(0, 131, 14),//Personales
-              Color.rgb(38, 166, 154)//Servicios
-              ,Color.rgb(0, 77, 64)//Otros
-          )
-
-          var barData = BarData()
-          barData.addDataSet(barDataSet)
-          barChart.setData(barData)
-          barChart.animateXY(1500, 1500)
-
-          binding.barChart.notifyDataSetChanged()
-          binding.barChart.invalidate()
+            val categorias = CategoriasIngreso.values()
+            var total_x_categoria = FloatArray(CategoriasIngreso.values().size)
+            for (movimiento in movimientos) {
+                if(movimiento.tipoMovimiento == 0) {//Si es un Ingreso
+                    total_x_categoria[movimiento.categoria - 1] =
+                        (total_x_categoria[movimiento.categoria - 1] + movimiento.monto).toFloat()
+                }
+            }
 
 
-    /*
+
+            for (i in 1..categorias.size) {
+                montos.add(BarEntry(i.toFloat(), total_x_categoria[i - 1]))
+            }
+
+            var barDataSet = BarDataSet(montos, "Categorias")
+            barDataSet.setColors(
+                Color.rgb(255, 23, 68),//Ahorro
+                Color.rgb(255, 214, 0),//Plazo Fijo
+                Color.rgb(213, 0, 249),//Prestamo
+                Color.rgb(101, 31, 255),//Sueldo
+                Color.rgb(48, 79, 254),//Ventas
+                Color.rgb(245, 127, 23),//Otro
+            )
 
 
-               var barChart = binding.barChart
+            var barData = BarData()
+            barData.addDataSet(barDataSet)
+            barChart.setData(barData)
+            barChart.animateXY(1500, 1500)
 
-               val categorias = CategoriasGasto.values()
-               var cero = 0
-               var total_x_categoria =  FloatArray(CategoriasGasto.values().size)
+            binding.barChart.notifyDataSetChanged()
+            binding.barChart.invalidate()
 
-               for(movimiento in movimientos){
-                   total_x_categoria[movimiento.categoria-1] = (total_x_categoria[movimiento.categoria-1] + movimiento.monto).toFloat()
-               }
+        }else{
+            var chipsEgresos = binding.barChipsEgresos
+            var chipsIngrsos = binding.barChipsIngresos
+            chipsEgresos.setVisibility(View.VISIBLE)
+            chipsIngrsos.setVisibility(View.INVISIBLE)
 
-               var barData = BarData()
+            var montos = ArrayList<BarEntry>()
 
-               val colores = arrayOf(
-                   Color.rgb(255, 23, 68),
-                   Color.rgb(245, 0, 87),
-                   Color.rgb(213, 0, 249),
-                   Color.rgb(101, 31, 255),
-                   Color.rgb(48, 79, 254),
-                   Color.rgb(13, 71, 161),
-                   Color.rgb(41, 182, 246),
-                   Color.rgb(0, 131, 143)
-                   ,Color.rgb(38, 166, 154)
-                   ,Color.rgb(0, 77, 64)
-                   ,Color.rgb(27, 94, 32)
-                   ,Color.rgb(118, 255, 3)
-                   ,Color.rgb(238, 255, 65)
-                   ,Color.rgb(245, 127, 23)
-                   ,Color.rgb(255, 214, 0)
-                   ,Color.rgb(78, 52, 46)
-                   ,Color.rgb(120, 144, 156)
-               )
+            val categorias = CategoriasGasto.values()
+            var total_x_categoria = FloatArray(CategoriasGasto.values().size)
+            for (movimiento in movimientos) {
+                if(movimiento.tipoMovimiento == 1) {//Si es un egreso
+                    total_x_categoria[movimiento.categoria - 1] =
+                        (total_x_categoria[movimiento.categoria - 1] + movimiento.monto).toFloat()
+                }
+            }
 
 
-               for(i in 0..categorias.size-1) {
-                   if(total_x_categoria[i] > 0){
-                       var categorias = ArrayList<BarEntry>()
-                       categorias.add(BarEntry(i.toFloat(),total_x_categoria[i]))
-                       var barDataSet = BarDataSet(categorias, CategoriasGasto.getByValor(i+1))
-                       barDataSet.setColors(colores[i])
-                       barData.addDataSet(barDataSet)
-                   }
-               }
 
-               //barData.addDataSet()
-               barChart.setData(barData)
-               barChart.animateXY(1500, 1500)
+            for (i in 1..categorias.size) {
+                montos.add(BarEntry(i.toFloat(), total_x_categoria[i - 1]))
+            }
 
-               binding.barChart.notifyDataSetChanged()
-               binding.barChart.invalidate()
-         */
-    }
+            var barDataSet = BarDataSet(montos, "Categorias")
+            barDataSet.setColors(
+                Color.rgb(255, 23, 68),//Ahorro
+                Color.rgb(255, 214, 0),//Alquiler
+                Color.rgb(213, 0, 249),//Casa
+                Color.rgb(101, 31, 255),//Comida
+                Color.rgb(48, 79, 254),//Delivery
+                Color.rgb(245, 127, 23),//Educacion
+                Color.rgb(41, 182, 246),//Gasolina
+                Color.rgb(0, 131, 14),//Personales
+                Color.rgb(38, 166, 154)//Servicios
+                , Color.rgb(0, 77, 64)//Otros
+            )
+
+            var barData = BarData()
+            barData.addDataSet(barDataSet)
+            barChart.setData(barData)
+            barChart.animateXY(1500, 1500)
+
+            binding.barChart.notifyDataSetChanged()
+            binding.barChart.invalidate()
+
+        }
+
+        }
+
 
 
 
