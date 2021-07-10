@@ -310,7 +310,7 @@ class AgregarMovimientosFragment: Fragment() {
     }
 
     private fun iniciarCamposListaDesplegable() {
-        val itemInicial = listOf<String>("Sin items")
+        val itemInicial = listOf<String>()
         agregarItemsALista(itemInicial, binding.medioPago.editText)
         agregarItemsALista(itemInicial, binding.moneda.editText)
         agregarItemsALista(itemInicial, binding.categoria.editText)
