@@ -7,6 +7,8 @@ import com.example.saveit.data.MovimientoDatabase
 import com.example.saveit.model.Movimiento
 import com.example.saveit.model.ResultadoReporte
 import com.example.saveit.repository.MovimientoRepository
+import com.example.saveit.retrofit.DolarService
+import com.example.saveit.retrofit.IDolarService
 
 class ReporteFechaViewModel(application: Application): AndroidViewModel(application) {
     private val readAllData: LiveData<List<Movimiento>>

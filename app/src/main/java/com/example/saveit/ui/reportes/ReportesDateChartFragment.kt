@@ -15,12 +15,18 @@ import com.example.saveit.data.*
 import com.example.saveit.databinding.ReportesDateChartFragmentBinding
 import com.example.saveit.data.CategoriasIngreso
 import com.example.saveit.data.CategoriasGasto
+import com.example.saveit.retrofit.DolarService
+import com.example.saveit.retrofit.Respuesta
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ReportesDateChartFragment: Fragment()  {
     private var _binding: ReportesDateChartFragmentBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private var cotizacionDolar: Double = 0.0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -139,7 +145,8 @@ class ReportesDateChartFragment: Fragment()  {
             val seleccion = arrayListOf(tipoMovimiento.toString(),
                 medioPagoSelec.toString(),
                 categoriaSelec.toString(),
-                periodoSelec.toString())
+                periodoSelec.toString(),
+                cotizacionDolar.toString())
 
             val action = ReportesDateChartFragmentDirections.actionReportesDateChartFragmentToActualDateChartFragment(seleccion.toTypedArray())
             findNavController().navigate(action)
@@ -149,5 +156,21 @@ class ReportesDateChartFragment: Fragment()  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val result: Call<Respuesta> = DolarService().getDolarValue("USD_ARS", "ultra", "175657d7d9f194e9f441")
+
+        result.enqueue(object: Callback<Respuesta> {
+            override fun onResponse(call: Call<Respuesta>, response: Response<Respuesta>) {
+                cotizacionDolar = response.body()!!.USD_ARS
+            }
+
+            override fun onFailure(call: Call<Respuesta>, error: Throwable) {
+                Toast.makeText(activity, "No se pudo obtener el valor del dólar", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

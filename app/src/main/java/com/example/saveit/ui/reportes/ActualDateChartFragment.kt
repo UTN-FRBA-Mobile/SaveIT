@@ -13,10 +13,15 @@ import com.example.saveit.R
 import com.example.saveit.data.*
 import com.example.saveit.databinding.ActualDateChartFragmentBinding
 import com.example.saveit.model.ResultadoReporte
+import com.example.saveit.retrofit.DolarService
+import com.example.saveit.retrofit.Respuesta
 import com.example.saveit.viewmodel.ReporteFechaViewModel
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ActualDateChartFragment: Fragment()  {
     private var _binding: ActualDateChartFragmentBinding? = null
@@ -43,6 +48,7 @@ class ActualDateChartFragment: Fragment()  {
         val medioPagoSelec = seleccion[1]
         val categoriaSelec = seleccion[2]
         val periodoDeTiempo = PeriodosDeTiempo.getByDescripcion(seleccion[3])
+        val cotizacionDolar = seleccion[4].toDouble()
 
         //not so ugly way of getting the data
         when (tipoMovimiento) {
@@ -51,7 +57,7 @@ class ActualDateChartFragment: Fragment()  {
                 when {(categoriaSelec == "Todas") and (medioPagoSelec == "Todos") -> {
                     reporteFechaViewModel.readSpecificTimeData(TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
-                        processGraph(ingresos, "Ingresos")
+                        processGraph(ingresos, "Ingresos", cotizacionDolar)
                     })
                 }}
 
@@ -59,7 +65,7 @@ class ActualDateChartFragment: Fragment()  {
                     reporteFechaViewModel.readSpecificTimeDataPaymentAll(CategoriasIngreso.getByDescripcion(categoriaSelec).valor,
                         TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
-                        processGraph(ingresos, "Ingresos")
+                        processGraph(ingresos, "Ingresos", cotizacionDolar)
                     })
                 }}
 
@@ -67,7 +73,7 @@ class ActualDateChartFragment: Fragment()  {
                     reporteFechaViewModel.readSpecificTimeDataCategoryAll(MedioPago.getByDescripcion(medioPagoSelec).valor,
                         TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
-                        processGraph(ingresos, "Ingresos")
+                        processGraph(ingresos, "Ingresos", cotizacionDolar)
                     })
                 }}
 
@@ -76,7 +82,7 @@ class ActualDateChartFragment: Fragment()  {
                         MedioPago.getByDescripcion(medioPagoSelec).valor,
                         TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { ingresos ->
-                        processGraph(ingresos, "Ingresos")
+                        processGraph(ingresos, "Ingresos", cotizacionDolar)
                     })
                 }}
 
@@ -86,7 +92,7 @@ class ActualDateChartFragment: Fragment()  {
                 when {(categoriaSelec == "Todas") and (medioPagoSelec == "Todos") -> {
                     reporteFechaViewModel.readSpecificTimeData(TipoMovimiento.EGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
-                        processGraph(egresos, "Egresos")
+                        processGraph(egresos, "Egresos", cotizacionDolar)
                     })
                 }}
 
@@ -94,7 +100,7 @@ class ActualDateChartFragment: Fragment()  {
                     reporteFechaViewModel.readSpecificTimeDataPaymentAll(CategoriasIngreso.getByDescripcion(categoriaSelec).valor,
                         TipoMovimiento.EGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
-                        processGraph(egresos, "Egresos")
+                        processGraph(egresos, "Egresos", cotizacionDolar)
                     })
                 }}
 
@@ -102,7 +108,7 @@ class ActualDateChartFragment: Fragment()  {
                     reporteFechaViewModel.readSpecificTimeDataCategoryAll(MedioPago.getByDescripcion(medioPagoSelec).valor,
                         TipoMovimiento.EGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
-                        processGraph(egresos, "Egresos")
+                        processGraph(egresos, "Egresos", cotizacionDolar)
                     })
                 }}
 
@@ -111,7 +117,7 @@ class ActualDateChartFragment: Fragment()  {
                         MedioPago.getByDescripcion(medioPagoSelec).valor,
                         TipoMovimiento.EGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, Observer { egresos ->
-                        processGraph(egresos, "Egresos")
+                        processGraph(egresos, "Egresos", cotizacionDolar)
                     })
                 }}
 
@@ -123,7 +129,7 @@ class ActualDateChartFragment: Fragment()  {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun processGraph(input: List<ResultadoReporte>, inputType: String)  {
+    private fun processGraph(input: List<ResultadoReporte>, inputType: String, cotizacionDolar: Double)  {
         when {
             input.isEmpty() -> {
                 Toast.makeText(requireContext(),
@@ -137,7 +143,7 @@ class ActualDateChartFragment: Fragment()  {
                 var pesifiedMap = mutableMapOf<Long, Float>()
                 shiftedDataset.forEach { ingreso ->
                     val day = pesifiedMap[ingreso.Day]
-                    val pesifiedAmount = if (ingreso.Moneda == Moneda.PESO.valor) ingreso.Value else ingreso.Value
+                    val pesifiedAmount = if (ingreso.Moneda == Moneda.PESO.valor) ingreso.Value else ingreso.Value * cotizacionDolar.toFloat()
                     if (day == null){
                         pesifiedMap[ingreso.Day] = pesifiedAmount
                     }else{
