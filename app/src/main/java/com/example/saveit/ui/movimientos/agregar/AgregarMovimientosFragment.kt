@@ -31,6 +31,7 @@ import com.example.saveit.retrofit.Respuesta
 import com.example.saveit.viewmodel.MovimientoViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
 import retrofit2.Call
 import retrofit2.Callback
@@ -51,6 +52,7 @@ class AgregarMovimientosFragment: Fragment() {
     private var latitud: Double = 0.0
     private var longitud: Double = 0.0
 
+    private var botonUbicacionPresionado: Boolean = false
     private var botonIngresoFueClickeado: Boolean = false
     private var botonEgresoFueClickeado: Boolean = false
 
@@ -99,25 +101,10 @@ class AgregarMovimientosFragment: Fragment() {
             askSpeechInput()
         }
 
-//        binding.botonUbicacion.setOnTouchListener(object : View.OnTouchListener {
-//            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-//                Toast.makeText(
-//                    this.context,
-//                    "Boton Presionado: " + event?.action.toString(),
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//                when (event?.action) {
-//                    MotionEvent.ACTION_DOWN -> botonUbicacionPresionado()
-//                        MotionEvent.ACTION_UP -> botonUbicacionArriba()
-//                }
-//
-//                return v?.onTouchEvent(event) ?: true
-//            }
-//        })
-
         binding.botonUbicacion.setOnClickListener {
-            Toast.makeText(this.context, "Boton Presionado: "+ binding.botonUbicacion.isPressed.toString(), Toast.LENGTH_SHORT).show()
-            if(binding.botonUbicacion.isPressed){
+//            if(!botonUbicacionPresionado){
+                if((binding.botonUbicacion as MaterialButton).isChecked) {
+//                botonUbicacionPresionado=true
                 if (ContextCompat.checkSelfPermission(
                         requireActivity(),
                         Manifest.permission.ACCESS_FINE_LOCATION
@@ -143,18 +130,7 @@ class AgregarMovimientosFragment: Fragment() {
                     obtenerUbicacionActual();
                 }
             } else {
-                Toast.makeText(
-                    this.context,
-                    "Boton Presionado: " + binding.botonUbicacion.isPressed.toString(),
-                    Toast.LENGTH_SHORT
-                ).show()
-                longitud = 0.0
-                latitud = 0.0
-                Toast.makeText(
-                    this.context,
-                    "Latitud: " + latitud + "Longitud: " + longitud,
-                    Toast.LENGTH_SHORT
-                ).show()
+                limpiarUbicacion()
             }
     }
         if (!tieneHardwareNecesario()) {
@@ -163,20 +139,26 @@ class AgregarMovimientosFragment: Fragment() {
 
         return binding.root
     }
-//    private fun botonUbicacionArriba() {
-//        Toast.makeText(
-//            this.context,
-//            "Boton Presionado: " + binding.botonUbicacion.isPressed.toString(),
-//            Toast.LENGTH_SHORT
-//        ).show()
-//        longitud = 0.0
-//        latitud = 0.0
-//        Toast.makeText(
-//            this.context,
-//            "Latitud: " + latitud + "Longitud: " + longitud,
-//            Toast.LENGTH_SHORT
-//        ).show()
-//    }
+
+    private fun limpiarUbicacion() {
+//        if (botonUbicacionPresionado) {
+//            (binding.botonUbicacion as MaterialButton).insetBottom=0
+//            Toast.makeText(
+//                this.context,
+//                "se activo insetbottom",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
+        (binding.botonUbicacion as MaterialButton).isChecked=false
+//        botonUbicacionPresionado = false
+        longitud = 0.0
+        latitud = 0.0
+        Toast.makeText(
+            this.context,
+            "Latitud: " + latitud + "Longitud: " + longitud,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
 
     override fun onStart() {
         super.onStart()
@@ -321,6 +303,7 @@ class AgregarMovimientosFragment: Fragment() {
         binding.descripcion.clearFocus()
         binding.fecha.setText("")
         binding.fecha.clearFocus()
+        limpiarUbicacion()
     }
 
     private fun iniciarCamposListaDesplegable() {
@@ -337,7 +320,7 @@ class AgregarMovimientosFragment: Fragment() {
         val itemsCategorias = if (tipoMovimiento == TipoMovimiento.INGRESO.valor) CategoriasIngreso.values().map { it.descripcion } else CategoriasGasto.values().map { it.descripcion }
         agregarItemsALista(itemsCategorias, binding.categoria.editText)
 
-        binding.categoriaTexto.setText(itemsCategorias.first(), false)
+//        binding.categoriaTexto.setText(itemsCategorias.first(), false)
 
         val itemsMonedas = Moneda.values().map { it.descripcion }
         agregarItemsALista(itemsMonedas, binding.moneda.editText)
@@ -350,6 +333,7 @@ class AgregarMovimientosFragment: Fragment() {
 
     @SuppressLint("MissingPermission")
     private fun obtenerUbicacionActual() {
+        Toast.makeText(this.context, "Obtener Ubicacion", Toast.LENGTH_SHORT).show()
         clienteUbicacion.lastLocation
             .addOnSuccessListener { u ->
                 if (u != null) {

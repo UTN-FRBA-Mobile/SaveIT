@@ -19,7 +19,7 @@
         android:clickable="false"
         android:focusable="false"
         android:checkable="false"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="30dp"
         android:paddingHorizontal="10dp"
         app:cardCornerRadius="28dp"
         app:contentPadding="20dp"
@@ -41,7 +41,8 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
                         android:id="@+id/grupo_botones_tipo_movimiento"
-                        app:singleSelection="true">
+                        app:singleSelection="true"
+                        app:selectionRequired="true">
                     <Button
                         android:id="@+id/boton_ingreso"
                         android:layout_width="wrap_content"
@@ -108,7 +109,7 @@
                     android:orientation="horizontal">
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/medio_pago"
-                    android:layout_width="300dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Medio Pago"
                     app:errorEnabled="true"
@@ -122,19 +123,7 @@
                         android:inputType="none"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp">
-                    <Button
-                        android:id="@+id/boton_ubicacion"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:icon="@drawable/outline_location_on_black_36"
-                        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                        android:layout_weight="1"
-                        />
-                </com.google.android.material.button.MaterialButtonToggleGroup>
+
                 </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,32 +148,52 @@
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fecha_movimiento"
-                    android:layout_width="50pt"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:hint="Fecha"
-                    android:paddingLeft="24dp"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    app:errorEnabled="true"
-                    app:startIconDrawable="@drawable/outline_calendar_today_black_20"
-                    style="@style/SaveIT.ExposedDropdownMenu.SinBotonDesplegar">
 
-                    <AutoCompleteTextView
-                        android:id="@+id/fecha"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none|date"
-                        android:cursorVisible="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp">
+        <Button
+            android:id="@+id/boton_ubicacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/outline_location_on_black_36"
+            style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+            android:layout_weight="1"
+            />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fecha_movimiento"
+        android:layout_width="50pt"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:hint="Fecha"
+        android:paddingLeft="24dp"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:errorEnabled="true"
+        app:startIconDrawable="@drawable/outline_calendar_today_black_20"
+        style="@style/SaveIT.ExposedDropdownMenu.SinBotonDesplegar">
 
+        <AutoCompleteTextView
+            android:id="@+id/fecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none|date"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -200,6 +209,7 @@
                         app:counterEnabled="true"
                         app:counterMaxLength="50"/>
                 </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
