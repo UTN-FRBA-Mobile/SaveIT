@@ -31,46 +31,46 @@ interface MovimientoDao {
     @Query("SELECT SUM(monto) FROM movimiento_table WHERE tipoMovimiento = 1 AND fecha BETWEEN :desde AND :hasta")
     fun readGastos(desde: Long, hasta: Long): LiveData<Double>
 
-    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda " +
+    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda, cotizacionDolar as CotizacionDolar " +
             "FROM movimiento_table " +
             "WHERE categoria = :categoria " +
             "AND medioDePago = :medioDePago " +
             "AND tipoMovimiento = :tipoMovimiento " +
             "AND fecha >= strftime('%s', DATETIME('NOW', :desde)) * 1000 " +
-            "GROUP BY Day, Moneda " +
+            "GROUP BY Day, Moneda, CotizacionDolar " +
             "ORDER BY Day asc")
     fun readSpecificTimeDataCategoryPayment(categoria: Int,
                                             medioDePago: Int,
                                             tipoMovimiento: Int,
                                             desde: String): LiveData<List<ResultadoReporte>>
 
-    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda " +
+    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda, cotizacionDolar as CotizacionDolar " +
             "FROM movimiento_table " +
             "WHERE medioDePago = :medioDePago " +
             "AND tipoMovimiento = :tipoMovimiento " +
             "AND fecha >= strftime('%s', DATETIME('NOW', :desde)) * 1000 " +
-            "GROUP BY Day, Moneda " +
+            "GROUP BY Day, Moneda, CotizacionDolar " +
             "ORDER BY Day asc")
     fun readSpecificTimeDataCategoryAll(medioDePago: Int,
                                         tipoMovimiento: Int,
                                         desde: String): LiveData<List<ResultadoReporte>>
 
-    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda " +
+    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda, cotizacionDolar as CotizacionDolar " +
             "FROM movimiento_table " +
             "WHERE categoria = :categoria " +
             "AND tipoMovimiento = :tipoMovimiento " +
             "AND fecha >= strftime('%s', DATETIME('NOW', :desde)) * 1000 " +
-            "GROUP BY Day, Moneda " +
+            "GROUP BY Day, Moneda, CotizacionDolar " +
             "ORDER BY Day asc")
     fun readSpecificTimeDataPaymentAll(categoria: Int,
                                        tipoMovimiento: Int,
                                        desde: String): LiveData<List<ResultadoReporte>>
 
-    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda " +
+    @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda, cotizacionDolar as CotizacionDolar " +
             "FROM movimiento_table " +
             "WHERE tipoMovimiento = :tipoMovimiento " +
             "AND fecha >= strftime('%s', DATETIME('NOW', :desde)) * 1000 " +
-            "GROUP BY Day, Moneda " +
+            "GROUP BY Day, Moneda, CotizacionDolar " +
             "ORDER BY Day asc")
     fun readSpecificTimeData(tipoMovimiento: Int,
                              desde: String): LiveData<List<ResultadoReporte>>

@@ -8,5 +8,6 @@ import kotlinx.android.parcel.Parcelize
 data class ResultadoReporte(
     var Day: Long,
     val Value: Float,
-    val Moneda: Int
+    val Moneda: Int,
+    val CotizacionDolar: Float
 ): Parcelable
