@@ -205,7 +205,12 @@ class ActualizarMovimientoFragment : Fragment() {
     }
 
     private fun getCategoriaVoz(textoVoz: String): String {
-        Categoria.values().forEach { m -> if (textoVoz.contains(m.descripcion.toLowerCase())) { return m.descripcion } }
+        if (tipoMovimiento == TipoMovimiento.INGRESO.valor) {
+            CategoriasIngreso.values().forEach { m -> if (textoVoz.contains(m.descripcion.toLowerCase())) { return m.descripcion } }
+        }
+        else {
+            CategoriasGasto.values().forEach { m -> if (textoVoz.contains(m.descripcion.toLowerCase())) { return m.descripcion } }
+        }
 
         return ""
     }
