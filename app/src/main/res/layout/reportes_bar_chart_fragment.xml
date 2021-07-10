@@ -35,82 +35,104 @@
             app:strokeColor="@color/blueBackground">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="0dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                >
+                android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tipoMovimientoBarChart"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="@string/dropdown_reportes_por_fecha_tipodemovimiento"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+                <AutoCompleteTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="55dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/seleccion_anio_barChart"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_weight="50"
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
-                    android:hint="@string/dropdown_grafico_de_torta_Anio"
-                    app:errorEnabled="true"
                     android:gravity="center"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+                    android:hint="@string/dropdown_grafico_de_torta_Anio"
+                    app:errorEnabled="true">
 
                     <AutoCompleteTextView
                         android:layout_width="fill_parent"
                         android:layout_height="60dp"
-                        android:inputType="none"
-                        />
+                        android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/seleccion_mes_barChart"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
-                    android:layout_weight="50"
-                    android:layout_height="match_parent"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
-                    android:hint="@string/dropdown_grafico_de_torta_Mes"
-                    app:errorEnabled="true"
+                    android:layout_weight="50"
                     android:gravity="center"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+                    android:hint="@string/dropdown_grafico_de_torta_Mes"
+                    app:errorEnabled="true">
 
                     <AutoCompleteTextView
                         android:layout_width="fill_parent"
                         android:layout_height="60dp"
-                        android:inputType="none"
-                        />
+                        android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="92dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:layout_marginTop="45dp"
-                >
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/boton_generar_reporte"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Generar"
                     android:layout_marginRight="10dp"
-                    app:backgroundTint="#43A047"
                     android:layout_weight=".5"
-                    />
+                    android:text="Generar"
+                    app:backgroundTint="#43A047" />
 
                 <Button
                     android:id="@+id/boton_limpiar_formulario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Limpiar"
                     android:layout_marginLeft="10dp"
-                    app:backgroundTint="#E64A19"
                     android:layout_weight=".5"
-                    />
+                    android:text="Limpiar"
+                    app:backgroundTint="#E64A19" />
 
 
             </LinearLayout>
-
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -151,6 +173,7 @@
 
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/barChipsEgresos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin = "10dp"
@@ -259,6 +282,81 @@
 
             </com.google.android.material.chip.ChipGroup>
 
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/barChipsIngresos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin = "10dp"
+                android:paddingHorizontal="16dp"
+                app:chipSpacingHorizontal="10dp"
+                app:chipSpacingVertical="0dp">
+
+
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ahorro"
+                    app:chipBackgroundColor="#ff1744"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Plazo Fijo"
+                    app:chipBackgroundColor="#ffd600"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Otro"
+                    app:chipBackgroundColor="#f57f17"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Prestamo"
+                    app:chipBackgroundColor="#d500f9"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sueldo"
+                    app:chipBackgroundColor="#651fff"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ventas"
+                    app:chipBackgroundColor="#304ffe"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+
+
+
+
+            </com.google.android.material.chip.ChipGroup>
 
         </com.google.android.material.card.MaterialCardView>
 

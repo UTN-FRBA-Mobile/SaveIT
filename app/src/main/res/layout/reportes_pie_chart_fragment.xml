@@ -35,7 +35,34 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tipoMovimientoPieChart"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="@string/dropdown_reportes_por_fecha_tipodemovimiento"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+                <AutoCompleteTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="55dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -62,7 +89,7 @@
                     android:id="@+id/seleccion_mes_pieChart"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="50"
                     android:gravity="center"
@@ -79,7 +106,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="92dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -109,7 +136,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="450dp"
             app:cardBackgroundColor="#E3F2FD"
             app:cardElevation="2dp"
             android:clickable="false"
@@ -121,6 +148,7 @@
             app:strokeColor="@color/blueBackground">
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChart"
+                    android:layout_marginTop="-90dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     >
@@ -129,9 +157,10 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:layout_marginTop="-100dp"
+            android:layout_marginTop="-140dp"
             app:cardBackgroundColor="#E3F2FD"
             app:cardElevation="2dp"
             android:clickable="false"
@@ -145,6 +174,7 @@
 
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/pieChipsEgresos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin = "10dp"
@@ -252,7 +282,74 @@
 
 
             </com.google.android.material.chip.ChipGroup>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/pieChipsIngresos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin = "10dp"
+                android:paddingHorizontal="16dp"
+                app:chipSpacingHorizontal="10dp"
+                app:chipSpacingVertical="0dp">
 
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ahorro"
+                    app:chipBackgroundColor="#ff1744"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Plazo Fijo"
+                    app:chipBackgroundColor="#ffd600"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Otro"
+                    app:chipBackgroundColor="#f57f17"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Prestamo"
+                    app:chipBackgroundColor="#d500f9"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sueldo"
+                    app:chipBackgroundColor="#651fff"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ventas"
+                    app:chipBackgroundColor="#304ffe"
+                    app:chipMinTouchTargetSize="1dp"
+                    app:chipEndPadding="2dp"
+                    app:chipStartPadding="2dp"
+                    />
+
+            </com.google.android.material.chip.ChipGroup>
 
         </com.google.android.material.card.MaterialCardView>
 
