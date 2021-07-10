@@ -20,7 +20,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -35,6 +34,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,7 +82,9 @@ class AgregarMovimientosFragment: Fragment() {
 
             agregarItemsAListasDesplegables()
         }
-
+        binding.tipoMoneda.setOnItemClickListener { _, _, _, _ ->
+            modificarTipoMonedaSegunSeleccion()
+        }
         binding.botonEgreso.setOnClickListener {
             tipoMovimiento = TipoMovimiento.EGRESO.valor
             botonEgresoFueClickeado = true
@@ -145,6 +147,15 @@ class AgregarMovimientosFragment: Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun modificarTipoMonedaSegunSeleccion() {
+        if (!(binding.moneda.editText?.text.toString().isEmpty())) {
+            binding.moneda.startIconDrawable = null
+        } else {
+            binding.moneda.startIconDrawable =
+                requireContext().getDrawable(R.drawable.outline_paid_black_20)
+        }
     }
 
     private fun limpiarUbicacion() {
@@ -287,6 +298,7 @@ class AgregarMovimientosFragment: Fragment() {
         binding.medioPagoTexto.text.clear()
         binding.medioPagoTexto.clearFocus()
         binding.tipoMoneda.text.clear()
+        modificarTipoMonedaSegunSeleccion()
         binding.tipoMoneda.clearFocus()
         binding.monto.setText("")
         binding.monto.clearFocus()
@@ -322,15 +334,11 @@ class AgregarMovimientosFragment: Fragment() {
 
     @SuppressLint("MissingPermission")
     private fun obtenerUbicacionActual() {
-        Toast.makeText(this.context, "Obtener Ubicacion", Toast.LENGTH_SHORT).show()
         clienteUbicacion.lastLocation
             .addOnSuccessListener { u ->
                 if (u != null) {
-                    // use your location object
-                    // get latitude , longitude and other info from this
                     latitud = u.latitude
                     longitud = u.longitude
-                    Toast.makeText(this.context, "Latitud1: "+ u.latitude.toString()+"Longitud1: "+u.longitude.toString(), Toast.LENGTH_SHORT).show()
                 }
 
             }

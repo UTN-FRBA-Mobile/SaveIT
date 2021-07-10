@@ -74,7 +74,7 @@
                     android:hint="Ingresar Monto"
                     android:paddingRight="24dp"
                     app:errorEnabled="true"
-                    app:startIconDrawable="@drawable/outline_paid_black_20"
+                    app:startIconDrawable="@drawable/outline_attach_money_black_20"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -91,7 +91,7 @@
                         android:layout_height="match_parent"
                         android:hint="Moneda"
                         app:errorEnabled="true"
-                        app:startIconDrawable="@drawable/outline_attach_money_black_20"
+                        app:startIconDrawable="@drawable/outline_paid_black_20"
                         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 
                     <AutoCompleteTextView
