@@ -112,19 +112,17 @@ class AgregarMovimientosFragment: Fragment() {
                     ) == PackageManager.PERMISSION_GRANTED -> {
                             obtenerUbicacionActual();
                         }
-                        ActivityCompat.shouldShowRequestPermissionRationale(
-                            requireActivity(),
+                        shouldShowRequestPermissionRationale(
                             Manifest.permission.ACCESS_FINE_LOCATION) -> {
                             val alertBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
                             alertBuilder.setCancelable(true)
+                            alertBuilder.setIcon(R.drawable.outline_location_on_black_48)
                             alertBuilder.setTitle("SaveIT necesita el permiso de ubicación ")
                             alertBuilder.setMessage("Para ver la distribucion geografica de tus movimentos en los reportes.")
                             alertBuilder.setPositiveButton(android.R.string.yes,
                                 DialogInterface.OnClickListener { dialog, which ->
-                                    ActivityCompat.requestPermissions(
-                                        (requireContext() as Activity?)!!, arrayOf(
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ), 1
+                                    requestPermissions(
+                                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
                                     )
                                 })
 
@@ -133,37 +131,11 @@ class AgregarMovimientosFragment: Fragment() {
 
                     }
                         else -> {
-                            ActivityCompat.requestPermissions(
-                                requireActivity(),
+                            requestPermissions(
                                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
                             )
                         }
                     }
-
-//                if (ContextCompat.checkSelfPermission(
-//                        requireActivity(),
-//                        Manifest.permission.ACCESS_FINE_LOCATION
-//                    ) !==
-//                    PackageManager.PERMISSION_GRANTED
-//                ) {
-//                    if (ActivityCompat.shouldShowRequestPermissionRationale(
-//                            requireActivity(),
-//                            Manifest.permission.ACCESS_FINE_LOCATION
-//                        )
-//                    ) {
-//                        ActivityCompat.requestPermissions(
-//                            requireActivity(),
-//                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
-//                        )
-//                    } else {
-//                        ActivityCompat.requestPermissions(
-//                            requireActivity(),
-//                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
-//                        )
-//                    }
-//                } else {
-//                    obtenerUbicacionActual();
-//                }
             } else {
                 limpiarUbicacion()
             }
@@ -198,20 +170,15 @@ class AgregarMovimientosFragment: Fragment() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        Toast.makeText(this.context, "Paso por onRequestPermissionsResult  "+requestCode, Toast.LENGTH_SHORT).show()
         when (requestCode) {
             1 -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if ((ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) === PackageManager.PERMISSION_GRANTED)) {
-                        Toast.makeText(this.context, "Permission Granted", Toast.LENGTH_SHORT).show()
-                        Toast.makeText(activity, "Permission Granted", Toast.LENGTH_SHORT).show()
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    if (!(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) === PackageManager.PERMISSION_GRANTED)) {
+                            (binding.botonUbicacion as MaterialButton).isChecked=false
                     }
+                }else{
+                    (binding.botonUbicacion as MaterialButton).isChecked=false
                 }
-                else {
-                    Toast.makeText(this.context, "Permission Denied", Toast.LENGTH_SHORT).show()
-                    Toast.makeText(activity, "Permission Denied", Toast.LENGTH_SHORT).show()
-                }
-
                 return
             }
         }
