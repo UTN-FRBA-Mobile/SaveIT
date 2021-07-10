@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -38,6 +40,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import kotlin.properties.Delegates
 
+
 class AgregarMovimientosFragment: Fragment() {
     private var _binding: AgregarMovimientosFragmentBinding? = null
     // This property is only valid between onCreateView and
@@ -52,7 +55,6 @@ class AgregarMovimientosFragment: Fragment() {
     private var latitud: Double = 0.0
     private var longitud: Double = 0.0
 
-    private var botonUbicacionPresionado: Boolean = false
     private var botonIngresoFueClickeado: Boolean = false
     private var botonEgresoFueClickeado: Boolean = false
 
@@ -102,33 +104,66 @@ class AgregarMovimientosFragment: Fragment() {
         }
 
         binding.botonUbicacion.setOnClickListener {
-//            if(!botonUbicacionPresionado){
                 if((binding.botonUbicacion as MaterialButton).isChecked) {
-//                botonUbicacionPresionado=true
-                if (ContextCompat.checkSelfPermission(
-                        requireActivity(),
+                    when {
+                        ContextCompat.checkSelfPermission(
+                            requireActivity(),
                         Manifest.permission.ACCESS_FINE_LOCATION
-                    ) !==
-                    PackageManager.PERMISSION_GRANTED
-                ) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    ) == PackageManager.PERMISSION_GRANTED -> {
+                            obtenerUbicacionActual();
+                        }
+                        ActivityCompat.shouldShowRequestPermissionRationale(
                             requireActivity(),
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        )
-                    ) {
-                        ActivityCompat.requestPermissions(
-                            requireActivity(),
-                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
-                        )
-                    } else {
-                        ActivityCompat.requestPermissions(
-                            requireActivity(),
-                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
-                        )
+                            Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                            val alertBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+                            alertBuilder.setCancelable(true)
+                            alertBuilder.setTitle("SaveIT necesita el permiso de ubicación ")
+                            alertBuilder.setMessage("Para ver la distribucion geografica de tus movimentos en los reportes.")
+                            alertBuilder.setPositiveButton(android.R.string.yes,
+                                DialogInterface.OnClickListener { dialog, which ->
+                                    ActivityCompat.requestPermissions(
+                                        (requireContext() as Activity?)!!, arrayOf(
+                                            Manifest.permission.ACCESS_FINE_LOCATION
+                                        ), 1
+                                    )
+                                })
+
+                            val alert: AlertDialog = alertBuilder.create()
+                            alert.show()
+
                     }
-                } else {
-                    obtenerUbicacionActual();
-                }
+                        else -> {
+                            ActivityCompat.requestPermissions(
+                                requireActivity(),
+                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+                            )
+                        }
+                    }
+
+//                if (ContextCompat.checkSelfPermission(
+//                        requireActivity(),
+//                        Manifest.permission.ACCESS_FINE_LOCATION
+//                    ) !==
+//                    PackageManager.PERMISSION_GRANTED
+//                ) {
+//                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+//                            requireActivity(),
+//                            Manifest.permission.ACCESS_FINE_LOCATION
+//                        )
+//                    ) {
+//                        ActivityCompat.requestPermissions(
+//                            requireActivity(),
+//                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+//                        )
+//                    } else {
+//                        ActivityCompat.requestPermissions(
+//                            requireActivity(),
+//                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+//                        )
+//                    }
+//                } else {
+//                    obtenerUbicacionActual();
+//                }
             } else {
                 limpiarUbicacion()
             }
@@ -141,23 +176,9 @@ class AgregarMovimientosFragment: Fragment() {
     }
 
     private fun limpiarUbicacion() {
-//        if (botonUbicacionPresionado) {
-//            (binding.botonUbicacion as MaterialButton).insetBottom=0
-//            Toast.makeText(
-//                this.context,
-//                "se activo insetbottom",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//        }
         (binding.botonUbicacion as MaterialButton).isChecked=false
-//        botonUbicacionPresionado = false
         longitud = 0.0
         latitud = 0.0
-        Toast.makeText(
-            this.context,
-            "Latitud: " + latitud + "Longitud: " + longitud,
-            Toast.LENGTH_SHORT
-        ).show()
     }
 
     override fun onStart() {
@@ -177,15 +198,18 @@ class AgregarMovimientosFragment: Fragment() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        Toast.makeText(this.context, "Paso por onRequestPermissionsResult  "+requestCode, Toast.LENGTH_SHORT).show()
         when (requestCode) {
             1 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if ((ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) === PackageManager.PERMISSION_GRANTED)) {
                         Toast.makeText(this.context, "Permission Granted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity, "Permission Granted", Toast.LENGTH_SHORT).show()
                     }
                 }
                 else {
                     Toast.makeText(this.context, "Permission Denied", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Permission Denied", Toast.LENGTH_SHORT).show()
                 }
 
                 return
@@ -319,8 +343,6 @@ class AgregarMovimientosFragment: Fragment() {
 
         val itemsCategorias = if (tipoMovimiento == TipoMovimiento.INGRESO.valor) CategoriasIngreso.values().map { it.descripcion } else CategoriasGasto.values().map { it.descripcion }
         agregarItemsALista(itemsCategorias, binding.categoria.editText)
-
-//        binding.categoriaTexto.setText(itemsCategorias.first(), false)
 
         val itemsMonedas = Moneda.values().map { it.descripcion }
         agregarItemsALista(itemsMonedas, binding.moneda.editText)
