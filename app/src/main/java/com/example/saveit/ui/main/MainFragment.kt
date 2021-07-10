@@ -96,13 +96,13 @@ class MainFragment: Fragment() {
 
         mMovimientoViewModel.readIngresos(desde, hasta).observe(viewLifecycleOwner, Observer { ingresos ->
             if (ingresos != null)
-                ingresosDisplay = ingresos
+                ingresosDisplay = String.format("%.2f", ingresos).toDouble()
 
             binding.textViewMontoIngresos.text = "+ \$" + ingresosDisplay
 
             mMovimientoViewModel.readGastos(desde, hasta).observe(viewLifecycleOwner, Observer { gastos ->
                 if (gastos != null)
-                    gastosDisplay = gastos
+                    gastosDisplay = String.format("%.2f", gastos).toDouble()
 
                 binding.textViewMontoGastos.text = "- \$" + gastosDisplay
 
