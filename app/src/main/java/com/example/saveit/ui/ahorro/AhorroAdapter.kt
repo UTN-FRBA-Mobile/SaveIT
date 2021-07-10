@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.saveit.R
 import com.example.saveit.data.CategoriasGasto
 import com.example.saveit.data.CategoriasIngreso
+import com.example.saveit.data.Moneda
 import com.example.saveit.data.TipoMovimiento
 import com.example.saveit.model.Movimiento
 import java.text.SimpleDateFormat
@@ -42,8 +43,8 @@ class AhorroAdapter: RecyclerView.Adapter<AhorroAdapter.MyViewHolder>(){
 
         val fecha = formatDate(currentItem.fecha)
 
-        holder.itemView.findViewById<TextView>(R.id.valor_movimiento).text = if (currentItem.descripcion.length > 10) currentItem.descripcion.subSequence(0, 10).toString() + "      $" + currentItem.monto.toString() else currentItem.descripcion + "      $" + currentItem.monto.toString()
-        holder.itemView.findViewById<TextView>(R.id.fecha_movimiento).text = fecha + "      " + if(currentItem.tipoMovimiento == 0) CategoriasIngreso.getByValor(currentItem.categoria) else CategoriasGasto.getByValor(currentItem.categoria)
+        holder.itemView.findViewById<TextView>(R.id.valor_movimiento).text = getTextValorMovimiento(currentItem)
+        holder.itemView.findViewById<TextView>(R.id.fecha_movimiento).text = fecha + "      " + if(currentItem.tipoMovimiento == TipoMovimiento.INGRESO.valor) CategoriasIngreso.getByValor(currentItem.categoria) else CategoriasGasto.getByValor(currentItem.categoria)
     }
 
     override fun getItemCount(): Int {
@@ -67,9 +68,28 @@ class AhorroAdapter: RecyclerView.Adapter<AhorroAdapter.MyViewHolder>(){
     }
 
     fun getMontoTotal(): Double {
-        val ingresos = ahorroList.filter { a -> a.tipoMovimiento == TipoMovimiento.INGRESO.valor }.map { a -> a.monto }.sum()
-        val egresos = ahorroList.filter { a -> a.tipoMovimiento == TipoMovimiento.EGRESO.valor }.map { a -> a.monto }.sum()
+        val ingresos = String.format("%.2f", ahorroList.filter { a -> a.tipoMovimiento == TipoMovimiento.INGRESO.valor }.map { a -> a.monto * a.cotizacionDolar }.sum()).toDouble()
+        val egresos = String.format("%.2f", ahorroList.filter { a -> a.tipoMovimiento == TipoMovimiento.EGRESO.valor }.map { a -> a.monto * a.cotizacionDolar }.sum()).toDouble()
 
         return ingresos - egresos
+    }
+
+    private fun getTextValorMovimiento(currentItem: Movimiento): String {
+        if (currentItem.descripcion.length > 10) {
+            if (currentItem.moneda == Moneda.PESO.valor) {
+                return currentItem.descripcion.subSequence(0, 10).toString() + "      $" + currentItem.monto.toString()
+            }
+            else {
+                return currentItem.descripcion.subSequence(0, 10).toString() + "      u\$s" + currentItem.monto.toString()
+            }
+        }
+        else {
+            if (currentItem.moneda == Moneda.PESO.valor) {
+                return currentItem.descripcion + "      $" + currentItem.monto.toString()
+            }
+            else {
+                return currentItem.descripcion + "      u\$s" + currentItem.monto.toString()
+            }
+        }
     }
 }
