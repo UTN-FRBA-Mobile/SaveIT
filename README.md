@@ -94,6 +94,15 @@ Tenemos que elegir Año y Mes para mostrar la ubicación de los movimientos real
 ### Ahorros
 En esta pantalla podemos ver el reporte desde el punto de vista de nuestros ahorros y como se van acumulando.
 
+Es importante destacar que en esta vista se verá como Ingreso (Verde), todo lo que en mis movimientos marque como Egreso y Ahorro.  
+
+Lo mismo sucede a la inversa, en esta vista, se verá como Egreso (Rojo), todo lo que en mis movimientos marque como Ingreso y Ahorro.
+
+Es decir, en esta pantalla se ven los movimientos de ahorros desde el punto de vista de mis ahorros, no se ven desde el punto de vista del flujo económico. 
+
+La información desde el punto de vista del flujo económico se ve reflejada en todas las demás secciones de la aplicación: la pantalla principal (Saldo), lista de movimientos, reportes, etc.
+
+
 ![image](https://user-images.githubusercontent.com/20273903/125209142-3b5a0500-e26d-11eb-9dff-7837952b8553.png)
 
 
@@ -119,8 +128,6 @@ xxxxxxxxxxxxxxxxxxx
 <br>
 
 # WIP
-
-Estadísticas de ingresos y egresos.
 
 Configurar el almacenamiento de los datos en una ruta donde el backup alcance esos datos.
 
