@@ -565,15 +565,15 @@ class AgregarMovimientosFragment : Fragment() {
         binding.fecha.setOnClickListener {
             onFechaMovimientoPressed()
         }
-        //TODO: si es actualizacion
-        //if
-        //binding.actualizarMoneda.isEnabled = false
-        //
+        if (fragmentPrevioEsListaMovimientos()) {
+            binding.moneda.isEnabled = false
+        }
     }
 
     fun onFechaMovimientoPressed() {
-        datePicker.show((activity as AppCompatActivity).supportFragmentManager, "tag")
-
+        if(!datePicker.isVisible) {
+            datePicker.show((activity as AppCompatActivity).supportFragmentManager, "tag")
+        }
     }
 
 
