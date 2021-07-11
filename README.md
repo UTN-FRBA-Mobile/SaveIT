@@ -65,24 +65,27 @@ Se pueden generar reportes de barra, de torta, de linea, sobre todos los movimie
 #### Reportes de Torta
 Tenemos que elegir Tipo de Movimiento, Año y opcionalmente el mes, para graficar el reporte en forma de torta. 
 
-![image](https://user-images.githubusercontent.com/20273903/125209221-c5a26900-e26d-11eb-9c2a-e5bb3600fab7.png)
+![ScreenshotPieCHART](https://user-images.githubusercontent.com/11811173/125211195-25ebd780-e27b-11eb-81f4-a7ee32dbf3fd.jpg)
+
 
 #### Reportes de Barra
 Tenemos que elegir Tipo de Movimiento, Año y opcionalmente el mes, para graficar el reporte en forma de barra. 
 
-![image](https://user-images.githubusercontent.com/20273903/125209265-000c0600-e26e-11eb-99ad-6b1987d5fd8a.png)
+![ScreenshotBarras](https://user-images.githubusercontent.com/11811173/125211201-2c7a4f00-e27b-11eb-99f1-20bfe0ce6a4e.jpg)
+
 
 #### Reportes por Fecha
 Tenemos que elegir Tipo de Movimiento, Categoría, Medio de Pago y Período para graficar el reporte en forma de línea en el tiempo.
 
 ![image](https://user-images.githubusercontent.com/20273903/125209283-229e1f00-e26e-11eb-96a5-20e5922ccd45.png)
 
-![image](https://user-images.githubusercontent.com/20273903/125209293-36e21c00-e26e-11eb-9406-7ad74edf7196.png)
+![ScreenshotFechas](https://user-images.githubusercontent.com/11811173/125211219-4320a600-e27b-11eb-82c1-8e80924adf0c.jpg)
+
 
 #### Reportes por Ubicación
 Tenemos que elegir Año y Mes para mostrar la ubicación de los movimientos realizados en ese período.
 
-![image](https://user-images.githubusercontent.com/20273903/125209394-e1f2d580-e26e-11eb-926d-0ad799108678.png)
+![ScreenshotMapa](https://user-images.githubusercontent.com/11811173/125211224-49168700-e27b-11eb-90fd-6d13709f6dad.jpg)
 
 
 
