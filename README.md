@@ -27,6 +27,9 @@ Con esta información podemos generar reportes y estadísticas que nos ayuden a 
 En la pantalla inicial podemos ver el período actual, el saldo del período y los ahorros totales.  
 Desde esta pantalla podemos navegar a la sección de ahorros, a la carga de movimientos, a la lista de movimientos y a la lista de reportes.
 
+![image](https://user-images.githubusercontent.com/20273903/125209122-16659200-e26d-11eb-949b-9bd65a496634.png)
+
+
 [Volver Arriba](#saveit)
 
 
@@ -42,6 +45,9 @@ Fecha
 Descripción  
 Ubicación
 
+![image](https://user-images.githubusercontent.com/20273903/125209132-241b1780-e26d-11eb-95e8-b45457c8994b.png)
+
+
 [Volver Arriba](#saveit)
 
 
@@ -50,14 +56,28 @@ Ubicación
 ### Reportes y Graficos
 Se pueden generar reportes de barra, de torta, de linea, sobre todos los movimientos, por semana, mes, año, etc.
 
+![image](https://user-images.githubusercontent.com/20273903/125209186-90961680-e26d-11eb-84c6-db6ec9a5881f.png)
+
+#### Reportes de Torta
+Tenemos que elegir Tipo de Movimiento, Año y opcionalmente el mes, para graficar el reporte en forma de torta. 
+
+![image](https://user-images.githubusercontent.com/20273903/125209221-c5a26900-e26d-11eb-9c2a-e5bb3600fab7.png)
+
+
 [Volver Arriba](#saveit)
 
 
 <a name="ahorros"/>
 
 ### Ahorros
-Cuando ahorramos (separamos dinero de nuestro ingreso mensual y lo guardamos) lo cargamos en el sistema como un movimiento de tipo Egreso y Categoría Ahorro.  
-Cuando utilizamos dinero de nuestros ahorros (rescatamos dinero de nuestros ahorros y lo usamos como ingreso mensual) lo cargamos en el sistema como un movimiento de tipo Ingreso y Categoría Ahorro.
+En esta pantalla podemos ver el reporte desde el punto de vista de nuestros ahorros y como se van acumulando.
+
+Cuando ahorramos (separamos dinero de nuestro ingreso mensual y lo guardamos), lo cargamos en el sistema como un movimiento de tipo Egreso y Categoría Ahorro.  
+
+Cuando utilizamos dinero de nuestros ahorros (rescatamos dinero de nuestros ahorros y lo usamos como ingreso mensual), lo cargamos en el sistema como un movimiento de tipo Ingreso y Categoría Ahorro.
+
+![image](https://user-images.githubusercontent.com/20273903/125209142-3b5a0500-e26d-11eb-9dff-7837952b8553.png)
+
 
 [Volver Arriba](#saveit)
 
