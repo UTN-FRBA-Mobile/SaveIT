@@ -12,7 +12,7 @@
 <a name="resumen"/>
 
 ### Resumen
-Es una aplicación que permite registrar los movimientos económicos de un hogar.
+Es una aplicación que permite registrar los movimientos económicos de un hogar.  
 Con esta información podemos generar reportes y estadísticas que nos ayuden a tomar decisiones.
 
 [Volver Arriba](#top)
@@ -28,7 +28,7 @@ Desde esta pantalla podemos navegar a la sección de ahorros, a la carga de movi
 <a name="movimientos"/>
 
 ### Movimientos
-Se pueden cargar movimientos de tipo Ingresos o Egreso, con las siguientes propiedades:
+Se pueden cargar movimientos de tipo Ingresos o Egreso, con las siguientes propiedades:  
 Monto  
 Moneda (ARS/USD)  
 Medio de pago  
