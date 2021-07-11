@@ -48,7 +48,8 @@ class ListaMovimientosAdapter: RecyclerView.Adapter<ListaMovimientosAdapter.MyVi
         holder.itemView.findViewById<TextView>(R.id.fecha_movimiento).text = fecha + "      " + if(currentItem.tipoMovimiento == 0) CategoriasIngreso.getByValor(currentItem.categoria) else CategoriasGasto.getByValor(currentItem.categoria)
 
         holder.itemView.rowLayout.setOnClickListener {
-            val action = ListaMovimientosFragmentDirections.actionListaMovimientosFragmentToActualizarMovimientoFragment(currentItem)
+//            val action = ListaMovimientosFragmentDirections.actionListaMovimientosFragmentToActualizarMovimientoFragment(currentItem)
+            val action = ListaMovimientosFragmentDirections.actionListaMovimientosFragmentToAgregarMovimientosFragment(currentItem)
             holder.itemView.findNavController().navigate(action)
         }
     }

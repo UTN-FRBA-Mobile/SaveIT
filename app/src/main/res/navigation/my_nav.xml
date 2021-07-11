@@ -27,8 +27,8 @@
         android:name="com.example.saveit.ui.movimientos.lista.ListaMovimientosFragment"
         android:label="Lista Movimientos" >
         <action
-            android:id="@+id/action_listaMovimientosFragment_to_actualizarMovimientoFragment"
-            app:destination="@id/actualizarMovimientoFragment" />
+            android:id="@+id/action_listaMovimientosFragment_to_agregarMovimientosFragment"
+            app:destination="@id/agregarMovimientosFragment" />
         <action
             android:id="@+id/action_listaMovimientosFragment_to_mainFragment2"
             app:destination="@id/mainFragment" />
@@ -36,7 +36,13 @@
     <fragment
         android:id="@+id/agregarMovimientosFragment"
         android:name="com.example.saveit.ui.movimientos.agregar.AgregarMovimientosFragment"
-        android:label="Agregar Movimiento" >
+        android:label="Agregar Movimientossss" >
+        <actionsetOnNavigationItemSelectedToAgregarListener
+            android:id="@+id/action_actualizarMovimientoFragment_to_agregarMovimientosFragment"
+            app:destination="@id/agregarMovimientosFragment" />
+        <argument
+            android:name="currentMovimiento"
+            app:argType="com.example.saveit.model.Movimiento" />
         <action
             android:id="@+id/action_agregarMovimientosFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
@@ -48,12 +54,6 @@
         android:id="@+id/actualizarMovimientoFragment"
         android:name="com.example.saveit.ui.movimientos.actualizar.ActualizarMovimientoFragment"
         android:label="Actualizar Movimiento" >
-        <actionsetOnNavigationItemSelectedListener
-            android:id="@+id/action_actualizarMovimientoFragment_to_listaMovimientosFragment"
-            app:destination="@id/listaMovimientosFragment" />
-        <argument
-            android:name="currentMovimiento"
-            app:argType="com.example.saveit.model.Movimiento" />
         <action
             android:id="@+id/action_actualizarMovimientoFragment_to_listaMovimientosFragment2"
             app:destination="@id/listaMovimientosFragment" />

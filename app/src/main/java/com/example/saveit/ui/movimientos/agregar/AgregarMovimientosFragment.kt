@@ -23,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.saveit.R
 import com.example.saveit.data.*
 import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
@@ -34,10 +36,10 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 import kotlin.properties.Delegates
 
 
@@ -50,6 +52,8 @@ class AgregarMovimientosFragment: Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
 
+    private val args by navArgs<AgregarMovimientosFragmentArgs>()
+
     private lateinit var mMovimientoViewModel: MovimientoViewModel
     private var tipoMovimiento by Delegates.notNull<Int>()
     private var latitud: Double = 0.0
@@ -57,7 +61,7 @@ class AgregarMovimientosFragment: Fragment() {
 
     private var botonIngresoFueClickeado: Boolean = false
     private var botonEgresoFueClickeado: Boolean = false
-
+private lateinit  var fragmentPrevio: String
     private val RQ_SPEECH_REC = 102
 
     private var cotizacionDolar: Double = 0.0
@@ -66,11 +70,12 @@ class AgregarMovimientosFragment: Fragment() {
        .setTitleText("Fecha de Movimiento")
        .build()
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
         clienteUbicacion = LocationServices.getFusedLocationProviderClient(requireActivity())
-
+fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displayName.toString()
         iniciarCamposListaDesplegable()
 
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
@@ -85,6 +90,7 @@ class AgregarMovimientosFragment: Fragment() {
         binding.tipoMoneda.setOnItemClickListener { _, _, _, _ ->
             modificarTipoMonedaSegunSeleccion()
         }
+
         binding.botonEgreso.setOnClickListener {
             tipoMovimiento = TipoMovimiento.EGRESO.valor
             botonEgresoFueClickeado = true
@@ -92,6 +98,11 @@ class AgregarMovimientosFragment: Fragment() {
 
             agregarItemsAListasDesplegables()
         }
+        if (fragmentPrevioEsListaMovimientos()) {
+            findNavController().currentBackStackEntry?.destination?.label ="Actualizar Movimiento"
+            setValuesToFields()
+        }
+        //TODO:Modificar titulo del layout si es actualizar
 
         binding.botonAceptar.setOnClickListener {
             insertDataToDataBase()
@@ -143,12 +154,15 @@ class AgregarMovimientosFragment: Fragment() {
             }
     }
         if (!tieneHardwareNecesario()) {
-            binding.botonUbicacion.visibility=View.GONE
+            binding.botonUbicacion.visibility=View.GONE //TODO: PRobar y mejorar la vista
         }
 
         return binding.root
     }
 
+    private fun fragmentPrevioEsListaMovimientos(): Boolean {
+        return fragmentPrevio.contains("listaMovimientosFragment")
+    }
     private fun modificarTipoMonedaSegunSeleccion() {
         if (!(binding.moneda.editText?.text.toString().isEmpty())) {
             binding.moneda.startIconDrawable = null
@@ -171,7 +185,8 @@ class AgregarMovimientosFragment: Fragment() {
 
         result.enqueue(object: Callback<Respuesta> {
             override fun onResponse(call: Call<Respuesta>, response: Response<Respuesta>) {
-                cotizacionDolar = response.body()!!.USD_ARS
+               // cotizacionDolar = response.body()!!.USD_ARS
+                cotizacionDolar=10.0
             }
 
             override fun onFailure(call: Call<Respuesta>, error: Throwable) {
@@ -192,6 +207,40 @@ class AgregarMovimientosFragment: Fragment() {
                 }
                 return
             }
+        }
+    }
+
+    private fun setValuesToFields() {
+        binding.monto.setText(args.currentMovimiento.monto.toString())
+        binding.tipoMoneda.setText(Moneda.getByValor(args.currentMovimiento.moneda), false)
+        binding.medioPagoTexto.setText(MedioPago.getByValor(args.currentMovimiento.medioDePago), false)
+
+        val fecha = formatDate(args.currentMovimiento.fecha)
+
+        binding.fecha.setText(fecha)
+
+        binding.descripcion.setText(args.currentMovimiento.descripcion)
+
+        if (args.currentMovimiento.tipoMovimiento == TipoMovimiento.INGRESO.valor) {
+            binding.botonIngreso.performClick()
+
+            binding.categoriaTexto.setText(CategoriasIngreso.getByValor(args.currentMovimiento.categoria), false)
+        }
+        else {
+            binding.botonEgreso.performClick()
+
+            binding.categoriaTexto.setText(CategoriasGasto.getByValor(args.currentMovimiento.categoria), false)
+        }
+    }
+
+    private fun formatDate(fecha: Long): String {
+        try {
+            val sdf = java.text.SimpleDateFormat("dd/MM/yyyy")
+            val netDate = Date(fecha)
+
+            return sdf.format(netDate).toString()
+        } catch (e: Exception) {
+            return e.toString()
         }
     }
 
@@ -307,6 +356,12 @@ class AgregarMovimientosFragment: Fragment() {
         binding.fecha.setText("")
         binding.fecha.clearFocus()
         limpiarUbicacion()
+        if(fragmentPrevioEsListaMovimientos()) {
+            findNavController().previousBackStackEntry?.destination?.let {
+                findNavController().navigate(
+                    it.id)
+            }
+        }
     }
 
     private fun iniciarCamposListaDesplegable() {
@@ -321,6 +376,8 @@ class AgregarMovimientosFragment: Fragment() {
         agregarItemsALista(itemsMedioPago, binding.medioPago.editText)
 
         val itemsCategorias = if (tipoMovimiento == TipoMovimiento.INGRESO.valor) CategoriasIngreso.values().map { it.descripcion } else CategoriasGasto.values().map { it.descripcion }
+        binding.categoriaTexto.text.clear()
+        binding.categoriaTexto.clearFocus()
         agregarItemsALista(itemsCategorias, binding.categoria.editText)
 
         val itemsMonedas = Moneda.values().map { it.descripcion }
@@ -346,22 +403,32 @@ class AgregarMovimientosFragment: Fragment() {
 
     private fun insertDataToDataBase() {
         if (validateFields()) {
+            var id:Int
+
             var monto = binding.monto.text.toString().toDouble()
             val moneda = Moneda.getByDescripcion(binding.moneda.editText?.text.toString()).valor
             var categoria = 0
 
-            if (moneda == Moneda.PESO.valor) {
-                cotizacionDolar = 1.0
+            if(fragmentPrevioEsListaMovimientos()) {
+                id = args.currentMovimiento.id
+                cotizacionDolar = args.currentMovimiento.cotizacionDolar
+            } else {
+                id = 0
+                if (moneda == Moneda.PESO.valor) {
+                    cotizacionDolar = 1.0
+                }
             }
 
             if (tipoMovimiento == TipoMovimiento.INGRESO.valor) {
-                categoria = CategoriasIngreso.getByDescripcion(binding.categoria.editText?.text.toString()).valor
-            }
-            else {
-                categoria = CategoriasGasto.getByDescripcion(binding.categoria.editText?.text.toString()).valor
+                categoria =
+                    CategoriasIngreso.getByDescripcion(binding.categoria.editText?.text.toString()).valor
+            } else {
+                categoria =
+                    CategoriasGasto.getByDescripcion(binding.categoria.editText?.text.toString()).valor
             }
 
-            val movimiento = Movimiento(0,
+            val movimiento = Movimiento(
+                id,
                 monto,
                 moneda,
                 MedioPago.getByDescripcion(binding.medioPago.editText?.text.toString()).valor,
@@ -375,8 +442,13 @@ class AgregarMovimientosFragment: Fragment() {
             )
 
             // Add Data to Database
-            mMovimientoViewModel.addMovimiento(movimiento)
-            Toast.makeText(requireContext(), "El movimiento fue creado correctamente!", Toast.LENGTH_LONG).show()
+            if (!fragmentPrevioEsListaMovimientos()) {
+                mMovimientoViewModel.addMovimiento(movimiento)
+                Toast.makeText(requireContext(), "El movimiento fue creado correctamente!", Toast.LENGTH_LONG).show()
+            } else {
+                mMovimientoViewModel.updateMovimiento(movimiento)
+                Toast.makeText(requireContext(), "El movimiento fue creado correctamente!", Toast.LENGTH_LONG).show()
+            }
             limpiarContenidoControles()
         }
     }
@@ -420,6 +492,10 @@ class AgregarMovimientosFragment: Fragment() {
         binding.fecha.setOnClickListener {
             onFechaMovimientoPressed()
         }
+        //TODO: si es actualizacion
+        //if
+        //binding.actualizarMoneda.isEnabled = false
+        //
     }
 
     fun onFechaMovimientoPressed() {

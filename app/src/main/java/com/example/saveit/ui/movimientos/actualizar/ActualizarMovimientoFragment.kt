@@ -43,7 +43,7 @@ class ActualizarMovimientoFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
 
-    private val args by navArgs<ActualizarMovimientoFragmentArgs>()
+    //private val args by navArgs<ActualizarMovimientoFragmentArgs>()
 
     private lateinit var mMovimientoViewModel: MovimientoViewModel
     private var tipoMovimiento by Delegates.notNull<Int>()
@@ -76,7 +76,7 @@ class ActualizarMovimientoFragment : Fragment() {
             agregarItemsAListasDesplegables()
         }
 
-        setValuesToFields()
+//        setValuesToFields()
 
         binding.botonAceptarActualizar.setOnClickListener {
             updateMovimiento()
@@ -227,28 +227,28 @@ class ActualizarMovimientoFragment : Fragment() {
         return ""
     }
 
-    private fun setValuesToFields() {
-        binding.actualizarMonto.setText(args.currentMovimiento.monto.toString())
-        binding.actualizarMoneda.setText(Moneda.getByValor(args.currentMovimiento.moneda), false)
-        binding.actualizarMedioPago.setText(MedioPago.getByValor(args.currentMovimiento.medioDePago), false)
-
-        val fecha = formatDate(args.currentMovimiento.fecha)
-
-        binding.actualizarFecha.setText(fecha)
-
-        binding.actualizarDescripcion.setText(args.currentMovimiento.descripcion)
-
-        if (args.currentMovimiento.tipoMovimiento == TipoMovimiento.INGRESO.valor) {
-            binding.botonIngresoActualizar.performClick()
-
-            binding.actualizarCategoria.setText(CategoriasIngreso.getByValor(args.currentMovimiento.categoria), false)
-        }
-        else {
-            binding.botonEgresoActualizar.performClick()
-
-            binding.actualizarCategoria.setText(CategoriasGasto.getByValor(args.currentMovimiento.categoria), false)
-        }
-    }
+//    private fun setValuesToFields() {
+//        binding.actualizarMonto.setText(args.currentMovimiento.monto.toString())
+//        binding.actualizarMoneda.setText(Moneda.getByValor(args.currentMovimiento.moneda), false)
+//        binding.actualizarMedioPago.setText(MedioPago.getByValor(args.currentMovimiento.medioDePago), false)
+//
+//        val fecha = formatDate(args.currentMovimiento.fecha)
+//
+//        binding.actualizarFecha.setText(fecha)
+//
+//        binding.actualizarDescripcion.setText(args.currentMovimiento.descripcion)
+//
+//        if (args.currentMovimiento.tipoMovimiento == TipoMovimiento.INGRESO.valor) {
+//            binding.botonIngresoActualizar.performClick()
+//
+//            binding.actualizarCategoria.setText(CategoriasIngreso.getByValor(args.currentMovimiento.categoria), false)
+//        }
+//        else {
+//            binding.botonEgresoActualizar.performClick()
+//
+//            binding.actualizarCategoria.setText(CategoriasGasto.getByValor(args.currentMovimiento.categoria), false)
+//        }
+//    }
 
     private fun tieneHardwareNecesario() = (requireActivity().packageManager.hasSystemFeature(
         PackageManager.FEATURE_LOCATION
@@ -330,7 +330,7 @@ class ActualizarMovimientoFragment : Fragment() {
                 categoria = CategoriasGasto.getByDescripcion(binding.categoria.editText?.text.toString()).valor
             }
 
-            val movimiento = Movimiento(args.currentMovimiento.id,
+            val movimiento = Movimiento(0,//args.currentMovimiento.id,
                 monto,
                 moneda,
                 MedioPago.getByDescripcion(binding.medioPago.editText?.text.toString()).valor,
@@ -340,7 +340,8 @@ class ActualizarMovimientoFragment : Fragment() {
                 latitud,
                 longitud,
                 tipoMovimiento,
-                args.currentMovimiento.cotizacionDolar
+                23.1
+//                args.currentMovimiento.cotizacionDolar
             )
 
             mMovimientoViewModel.updateMovimiento(movimiento)
