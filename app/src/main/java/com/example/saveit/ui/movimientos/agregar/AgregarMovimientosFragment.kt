@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.saveit.MainActivity
 import com.example.saveit.R
 import com.example.saveit.data.*
 import com.example.saveit.databinding.AgregarMovimientosFragmentBinding
@@ -43,8 +44,9 @@ import java.util.*
 import kotlin.properties.Delegates
 
 
-class AgregarMovimientosFragment: Fragment() {
+class AgregarMovimientosFragment : Fragment() {
     private var _binding: AgregarMovimientosFragmentBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -61,21 +63,24 @@ class AgregarMovimientosFragment: Fragment() {
 
     private var botonIngresoFueClickeado: Boolean = false
     private var botonEgresoFueClickeado: Boolean = false
-private lateinit  var fragmentPrevio: String
+    private lateinit var fragmentPrevio: String
     private val RQ_SPEECH_REC = 102
 
     private var cotizacionDolar: Double = 0.0
 
     val datePicker = MaterialDatePicker.Builder.datePicker()
-       .setTitleText("Fecha de Movimiento")
-       .build()
+        .setTitleText("Fecha de Movimiento")
+        .build()
 
     @SuppressLint("RestrictedApi")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = AgregarMovimientosFragmentBinding.inflate(inflater, container, false)
         clienteUbicacion = LocationServices.getFusedLocationProviderClient(requireActivity())
-fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displayName.toString()
+        fragmentPrevio =
+            findNavController().previousBackStackEntry?.destination?.displayName.toString()
         iniciarCamposListaDesplegable()
 
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
@@ -99,10 +104,9 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
             agregarItemsAListasDesplegables()
         }
         if (fragmentPrevioEsListaMovimientos()) {
-            findNavController().currentBackStackEntry?.destination?.label ="Actualizar Movimiento"
+            (requireActivity() as MainActivity).supportActionBar?.title = "Actualizar Movimiento"
             setValuesToFields()
         }
-        //TODO:Modificar titulo del layout si es actualizar
 
         binding.botonAceptar.setOnClickListener {
             insertDataToDataBase()
@@ -117,44 +121,46 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
         }
 
         binding.botonUbicacion.setOnClickListener {
-                if((binding.botonUbicacion as MaterialButton).isChecked) {
-                    when {
-                        ContextCompat.checkSelfPermission(
-                            requireActivity(),
+            if ((binding.botonUbicacion as MaterialButton).isChecked) {
+                when {
+                    ContextCompat.checkSelfPermission(
+                        requireActivity(),
                         Manifest.permission.ACCESS_FINE_LOCATION
                     ) == PackageManager.PERMISSION_GRANTED -> {
-                            obtenerUbicacionActual();
-                        }
-                        shouldShowRequestPermissionRationale(
-                            Manifest.permission.ACCESS_FINE_LOCATION) -> {
-                            val alertBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-                            alertBuilder.setCancelable(true)
-                            alertBuilder.setIcon(R.drawable.outline_location_on_black_48)
-                            alertBuilder.setTitle("SaveIT necesita el permiso de ubicación ")
-                            alertBuilder.setMessage("Para ver la distribucion geografica de tus movimentos en los reportes.")
-                            alertBuilder.setPositiveButton(android.R.string.yes,
-                                DialogInterface.OnClickListener { dialog, which ->
-                                    requestPermissions(
-                                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
-                                    )
-                                })
+                        obtenerUbicacionActual();
+                    }
+                    shouldShowRequestPermissionRationale(
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) -> {
+                        val alertBuilder: AlertDialog.Builder =
+                            AlertDialog.Builder(requireContext())
+                        alertBuilder.setCancelable(true)
+                        alertBuilder.setIcon(R.drawable.outline_location_on_black_48)
+                        alertBuilder.setTitle("SaveIT necesita el permiso de ubicación ")
+                        alertBuilder.setMessage("Para ver la distribucion geografica de tus movimentos en los reportes.")
+                        alertBuilder.setPositiveButton(android.R.string.yes,
+                            DialogInterface.OnClickListener { dialog, which ->
+                                requestPermissions(
+                                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+                                )
+                            })
 
-                            val alert: AlertDialog = alertBuilder.create()
-                            alert.show()
+                        val alert: AlertDialog = alertBuilder.create()
+                        alert.show()
 
                     }
-                        else -> {
-                            requestPermissions(
-                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
-                            )
-                        }
+                    else -> {
+                        requestPermissions(
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+                        )
                     }
+                }
             } else {
                 limpiarUbicacion()
             }
-    }
+        }
         if (!tieneHardwareNecesario()) {
-            binding.botonUbicacion.visibility=View.GONE //TODO: PRobar y mejorar la vista
+            binding.botonUbicacion.visibility = View.GONE //TODO: PRobar y mejorar la vista
         }
 
         return binding.root
@@ -163,6 +169,7 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
     private fun fragmentPrevioEsListaMovimientos(): Boolean {
         return fragmentPrevio.contains("listaMovimientosFragment")
     }
+
     private fun modificarTipoMonedaSegunSeleccion() {
         if (!(binding.moneda.editText?.text.toString().isEmpty())) {
             binding.moneda.startIconDrawable = null
@@ -173,7 +180,7 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
     }
 
     private fun limpiarUbicacion() {
-        (binding.botonUbicacion as MaterialButton).isChecked=false
+        (binding.botonUbicacion as MaterialButton).isChecked = false
         longitud = 0.0
         latitud = 0.0
     }
@@ -181,29 +188,42 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
     override fun onStart() {
         super.onStart()
 
-        val result: Call<Respuesta> = DolarService().getDolarValue("USD_ARS", "ultra", "175657d7d9f194e9f441")
+        val result: Call<Respuesta> =
+            DolarService().getDolarValue("USD_ARS", "ultra", "175657d7d9f194e9f441")
 
-        result.enqueue(object: Callback<Respuesta> {
+        result.enqueue(object : Callback<Respuesta> {
             override fun onResponse(call: Call<Respuesta>, response: Response<Respuesta>) {
-               // cotizacionDolar = response.body()!!.USD_ARS
-                cotizacionDolar=10.0
+                // cotizacionDolar = response.body()!!.USD_ARS
+                cotizacionDolar = 10.0
             }
 
             override fun onFailure(call: Call<Respuesta>, error: Throwable) {
-                Toast.makeText(activity, "No se pudo obtener el valor del dólar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    activity,
+                    "No se pudo obtener el valor del dólar",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             1 -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    if (!(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) === PackageManager.PERMISSION_GRANTED)) {
-                            (binding.botonUbicacion as MaterialButton).isChecked=false
+                    if (!(ContextCompat.checkSelfPermission(
+                            requireActivity(),
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) === PackageManager.PERMISSION_GRANTED)
+                    ) {
+                        (binding.botonUbicacion as MaterialButton).isChecked = false
                     }
-                }else{
-                    (binding.botonUbicacion as MaterialButton).isChecked=false
+                } else {
+                    (binding.botonUbicacion as MaterialButton).isChecked = false
                 }
                 return
             }
@@ -213,7 +233,10 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
     private fun setValuesToFields() {
         binding.monto.setText(args.currentMovimiento.monto.toString())
         binding.tipoMoneda.setText(Moneda.getByValor(args.currentMovimiento.moneda), false)
-        binding.medioPagoTexto.setText(MedioPago.getByValor(args.currentMovimiento.medioDePago), false)
+        binding.medioPagoTexto.setText(
+            MedioPago.getByValor(args.currentMovimiento.medioDePago),
+            false
+        )
 
         val fecha = formatDate(args.currentMovimiento.fecha)
 
@@ -224,12 +247,17 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
         if (args.currentMovimiento.tipoMovimiento == TipoMovimiento.INGRESO.valor) {
             binding.botonIngreso.performClick()
 
-            binding.categoriaTexto.setText(CategoriasIngreso.getByValor(args.currentMovimiento.categoria), false)
-        }
-        else {
+            binding.categoriaTexto.setText(
+                CategoriasIngreso.getByValor(args.currentMovimiento.categoria),
+                false
+            )
+        } else {
             binding.botonEgreso.performClick()
 
-            binding.categoriaTexto.setText(CategoriasGasto.getByValor(args.currentMovimiento.categoria), false)
+            binding.categoriaTexto.setText(
+                CategoriasGasto.getByValor(args.currentMovimiento.categoria),
+                false
+            )
         }
     }
 
@@ -258,8 +286,7 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
                 if (!botonIngresoFueClickeado) {
                     binding.botonIngreso.performClick()
                 }
-            }
-            else if (tipoMovimientoVoz == "gasto") {
+            } else if (tipoMovimientoVoz == "gasto") {
                 if (!botonEgresoFueClickeado) {
                     binding.botonEgreso.performClick()
                 }
@@ -282,8 +309,7 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
     private fun getTipoMovimientoVoz(textoVoz: String): String {
         if (textoVoz.contains("ingreso")) {
             return "ingreso"
-        }
-        else if (textoVoz.contains("gasto")) {
+        } else if (textoVoz.contains("gasto")) {
             return "gasto"
         }
 
@@ -303,17 +329,28 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
     }
 
     private fun getMedioDePagoVoz(textoVoz: String): String {
-        MedioPago.values().forEach { m -> if (textoVoz.contains(m.descripcion.toLowerCase())) { return m.descripcion } }
+        MedioPago.values().forEach { m ->
+            if (textoVoz.contains(m.descripcion.toLowerCase())) {
+                return m.descripcion
+            }
+        }
 
         return ""
     }
 
     private fun getCategoriaVoz(textoVoz: String): String {
         if (tipoMovimiento == TipoMovimiento.INGRESO.valor) {
-            CategoriasIngreso.values().forEach { m -> if (textoVoz.contains(m.descripcion.toLowerCase())) { return m.descripcion } }
-        }
-        else {
-            CategoriasGasto.values().forEach { m -> if (textoVoz.contains(m.descripcion.toLowerCase())) { return m.descripcion } }
+            CategoriasIngreso.values().forEach { m ->
+                if (textoVoz.contains(m.descripcion.toLowerCase())) {
+                    return m.descripcion
+                }
+            }
+        } else {
+            CategoriasGasto.values().forEach { m ->
+                if (textoVoz.contains(m.descripcion.toLowerCase())) {
+                    return m.descripcion
+                }
+            }
         }
 
         return ""
@@ -356,10 +393,11 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
         binding.fecha.setText("")
         binding.fecha.clearFocus()
         limpiarUbicacion()
-        if(fragmentPrevioEsListaMovimientos()) {
+        if (fragmentPrevioEsListaMovimientos()) {
             findNavController().previousBackStackEntry?.destination?.let {
                 findNavController().navigate(
-                    it.id)
+                    it.id
+                )
             }
         }
     }
@@ -375,7 +413,9 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
         val itemsMedioPago = MedioPago.values().map { it.descripcion }
         agregarItemsALista(itemsMedioPago, binding.medioPago.editText)
 
-        val itemsCategorias = if (tipoMovimiento == TipoMovimiento.INGRESO.valor) CategoriasIngreso.values().map { it.descripcion } else CategoriasGasto.values().map { it.descripcion }
+        val itemsCategorias =
+            if (tipoMovimiento == TipoMovimiento.INGRESO.valor) CategoriasIngreso.values()
+                .map { it.descripcion } else CategoriasGasto.values().map { it.descripcion }
         binding.categoriaTexto.text.clear()
         binding.categoriaTexto.clearFocus()
         agregarItemsALista(itemsCategorias, binding.categoria.editText)
@@ -384,7 +424,7 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
         agregarItemsALista(itemsMonedas, binding.moneda.editText)
     }
 
-    private fun agregarItemsALista(items: List<String>,componenteLista: EditText?) {
+    private fun agregarItemsALista(items: List<String>, componenteLista: EditText?) {
         val adapter = ArrayAdapter(requireContext(), R.layout.lista_items, items)
         (componenteLista as? AutoCompleteTextView)?.setAdapter(adapter)
     }
@@ -403,13 +443,13 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
 
     private fun insertDataToDataBase() {
         if (validateFields()) {
-            var id:Int
+            var id: Int
 
             var monto = binding.monto.text.toString().toDouble()
             val moneda = Moneda.getByDescripcion(binding.moneda.editText?.text.toString()).valor
             var categoria = 0
 
-            if(fragmentPrevioEsListaMovimientos()) {
+            if (fragmentPrevioEsListaMovimientos()) {
                 id = args.currentMovimiento.id
                 cotizacionDolar = args.currentMovimiento.cotizacionDolar
             } else {
@@ -444,10 +484,18 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
             // Add Data to Database
             if (!fragmentPrevioEsListaMovimientos()) {
                 mMovimientoViewModel.addMovimiento(movimiento)
-                Toast.makeText(requireContext(), "El movimiento fue creado correctamente!", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "El movimiento fue creado correctamente!",
+                    Toast.LENGTH_LONG
+                ).show()
             } else {
                 mMovimientoViewModel.updateMovimiento(movimiento)
-                Toast.makeText(requireContext(), "El movimiento fue creado correctamente!", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "El movimiento fue actualizado correctamente!",
+                    Toast.LENGTH_LONG
+                ).show()
             }
             limpiarContenidoControles()
         }
@@ -458,8 +506,13 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
             || binding.moneda.editText?.text.isNullOrEmpty()
             || binding.medioPago.editText?.text.isNullOrEmpty()
             || binding.categoria.editText?.text.isNullOrEmpty()
-            || binding.fechaMovimiento.editText?.text.isNullOrEmpty()) {
-            Toast.makeText(requireContext(), "Por favor, selecciona todos los campos", Toast.LENGTH_LONG).show()
+            || binding.fechaMovimiento.editText?.text.isNullOrEmpty()
+        ) {
+            Toast.makeText(
+                requireContext(),
+                "Por favor, selecciona todos los campos",
+                Toast.LENGTH_LONG
+            ).show()
 
             return false
         }
@@ -469,14 +522,23 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
 
     private fun askSpeechInput() {
         if (!SpeechRecognizer.isRecognitionAvailable(requireContext())) {
-            Toast.makeText(requireContext(), "El reconocimiento de voz no está disponible", Toast.LENGTH_LONG).show()
-        }
-        else {
+            Toast.makeText(
+                requireContext(),
+                "El reconocimiento de voz no está disponible",
+                Toast.LENGTH_LONG
+            ).show()
+        } else {
             val i = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
 
-            i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            i.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
             i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es-ES")
-            i.putExtra(RecognizerIntent.EXTRA_PROMPT, "El formato es: 'Ingreso/Gasto de X pesos con medio de pago X con categoría X y descripción X'")
+            i.putExtra(
+                RecognizerIntent.EXTRA_PROMPT,
+                "El formato es: 'Ingreso/Gasto de X pesos con medio de pago X con categoría X y descripción X'"
+            )
 
             startActivityForResult(i, RQ_SPEECH_REC)
         }
@@ -486,7 +548,11 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
         super.onViewCreated(view, savedInstanceState)
 
         datePicker.addOnPositiveButtonClickListener {
-            (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(SimpleDateFormat("dd/MM/yyyy").format(SimpleDateFormat("MMM dd, yyyy").parse(datePicker.headerText)).toString())
+            (binding.fechaMovimiento.editText as? AutoCompleteTextView)?.setText(
+                SimpleDateFormat("dd/MM/yyyy").format(
+                    SimpleDateFormat("MMM dd, yyyy").parse(datePicker.headerText)
+                ).toString()
+            )
         }
 
         binding.fecha.setOnClickListener {
@@ -499,7 +565,7 @@ fragmentPrevio = findNavController().previousBackStackEntry?.destination?.displa
     }
 
     fun onFechaMovimientoPressed() {
-        datePicker.show((activity as AppCompatActivity).supportFragmentManager , "tag")
+        datePicker.show((activity as AppCompatActivity).supportFragmentManager, "tag")
 
     }
 

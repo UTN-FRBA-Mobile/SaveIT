@@ -8,12 +8,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.saveit.databinding.ActivityMainBinding
 import com.example.saveit.ui.ahorro.AhorroFragment
 import com.example.saveit.ui.main.MainFragment
-import com.example.saveit.ui.movimientos.actualizar.ActualizarMovimientoFragment
 import com.example.saveit.ui.movimientos.agregar.AgregarMovimientosFragment
 import com.example.saveit.ui.movimientos.lista.ListaMovimientosFragment
 import com.example.saveit.ui.reportes.ReportesFragment
 
-class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionListener, AhorroFragment.OnFragmentInteractionListener, ListaMovimientosFragment.OnFragmentInteractionListener, AgregarMovimientosFragment.OnFragmentInteractionListener, ReportesFragment.OnFragmentInteractionListener, ActualizarMovimientoFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionListener, AhorroFragment.OnFragmentInteractionListener, ListaMovimientosFragment.OnFragmentInteractionListener, AgregarMovimientosFragment.OnFragmentInteractionListener, ReportesFragment.OnFragmentInteractionListener {
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

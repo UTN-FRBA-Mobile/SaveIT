@@ -36,9 +36,9 @@
     <fragment
         android:id="@+id/agregarMovimientosFragment"
         android:name="com.example.saveit.ui.movimientos.agregar.AgregarMovimientosFragment"
-        android:label="Agregar Movimientossss" >
+        android:label="Agregar Movimientos" >
         <actionsetOnNavigationItemSelectedToAgregarListener
-            android:id="@+id/action_actualizarMovimientoFragment_to_agregarMovimientosFragment"
+            android:id="@+id/action_listaMovimientosFragment_to_agregarMovimientosFragment"
             app:destination="@id/agregarMovimientosFragment" />
         <argument
             android:name="currentMovimiento"
@@ -48,14 +48,6 @@
             app:destination="@id/mainFragment" />
         <action
             android:id="@+id/action_agregarMovimientosFragment_to_listaMovimientosFragment"
-            app:destination="@id/listaMovimientosFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/actualizarMovimientoFragment"
-        android:name="com.example.saveit.ui.movimientos.actualizar.ActualizarMovimientoFragment"
-        android:label="Actualizar Movimiento" >
-        <action
-            android:id="@+id/action_actualizarMovimientoFragment_to_listaMovimientosFragment2"
             app:destination="@id/listaMovimientosFragment" />
     </fragment>
     <fragment
