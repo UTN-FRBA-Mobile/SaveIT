@@ -63,6 +63,18 @@ Tenemos que elegir Tipo de Movimiento, Año y opcionalmente el mes, para grafica
 
 ![image](https://user-images.githubusercontent.com/20273903/125209221-c5a26900-e26d-11eb-9c2a-e5bb3600fab7.png)
 
+#### Reportes de Barra
+Tenemos que elegir Tipo de Movimiento, Año y opcionalmente el mes, para graficar el reporte en forma de barra. 
+
+![image](https://user-images.githubusercontent.com/20273903/125209265-000c0600-e26e-11eb-99ad-6b1987d5fd8a.png)
+
+#### Reportes por Fecha
+Tenemos que elegir Tipo de Movimiento, Categoría, Medio de Pago y Período para graficar el reporte en forma de línea en el tiempo.
+
+![image](https://user-images.githubusercontent.com/20273903/125209283-229e1f00-e26e-11eb-96a5-20e5922ccd45.png)
+
+![image](https://user-images.githubusercontent.com/20273903/125209293-36e21c00-e26e-11eb-9406-7ad74edf7196.png)
+
 
 [Volver Arriba](#saveit)
 
