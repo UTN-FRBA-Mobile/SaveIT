@@ -1,7 +1,10 @@
 # SaveIT
 SaveIt
 App de Gestión de Economía Personal (SaveIT)
-[Screenshot_9](https://user-images.githubusercontent.com/11811173/125207274-b4535f80-e261-11eb-901f-910a0288c015.jpg)
+
+
+![Screenshot_9](https://user-images.githubusercontent.com/11811173/125207274-b4535f80-e261-11eb-901f-910a0288c015.jpg)
+
 Es una aplicación que permite generar reportes y estadísticas en base a los egresos e ingresos que el usuario carga en la misma.
 
 Ingresos y Egresos
