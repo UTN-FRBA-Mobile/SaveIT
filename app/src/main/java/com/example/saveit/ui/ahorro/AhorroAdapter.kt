@@ -35,10 +35,10 @@ class AhorroAdapter: RecyclerView.Adapter<AhorroAdapter.MyViewHolder>(){
         val currentItem = ahorroList[position]
 
         if (currentItem.tipoMovimiento == 0) {
-            holder.itemView.findViewById<LinearLayout>(R.id.layout_movimiento).setBackground(ContextCompat.getDrawable(context, R.drawable.custom_layout_green_style))
+            holder.itemView.findViewById<LinearLayout>(R.id.layout_movimiento).setBackground(ContextCompat.getDrawable(context, R.drawable.custom_layout_red_style))
         }
         else {
-            holder.itemView.findViewById<LinearLayout>(R.id.layout_movimiento).setBackground(ContextCompat.getDrawable(context, R.drawable.custom_layout_red_style))
+            holder.itemView.findViewById<LinearLayout>(R.id.layout_movimiento).setBackground(ContextCompat.getDrawable(context, R.drawable.custom_layout_green_style))
         }
 
         val fecha = formatDate(currentItem.fecha)
@@ -68,8 +68,15 @@ class AhorroAdapter: RecyclerView.Adapter<AhorroAdapter.MyViewHolder>(){
     }
 
     fun getMontoTotal(): Double {
-        val ingresos = String.format("%.2f", ahorroList.filter { a -> a.tipoMovimiento == TipoMovimiento.INGRESO.valor }.map { a -> a.monto * a.cotizacionDolar }.sum()).toDouble()
-        val egresos = String.format("%.2f", ahorroList.filter { a -> a.tipoMovimiento == TipoMovimiento.EGRESO.valor }.map { a -> a.monto * a.cotizacionDolar }.sum()).toDouble()
+        val ingresos = String.format("%.2f", ahorroList.filter { a ->
+            a.tipoMovimiento == TipoMovimiento.INGRESO.valor }.map { movimiento ->
+                if (movimiento.moneda == Moneda.PESO.valor) movimiento.monto
+                else movimiento.monto * movimiento.cotizacionDolar }.sum()).toDouble() * -1
+
+        val egresos = String.format("%.2f", ahorroList.filter { a ->
+            a.tipoMovimiento == TipoMovimiento.EGRESO.valor }.map { movimiento ->
+                if (movimiento.moneda == Moneda.PESO.valor) movimiento.monto
+                else movimiento.monto * movimiento.cotizacionDolar }.sum()).toDouble() * -1
 
         return ingresos - egresos
     }

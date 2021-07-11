@@ -152,7 +152,7 @@
                         android:gravity="right"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:text="Total = "
+                        android:text="Saldo = "
                         android:textAlignment="gravity"
                         android:textSize="20dp"
                         app:counterEnabled="true"
@@ -160,6 +160,41 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/textViewMontoTotal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_weight="50"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="15dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_weight="50"
+                        android:gravity="right"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text="Ahorros = "
+                        android:textAlignment="gravity"
+                        android:textSize="20dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="50" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewMontoAhorros"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"

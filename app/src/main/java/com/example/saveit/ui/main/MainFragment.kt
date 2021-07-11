@@ -8,12 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.saveit.R
+import com.example.saveit.data.Moneda
+import com.example.saveit.data.TipoMovimiento
 import com.example.saveit.databinding.MainFragmentBinding
 import com.example.saveit.viewmodel.MovimientoViewModel
+import kotlinx.android.synthetic.main.reportes_date_chart_fragment.*
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -37,18 +39,18 @@ class MainFragment: Fragment() {
             title = it.getString(ARG_TITLE)
         }
 
-        monthsDictionary.put(0, "Enero");
-        monthsDictionary.put(1, "Febrero");
-        monthsDictionary.put(2, "Marzo");
-        monthsDictionary.put(3, "Abril");
-        monthsDictionary.put(4, "Mayo");
-        monthsDictionary.put(5, "Junio");
-        monthsDictionary.put(6, "Julio");
-        monthsDictionary.put(7, "Agosto");
-        monthsDictionary.put(8, "Septiembre");
-        monthsDictionary.put(9, "Octubre");
-        monthsDictionary.put(10, "Noviembre");
-        monthsDictionary.put(11, "Diciembre");
+        monthsDictionary.put(0, "Enero")
+        monthsDictionary.put(1, "Febrero")
+        monthsDictionary.put(2, "Marzo")
+        monthsDictionary.put(3, "Abril")
+        monthsDictionary.put(4, "Mayo")
+        monthsDictionary.put(5, "Junio")
+        monthsDictionary.put(6, "Julio")
+        monthsDictionary.put(7, "Agosto")
+        monthsDictionary.put(8, "Septiembre")
+        monthsDictionary.put(9, "Octubre")
+        monthsDictionary.put(10, "Noviembre")
+        monthsDictionary.put(11, "Diciembre")
     }
 
     override fun onCreateView(
@@ -88,19 +90,20 @@ class MainFragment: Fragment() {
 
         var ingresosDisplay: Double = 0.toDouble()
         var gastosDisplay: Double = 0.toDouble()
+        var ahorrosDisplay: Double
 
         mMovimientoViewModel = ViewModelProvider(this).get(MovimientoViewModel::class.java)
 
         var desde = getFirstDayOfMonth()
         var hasta = getLastDayOfMonth()
 
-        mMovimientoViewModel.readIngresos(desde, hasta).observe(viewLifecycleOwner, Observer { ingresos ->
+        mMovimientoViewModel.readIngresos(desde, hasta).observe(viewLifecycleOwner, { ingresos ->
             if (ingresos != null)
                 ingresosDisplay = String.format("%.2f", ingresos).toDouble()
 
             binding.textViewMontoIngresos.text = "+ \$" + ingresosDisplay
 
-            mMovimientoViewModel.readGastos(desde, hasta).observe(viewLifecycleOwner, Observer { gastos ->
+            mMovimientoViewModel.readGastos(desde, hasta).observe(viewLifecycleOwner, { gastos ->
                 if (gastos != null)
                     gastosDisplay = String.format("%.2f", gastos).toDouble()
 
@@ -112,6 +115,28 @@ class MainFragment: Fragment() {
                     binding.textViewMontoTotal.text = "+ \$" + saldo
                 else
                     binding.textViewMontoTotal.text = "- \$" + saldo * -1
+
+                mMovimientoViewModel.readAhorros().observe(viewLifecycleOwner, { ahorros ->
+                    var actualSavings = 0.0
+                    if (ahorros != null) {
+                         actualSavings = ahorros.map{ ahorro ->
+                            if (ahorro.moneda == Moneda.PESO.valor
+                                && ahorro.tipoMovimiento == TipoMovimiento.INGRESO.valor) ahorro.monto * -1.0
+
+                            else if (ahorro.moneda == Moneda.PESO.valor
+                                && ahorro.tipoMovimiento == TipoMovimiento.EGRESO.valor) ahorro.monto
+
+                            else if (ahorro.moneda == Moneda.DOLAR.valor
+                                && ahorro.tipoMovimiento == TipoMovimiento.INGRESO.valor) ahorro.monto * ahorro.cotizacionDolar * -1.0
+
+                            else if (ahorro.moneda == Moneda.DOLAR.valor
+                                && ahorro.tipoMovimiento == TipoMovimiento.EGRESO.valor) ahorro.monto * ahorro.cotizacionDolar
+
+                            else 0.0}.sum()
+                    }
+                    ahorrosDisplay = String.format("%.2f", actualSavings).toDouble()
+                    binding.textViewMontoAhorros.text = "+ \$" + ahorrosDisplay
+                })
             })
         })
     }

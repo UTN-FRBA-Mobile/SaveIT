@@ -97,7 +97,7 @@ class ActualDateChartFragment: Fragment()  {
                 }}
 
                 when {(categoriaSelec != "Todas") and (medioPagoSelec == "Todos") -> {
-                    reporteFechaViewModel.readSpecificTimeDataPaymentAll(CategoriasIngreso.getByDescripcion(categoriaSelec).valor,
+                    reporteFechaViewModel.readSpecificTimeDataPaymentAll(CategoriasGasto.getByDescripcion(categoriaSelec).valor,
                         TipoMovimiento.EGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, { egresos ->
                         processGraph(egresos, "Egresos Categoría: $categoriaSelec")
@@ -113,7 +113,7 @@ class ActualDateChartFragment: Fragment()  {
                 }}
 
                 when {(categoriaSelec != "Todas") and (medioPagoSelec != "Todos") -> {
-                    reporteFechaViewModel.readSpecificTimeDataCategoryPayment(CategoriasIngreso.getByDescripcion(categoriaSelec).valor,
+                    reporteFechaViewModel.readSpecificTimeDataCategoryPayment(CategoriasGasto.getByDescripcion(categoriaSelec).valor,
                         MedioPago.getByDescripcion(medioPagoSelec).valor,
                         TipoMovimiento.EGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, { egresos ->

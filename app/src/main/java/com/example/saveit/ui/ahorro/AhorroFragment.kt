@@ -55,7 +55,7 @@ class AhorroFragment: Fragment() {
             if (monto >= 0)
                 binding.montoTotal.text = "Total: + \$" + monto
             else
-                binding.montoTotal.text = "Total: - \$" + monto * -1
+                binding.montoTotal.text = "Total: - \$" + monto
         })
 
         loadYearsAndMonths()
@@ -88,7 +88,7 @@ class AhorroFragment: Fragment() {
                     if (monto >= 0)
                         binding.montoTotal.text = "Total: + \$" + monto
                     else
-                        binding.montoTotal.text = "Total: - \$" + monto * -1
+                        binding.montoTotal.text = "Total: - \$" + monto
                 })
             }
             else {
