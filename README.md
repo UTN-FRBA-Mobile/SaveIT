@@ -115,7 +115,7 @@ La información desde el punto de vista del flujo económico se ve reflejada en 
 <a name="ingresoporvoz"/>
 
 ### Ingreso por Voz
-xxxxxxxxxxxxxxxxxxx
+Se pueden crear movimientos por comando de voz utilizando el asistente de Google.
 
 [Volver Arriba](#saveit)
 
