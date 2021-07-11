@@ -1,40 +1,36 @@
 # SaveIT
-SaveIt
-App de Gestión de Economía Personal (SaveIT)
-
+## App de Gestión de Economía Personal
 
 ![Screenshot_9](https://user-images.githubusercontent.com/11811173/125207274-b4535f80-e261-11eb-901f-910a0288c015.jpg)
 
-Es una aplicación que permite generar reportes y estadísticas en base a los egresos e ingresos que el usuario carga en la misma.
+### Resumen
+Es una aplicación que permite registrar los movimientos económicos de un hogar.
+Con esta información podemos generar reportes y estadísticas que nos ayuden a tomar decisiones.
 
-Ingresos y Egresos
-Se podrán hacer ABMs de ingresos y egresos, que son entidades con los siguientes atributos:
+### Pantalla Inicial
+En la pantalla inicial podemos ver el período actual, el saldo del período y los ahorros totales.
+Desde esta pantalla podemos navegar a la sección de ahorros, a la carga de movimientos, a la lista de movimientos y a la lista de reportes.
+
+### Movimientos
+Se pueden cargar movimientos de tipo Ingresos o Egreso, con las siguientes propiedades:
 Monto
+Moneda (ARS/USD)
 Medio de pago
 Categoría
+Fecha
 Descripción
-Fecha!
+Ubicación
 
-Moneda
-Ubicación (provista por el GPS o por Google Assistant)
+### Reportes y gráficos
+Se pueden generar reportes de barra, de torta, de linea, sobre todos los movimientos, por semana, mes, año, etc.
 
-Categorías de egresos e ingresos (precargadas):
-La aplicación tendrá un módulo de ABM de categorías, donde el usuario podrá personalizar las categorías que le resulten convenientes y definir su tipo (ingreso/egreso)
+### Ahorros
+Cuando ahorramos (separamos dinero de nuestro ingreso mensual y lo guardamos) lo cargamos en el sistema como un movimiento de tipo Egreso y Categoría Ahorro.
+Cuando utilizamos dinero de nuestros ahorros (rescatamos dinero de nuestros ahorros y lo usamos como ingreso mensual) lo cargamos en el sistema como un movimiento de tipo Ingreso y Categoría Ahorro.
 
-Medios de pago:
-La aplicación tendrá un módulo de ABM de medios de pago, donde el usuario podrá personalizar los medios de pago que le resulten convenientes. Si genera un gasto con tarjeta de crédito en cuotas aparece el gasto en los meses subsiguientes.
+<br>
 
-Reportes y gráficos (tablas, evolución en el tiempo de categorías a elección)
-Contará con los siguientes reportes semanales, mensuales y anuales.
-El reporte será flexible, se puede elegir categorías, período de tiempo, ubicación (país), tipo de pago, etc.
-
-ABM de Monedas (ars/usd/eur/real/etc). (precargadas)
-A la hora de los reportes, se mostrarán en su moneda original.
-=> Mockear el servicio de tipo de cambio
-
-Los ahorros se pueden modelar como una categoría de tipo egreso.
-Vas anotando lo que ahorraste en un determinado día. 
-En la moneda que corresponda: dólares, euro, bitcoin, etc. Se puede hacer reportes y ver cómo evolucionan los movimientos de los ahorros en el tiempo (no los ahorros en sí), como se puede hacer con cualquier otra categoría.
+# WIP
 
 Estadísticas de ingresos y egresos.
 
@@ -42,19 +38,13 @@ Configurar el almacenamiento de los datos en una ruta donde el backup alcance es
 
 Google Assistant: Permitir dar de alta un ingreso mediante google assistant, por ejemplo “OK Google, registra un gasto de $X en Y medio de pago en Z categoría
 
----------
-
 ABMs -> Categorías | Medio de Pago | Alertas | Monedas | Medios de Cobranza (?)
 
 Consultar almacenamiento de perfiles y datos de usuarios -> Local?
 => SI, asegurarse que se backupee la informacion
-
----------
 
 NO ABM DE Categorías
 
 NO ABM DE MONEDAS
 
 NO ABM DE MEDIOS DE PAGO
-
-
