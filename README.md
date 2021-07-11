@@ -45,6 +45,10 @@ Fecha
 Descripción  
 Ubicación
 
+Cuando ahorramos (separamos dinero de nuestro ingreso mensual y lo guardamos), lo cargamos en el sistema como un movimiento de tipo Egreso y Categoría Ahorro.  
+
+Cuando utilizamos dinero de nuestros ahorros (rescatamos dinero de nuestros ahorros y lo usamos como ingreso mensual), lo cargamos en el sistema como un movimiento de tipo Ingreso y Categoría Ahorro.
+
 ![image](https://user-images.githubusercontent.com/20273903/125209132-241b1780-e26d-11eb-95e8-b45457c8994b.png)
 
 
@@ -75,6 +79,12 @@ Tenemos que elegir Tipo de Movimiento, Categoría, Medio de Pago y Período para
 
 ![image](https://user-images.githubusercontent.com/20273903/125209293-36e21c00-e26e-11eb-9406-7ad74edf7196.png)
 
+#### Reportes por Ubicación
+Tenemos que elegir Año y Mes para mostrar la ubicación de los movimientos realizados en ese período.
+
+![image](https://user-images.githubusercontent.com/20273903/125209394-e1f2d580-e26e-11eb-926d-0ad799108678.png)
+
+
 
 [Volver Arriba](#saveit)
 
@@ -83,10 +93,6 @@ Tenemos que elegir Tipo de Movimiento, Categoría, Medio de Pago y Período para
 
 ### Ahorros
 En esta pantalla podemos ver el reporte desde el punto de vista de nuestros ahorros y como se van acumulando.
-
-Cuando ahorramos (separamos dinero de nuestro ingreso mensual y lo guardamos), lo cargamos en el sistema como un movimiento de tipo Egreso y Categoría Ahorro.  
-
-Cuando utilizamos dinero de nuestros ahorros (rescatamos dinero de nuestros ahorros y lo usamos como ingreso mensual), lo cargamos en el sistema como un movimiento de tipo Ingreso y Categoría Ahorro.
 
 ![image](https://user-images.githubusercontent.com/20273903/125209142-3b5a0500-e26d-11eb-9dff-7837952b8553.png)
 
