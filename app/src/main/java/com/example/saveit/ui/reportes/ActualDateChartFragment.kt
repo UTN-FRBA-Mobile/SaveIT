@@ -14,6 +14,7 @@ import com.example.saveit.databinding.ActualDateChartFragmentBinding
 import com.example.saveit.model.ResultadoReporte
 import com.example.saveit.viewmodel.ReporteFechaViewModel
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -56,7 +57,7 @@ class ActualDateChartFragment: Fragment()  {
                 when {(categoriaSelec == "Todas") and (medioPagoSelec == "Todos") -> {
                     reporteFechaViewModel.readSpecificTimeData(TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, { ingresos ->
-                        processGraph(ingresos, "Ingresos")
+                        processGraph(ingresos, "Ingresos Totales")
                     })
                 }}
 
@@ -64,7 +65,7 @@ class ActualDateChartFragment: Fragment()  {
                     reporteFechaViewModel.readSpecificTimeDataPaymentAll(CategoriasIngreso.getByDescripcion(categoriaSelec).valor,
                         TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, { ingresos ->
-                        processGraph(ingresos, "Ingresos")
+                        processGraph(ingresos, "Ingresos Categoría: $categoriaSelec")
                     })
                 }}
 
@@ -72,7 +73,7 @@ class ActualDateChartFragment: Fragment()  {
                     reporteFechaViewModel.readSpecificTimeDataCategoryAll(MedioPago.getByDescripcion(medioPagoSelec).valor,
                         TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, { ingresos ->
-                        processGraph(ingresos, "Ingresos")
+                        processGraph(ingresos, "Ingresos Medio de Pago: $medioPagoSelec")
                     })
                 }}
 
@@ -81,7 +82,7 @@ class ActualDateChartFragment: Fragment()  {
                         MedioPago.getByDescripcion(medioPagoSelec).valor,
                         TipoMovimiento.INGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, { ingresos ->
-                        processGraph(ingresos, "Ingresos")
+                        processGraph(ingresos, "Ingresos Categoría: $categoriaSelec, Medio de Pago: $medioPagoSelec")
                     })
                 }}
 
@@ -91,7 +92,7 @@ class ActualDateChartFragment: Fragment()  {
                 when {(categoriaSelec == "Todas") and (medioPagoSelec == "Todos") -> {
                     reporteFechaViewModel.readSpecificTimeData(TipoMovimiento.EGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, { egresos ->
-                        processGraph(egresos, "Egresos")
+                        processGraph(egresos, "Egresos Totales")
                     })
                 }}
 
@@ -99,7 +100,7 @@ class ActualDateChartFragment: Fragment()  {
                     reporteFechaViewModel.readSpecificTimeDataPaymentAll(CategoriasIngreso.getByDescripcion(categoriaSelec).valor,
                         TipoMovimiento.EGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, { egresos ->
-                        processGraph(egresos, "Egresos")
+                        processGraph(egresos, "Egresos Categoría: $categoriaSelec")
                     })
                 }}
 
@@ -107,7 +108,7 @@ class ActualDateChartFragment: Fragment()  {
                     reporteFechaViewModel.readSpecificTimeDataCategoryAll(MedioPago.getByDescripcion(medioPagoSelec).valor,
                         TipoMovimiento.EGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, { egresos ->
-                        processGraph(egresos, "Egresos")
+                        processGraph(egresos, "Egresos Medio de Pago: $medioPagoSelec")
                     })
                 }}
 
@@ -116,7 +117,7 @@ class ActualDateChartFragment: Fragment()  {
                         MedioPago.getByDescripcion(medioPagoSelec).valor,
                         TipoMovimiento.EGRESO.valor,
                         periodoDeTiempo.query_str).observe(viewLifecycleOwner, { egresos ->
-                        processGraph(egresos, "Egresos")
+                        processGraph(egresos, "Egresos Categoría: $categoriaSelec, Medio de Pago: $medioPagoSelec")
                     })
                 }}
 
@@ -136,6 +137,12 @@ class ActualDateChartFragment: Fragment()  {
                     Toast.LENGTH_LONG).show()
             }
             else -> {
+
+                var graphColor = resources.getColor(R.color.green)
+                if (inputType.contains("Egresos")){
+                    graphColor = resources.getColor(R.color.red)
+                }
+
                 var pesifiedMap = mutableMapOf<Long, Float>()
                 input.forEach { resultadoReporte ->
                     val day = pesifiedMap[resultadoReporte.Day]
@@ -159,12 +166,12 @@ class ActualDateChartFragment: Fragment()  {
 
                 val lineIngresosEntry = shiftedMap.map { entry -> Entry(entry.key.toFloat(), entry.value) }
                 val linedataset1 = LineDataSet(lineIngresosEntry, inputType)
-                linedataset1.color = resources.getColor(R.color.green)
+                linedataset1.color = graphColor
                 linedataset1.setDrawCircles(true)
-                linedataset1.setCircleColor(resources.getColor(R.color.green))
+                linedataset1.setCircleColor(graphColor)
                 linedataset1.circleRadius = 5f
                 linedataset1.setDrawFilled(true)
-                linedataset1.fillColor = resources.getColor(R.color.green)
+                linedataset1.fillColor = graphColor
                 linedataset1.fillAlpha = 60
                 linedataset1.valueTextSize = 0f
 
@@ -174,13 +181,21 @@ class ActualDateChartFragment: Fragment()  {
                 xAxis.isGranularityEnabled = true
                 xAxis.setCenterAxisLabels(true)
                 xAxis.granularity = 1f
+                xAxis.textSize = 10f
                 xAxis.valueFormatter = IndexAxisValueFormatter(xLabel)
+
+                val yRightAxis: YAxis = binding.lineChart.axisRight
+                yRightAxis.valueFormatter = IndexAxisValueFormatter(listOf<String>())
+
+                val yLeftAxis: YAxis = binding.lineChart.axisLeft
+                yLeftAxis.textSize = 10f
 
                 val data = LineData(linedataset1)
                 binding.lineChart.setBackgroundColor(resources.getColor(R.color.white))
                 binding.lineChart.data = data
-                binding.lineChart.animateXY(1500, 1500)
+                binding.lineChart.animateXY(1000, 1000)
                 binding.lineChart.description.text = ""
+                binding.lineChart.legend.textSize = 12f
             }
         }
     }

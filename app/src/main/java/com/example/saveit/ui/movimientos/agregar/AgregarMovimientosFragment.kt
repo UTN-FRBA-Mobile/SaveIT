@@ -193,11 +193,18 @@ class AgregarMovimientosFragment : Fragment() {
 
         result.enqueue(object : Callback<Respuesta> {
             override fun onResponse(call: Call<Respuesta>, response: Response<Respuesta>) {
-                // cotizacionDolar = response.body()!!.USD_ARS
-                cotizacionDolar = 10.0
+                when {
+                    response.raw().code() != 200 -> {
+                        cotizacionDolar = 95.0 //fallback value in case api fails //should be replaced by a secondary api
+                    }
+                    response.raw().code() == 200 -> {
+                        cotizacionDolar = response.body()!!.USD_ARS
+                    }
+                }
             }
 
             override fun onFailure(call: Call<Respuesta>, error: Throwable) {
+
                 Toast.makeText(
                     activity,
                     "No se pudo obtener el valor del dólar",
