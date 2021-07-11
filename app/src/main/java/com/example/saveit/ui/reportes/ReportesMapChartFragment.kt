@@ -92,6 +92,7 @@ class ReportesMapChartFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun cargarMapa(movimientos: List<Movimiento>?) {
+        mMap.clear()
         if (movimientos != null) {
             for(movimiento in movimientos){
                 createMarker(movimiento)
@@ -109,7 +110,9 @@ class ReportesMapChartFragment : Fragment(), OnMapReadyCallback {
                         null
                     )
              break
-
+                    if(i == movimientos.size-1){
+                        Toast.makeText(requireContext(), "No hay movimientos con ubicacion en el periodo", Toast.LENGTH_LONG).show()
+                    }
                 }
 
             }
