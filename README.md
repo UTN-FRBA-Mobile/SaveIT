@@ -1,4 +1,5 @@
 <a name="saveit"/>
+
 # SaveIT (App de Gestión de Economía Hogareña)
 
 ## Indice
@@ -10,6 +11,7 @@
 [Ingreso por Voz](#ingreso-por-voz)  
 [Navegacion](#navegacion)
 
+
 <a name="resumen"/>
 
 ### Resumen
@@ -18,6 +20,7 @@ Con esta información podemos generar reportes y estadísticas que nos ayuden a 
 
 [Volver Arriba](#saveit)
 
+
 <a name="pantallainicial"/>
 
 ### Pantalla Inicial
@@ -25,6 +28,7 @@ En la pantalla inicial podemos ver el período actual, el saldo del período y l
 Desde esta pantalla podemos navegar a la sección de ahorros, a la carga de movimientos, a la lista de movimientos y a la lista de reportes.
 
 [Volver Arriba](#saveit)
+
 
 <a name="movimientos"/>
 
@@ -40,12 +44,14 @@ Ubicación
 
 [Volver Arriba](#saveit)
 
+
 <a name="reportes"/>
 
 ### Reportes y Graficos
 Se pueden generar reportes de barra, de torta, de linea, sobre todos los movimientos, por semana, mes, año, etc.
 
 [Volver Arriba](#saveit)
+
 
 <a name="ahorros"/>
 
@@ -55,6 +61,7 @@ Cuando utilizamos dinero de nuestros ahorros (rescatamos dinero de nuestros ahor
 
 [Volver Arriba](#saveit)
 
+
 <a name="ingresoporvoz"/>
 
 ### Ingreso por Voz
@@ -62,12 +69,14 @@ xxxxxxxxxxxxxxxxxxx
 
 [Volver Arriba](#saveit)
 
+
 <a name="navegacion"/>
 
 ### Navegacion
 ![Screenshot_9](https://user-images.githubusercontent.com/11811173/125207274-b4535f80-e261-11eb-901f-910a0288c015.jpg)
 
 [Volver Arriba](#saveit)
+
 
 <br>
 
