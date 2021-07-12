@@ -8,6 +8,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
+import android.location.Location
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
@@ -34,7 +35,10 @@ import com.example.saveit.retrofit.DolarService
 import com.example.saveit.retrofit.Respuesta
 import com.example.saveit.viewmodel.MovimientoViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
 import retrofit2.Call
@@ -51,7 +55,7 @@ class AgregarMovimientosFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var clienteUbicacion: FusedLocationProviderClient
-
+    private var tokenDeCancelacion = CancellationTokenSource()
     private var listener: OnFragmentInteractionListener? = null
 
     private val args by navArgs<AgregarMovimientosFragmentArgs>()
@@ -127,17 +131,20 @@ class AgregarMovimientosFragment : Fragment() {
                         requireActivity(),
                         Manifest.permission.ACCESS_FINE_LOCATION
                     ) == PackageManager.PERMISSION_GRANTED -> {
+                        System.out.println("#####################################PASO POR WHEN TENGO PERMISO BUSCO UBICACION")
                         obtenerUbicacionActual();
+                        System.out.println("#####################################PASO POR WHEN TENGO PERMISO LLEGO UBICACION: Lat"+latitud+" Long:"+longitud)
                     }
                     shouldShowRequestPermissionRationale(
                         Manifest.permission.ACCESS_FINE_LOCATION
                     ) -> {
+                        System.out.println("#####################################PASO POR shouldShowRequestPermissionRationale AUN NO TENGO PERMISO")
                         val alertBuilder: AlertDialog.Builder =
                             AlertDialog.Builder(requireContext())
                         alertBuilder.setCancelable(true)
                         alertBuilder.setIcon(R.drawable.outline_location_on_black_48)
                         alertBuilder.setTitle("SaveIT necesita el permiso de ubicación ")
-                        alertBuilder.setMessage("Para ver la distribucion geografica de tus movimentos en los reportes.")
+                        alertBuilder.setMessage("Para ver la distribución geográfica de tus movimientos, en los reportes.")
                         alertBuilder.setPositiveButton(android.R.string.yes,
                             DialogInterface.OnClickListener { dialog, which ->
                                 requestPermissions(
@@ -150,18 +157,20 @@ class AgregarMovimientosFragment : Fragment() {
 
                     }
                     else -> {
+                        System.out.println("#####################################PASO POR ELSE del WHEN PIDO PERMISO")
                         requestPermissions(
                             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
                         )
                     }
                 }
             } else {
+                System.out.println("#####################################PASO POR ELSE del IF LIMPIO UBICACION")
                 limpiarUbicacion()
             }
         }
-        if (!tieneHardwareNecesario()) {
-            binding.botonUbicacion.visibility = View.GONE //TODO: PRobar y mejorar la vista
-        }
+//        if (!tieneHardwareNecesario()) {
+//            binding.botonUbicacion.visibility = View.GONE //TODO: PRobar y mejorar la vista
+//        }
 
         return binding.root
     }
@@ -219,17 +228,22 @@ class AgregarMovimientosFragment : Fragment() {
         permissions: Array<String>,
         grantResults: IntArray
     ) {
+        System.out.println("#####################################ENTRO EN onRequestPermissionsResult ")
         when (requestCode) {
             1 -> {
+                System.out.println("##################################### WHEN opcion 1 del onRequestPermissionsResult ")
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    System.out.println("##################################### WHEN opcion 1 primer IF del onRequestPermissionsResult ")
                     if (!(ContextCompat.checkSelfPermission(
                             requireActivity(),
                             Manifest.permission.ACCESS_FINE_LOCATION
                         ) === PackageManager.PERMISSION_GRANTED)
                     ) {
+                        System.out.println("##################################### WHEN opcion 1 segundo IF del onRequestPermissionsResult ")
                         (binding.botonUbicacion as MaterialButton).isChecked = false
                     }
                 } else {
+                    System.out.println("##################################### WHEN opcion 1 else del segundo IF del onRequestPermissionsResult ")
                     (binding.botonUbicacion as MaterialButton).isChecked = false
                 }
                 return
@@ -375,13 +389,13 @@ class AgregarMovimientosFragment : Fragment() {
         return ""
     }
 
-    private fun tieneHardwareNecesario() = (requireActivity().packageManager.hasSystemFeature(
-        PackageManager.FEATURE_LOCATION
-    ) && requireActivity().packageManager.hasSystemFeature(
-        PackageManager.FEATURE_LOCATION_GPS
-    ) && requireActivity().packageManager.hasSystemFeature(
-        PackageManager.FEATURE_LOCATION_NETWORK
-    ))
+//    private fun tieneHardwareNecesario() = (requireActivity().packageManager.hasSystemFeature(
+//        PackageManager.FEATURE_LOCATION
+//    ) && requireActivity().packageManager.hasSystemFeature(
+//        PackageManager.FEATURE_LOCATION_GPS
+//    ) && requireActivity().packageManager.hasSystemFeature(
+//        PackageManager.FEATURE_LOCATION_NETWORK
+//    ))
 
     private fun limpiarContenidoControles() {
         iniciarCamposListaDesplegable()
@@ -438,14 +452,37 @@ class AgregarMovimientosFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     private fun obtenerUbicacionActual() {
-        clienteUbicacion.lastLocation
-            .addOnSuccessListener { u ->
-                if (u != null) {
-                    latitud = u.latitude
-                    longitud = u.longitude
-                }
-
+        System.out.println("##################################### ENTRO EN obtenerUbicacionActual ")
+        val currentLocationTask: Task<Location> = clienteUbicacion.getCurrentLocation(PRIORITY_HIGH_ACCURACY, tokenDeCancelacion.token)
+        currentLocationTask.addOnCompleteListener { task: Task<Location> ->
+            System.out.println("##################################### ENTRO EN currentLocationTask -> addOnCompleteListener")
+            val result = if (task.isSuccessful) {
+                latitud = task.result.latitude
+                longitud = task.result.longitude
+                System.out.println("##################################### Resultado Success: Lat " + latitud + " LONG: " + longitud)
+//                val result: Location = task.result
+//                "Location (success): ${result.latitude}, ${result.longitude}"
+            } else {
+                val exception = task.exception
+                "Location (failure): $exception"
+                Toast.makeText(
+                    requireContext(),
+                    "No se pudo obtener la ubicación, $exception",
+                    Toast.LENGTH_LONG
+                ).show()
             }
+        }
+//        clienteUbicacion.lastLocation
+//            .addOnSuccessListener { u ->
+//                System.out.println("##################################### ENTRO EN obtenerUbicacionActual -> addOnSuccessListener")
+//                if (u != null) {
+//                    System.out.println("##################################### ENTRO EN obtenerUbicacionActual -> addOnSuccessListener -> IF")
+//                    System.out.println("##################################### UBICION NO ES NULA: Lat "+u.latitude+" LONG: "+u.longitude)
+//                    latitud = u.latitude
+//                    longitud = u.longitude
+//                }
+//                System.out.println("##################################### ENTRO EN obtenerUbicacionActual -> FUERA addOnSuccessListener")
+//            }
     }
 
     private fun insertDataToDataBase() {
