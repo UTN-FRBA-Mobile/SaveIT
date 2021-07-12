@@ -133,12 +133,10 @@ class AgregarMovimientosFragment : Fragment() {
                     ) == PackageManager.PERMISSION_GRANTED -> {
                         System.out.println("#####################################PASO POR WHEN TENGO PERMISO BUSCO UBICACION")
                         obtenerUbicacionActual();
-                        System.out.println("#####################################PASO POR WHEN TENGO PERMISO LLEGO UBICACION: Lat"+latitud+" Long:"+longitud)
                     }
                     shouldShowRequestPermissionRationale(
                         Manifest.permission.ACCESS_FINE_LOCATION
                     ) -> {
-                        System.out.println("#####################################PASO POR shouldShowRequestPermissionRationale AUN NO TENGO PERMISO")
                         val alertBuilder: AlertDialog.Builder =
                             AlertDialog.Builder(requireContext())
                         alertBuilder.setCancelable(true)
@@ -157,14 +155,12 @@ class AgregarMovimientosFragment : Fragment() {
 
                     }
                     else -> {
-                        System.out.println("#####################################PASO POR ELSE del WHEN PIDO PERMISO")
                         requestPermissions(
                             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
                         )
                     }
                 }
             } else {
-                System.out.println("#####################################PASO POR ELSE del IF LIMPIO UBICACION")
                 limpiarUbicacion()
             }
         }
@@ -228,22 +224,17 @@ class AgregarMovimientosFragment : Fragment() {
         permissions: Array<String>,
         grantResults: IntArray
     ) {
-        System.out.println("#####################################ENTRO EN onRequestPermissionsResult ")
         when (requestCode) {
             1 -> {
-                System.out.println("##################################### WHEN opcion 1 del onRequestPermissionsResult ")
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    System.out.println("##################################### WHEN opcion 1 primer IF del onRequestPermissionsResult ")
                     if (!(ContextCompat.checkSelfPermission(
                             requireActivity(),
                             Manifest.permission.ACCESS_FINE_LOCATION
                         ) === PackageManager.PERMISSION_GRANTED)
                     ) {
-                        System.out.println("##################################### WHEN opcion 1 segundo IF del onRequestPermissionsResult ")
                         (binding.botonUbicacion as MaterialButton).isChecked = false
                     }
                 } else {
-                    System.out.println("##################################### WHEN opcion 1 else del segundo IF del onRequestPermissionsResult ")
                     (binding.botonUbicacion as MaterialButton).isChecked = false
                 }
                 return
@@ -389,14 +380,6 @@ class AgregarMovimientosFragment : Fragment() {
         return ""
     }
 
-//    private fun tieneHardwareNecesario() = (requireActivity().packageManager.hasSystemFeature(
-//        PackageManager.FEATURE_LOCATION
-//    ) && requireActivity().packageManager.hasSystemFeature(
-//        PackageManager.FEATURE_LOCATION_GPS
-//    ) && requireActivity().packageManager.hasSystemFeature(
-//        PackageManager.FEATURE_LOCATION_NETWORK
-//    ))
-
     private fun limpiarContenidoControles() {
         iniciarCamposListaDesplegable()
         binding.grupoBotonesTipoMovimiento.clearChecked()
@@ -452,16 +435,11 @@ class AgregarMovimientosFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     private fun obtenerUbicacionActual() {
-        System.out.println("##################################### ENTRO EN obtenerUbicacionActual ")
         val currentLocationTask: Task<Location> = clienteUbicacion.getCurrentLocation(PRIORITY_HIGH_ACCURACY, tokenDeCancelacion.token)
         currentLocationTask.addOnCompleteListener { task: Task<Location> ->
-            System.out.println("##################################### ENTRO EN currentLocationTask -> addOnCompleteListener")
-            val result = if (task.isSuccessful) {
+            if (task.isSuccessful) {
                 latitud = task.result.latitude
                 longitud = task.result.longitude
-                System.out.println("##################################### Resultado Success: Lat " + latitud + " LONG: " + longitud)
-//                val result: Location = task.result
-//                "Location (success): ${result.latitude}, ${result.longitude}"
             } else {
                 val exception = task.exception
                 "Location (failure): $exception"
@@ -472,17 +450,6 @@ class AgregarMovimientosFragment : Fragment() {
                 ).show()
             }
         }
-//        clienteUbicacion.lastLocation
-//            .addOnSuccessListener { u ->
-//                System.out.println("##################################### ENTRO EN obtenerUbicacionActual -> addOnSuccessListener")
-//                if (u != null) {
-//                    System.out.println("##################################### ENTRO EN obtenerUbicacionActual -> addOnSuccessListener -> IF")
-//                    System.out.println("##################################### UBICION NO ES NULA: Lat "+u.latitude+" LONG: "+u.longitude)
-//                    latitud = u.latitude
-//                    longitud = u.longitude
-//                }
-//                System.out.println("##################################### ENTRO EN obtenerUbicacionActual -> FUERA addOnSuccessListener")
-//            }
     }
 
     private fun insertDataToDataBase() {
