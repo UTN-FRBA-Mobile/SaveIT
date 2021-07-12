@@ -55,7 +55,7 @@ class AhorroFragment: Fragment() {
             if (monto >= 0)
                 binding.montoTotal.text = "Total: + \$" + monto
             else
-                binding.montoTotal.text = "Total: - \$" + monto
+                binding.montoTotal.text = "Total: - \$" + monto * -1
         })
 
         loadYearsAndMonths()
@@ -77,18 +77,18 @@ class AhorroFragment: Fragment() {
                     hasta = getLastDayOfMonth(Integer.parseInt(anio), Meses.getByDescripcion("Diciembre"))
                 }
 
-                mMovimientoViewModel.readAhorrosBetween(desde, hasta).observe(viewLifecycleOwner, Observer { user ->
-                    if (user.size == 0)
+                mMovimientoViewModel.readAhorrosBetween(desde, hasta).observe(viewLifecycleOwner, Observer { ahorro ->
+                    if (ahorro.size == 0)
                         Toast.makeText(requireContext(), "No hay ahorros cargados", Toast.LENGTH_LONG).show()
 
-                    adapter.setData(user)
+                    adapter.setData(ahorro)
 
                     val monto = adapter.getMontoTotal()
 
                     if (monto >= 0)
                         binding.montoTotal.text = "Total: + \$" + monto
                     else
-                        binding.montoTotal.text = "Total: - \$" + monto
+                        binding.montoTotal.text = "Total: - \$" + monto * -1
                 })
             }
             else {

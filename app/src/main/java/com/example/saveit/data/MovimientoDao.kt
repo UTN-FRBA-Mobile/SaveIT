@@ -31,6 +31,9 @@ interface MovimientoDao {
     @Query("SELECT SUM(monto) FROM movimiento_table WHERE tipoMovimiento = 1 AND fecha BETWEEN :desde AND :hasta")
     fun readGastos(desde: Long, hasta: Long): LiveData<Double>
 
+    @Query("SELECT cotizacionDolar FROM movimiento_table WHERE moneda = 2 ORDER BY fecha DESC LIMIT 1")
+    fun readUltimaCotizacion(): LiveData<Double>
+
     @Query("SELECT strftime('%s', strftime('%Y-%m-%d', datetime(fecha/1000, 'unixepoch'))) as Day, SUM(monto) as Value, moneda as Moneda, cotizacionDolar as CotizacionDolar " +
             "FROM movimiento_table " +
             "WHERE categoria = :categoria " +
