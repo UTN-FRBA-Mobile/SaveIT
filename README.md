@@ -130,14 +130,3 @@ Se pueden crear movimientos por comando de voz utilizando el asistente de Google
 
 [Volver Arriba](#saveit)
 
-
-<br>
-
-# WIP
-
-Configurar el almacenamiento de los datos en una ruta donde el backup alcance esos datos.
-
-Google Assistant: Permitir dar de alta un ingreso mediante google assistant, por ejemplo “OK Google, registra un gasto de $X en Y medio de pago en Z categoría
-
-Consultar almacenamiento de perfiles y datos de usuarios -> Local?
-=> SI, asegurarse que se backupee la informacion
