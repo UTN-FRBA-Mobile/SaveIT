@@ -18,6 +18,8 @@ class MovimientoRepository(private val movimientoDao: MovimientoDao) {
 
     fun readGastos(desde: Long, hasta: Long): LiveData<Double> = movimientoDao.readGastos(desde, hasta)
 
+    fun readUltimaCotizacion(): LiveData<Double> = movimientoDao.readUltimaCotizacion()
+
     fun readSpecificTimeDataCategoryPayment(categoria: Int, medioPago: Int, tipoMovimiento: Int, desde: String):
             LiveData<List<ResultadoReporte>> = movimientoDao.readSpecificTimeDataCategoryPayment(categoria, medioPago, tipoMovimiento, desde)
 

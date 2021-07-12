@@ -200,7 +200,14 @@ class AgregarMovimientosFragment : Fragment() {
             override fun onResponse(call: Call<Respuesta>, response: Response<Respuesta>) {
                 when {
                     response.raw().code() != 200 -> {
-                        cotizacionDolar = 95.0 //fallback value in case api fails //should be replaced by a secondary api
+                        mMovimientoViewModel.readUltimaCotizacion().observe(viewLifecycleOwner, { cotizacion ->
+                            if (cotizacion != null) {
+                                cotizacionDolar = cotizacion
+                            }
+                            else {
+                                cotizacionDolar = 95.0
+                            }
+                        })
                     }
                     response.raw().code() == 200 -> {
                         cotizacionDolar = response.body()!!.USD_ARS

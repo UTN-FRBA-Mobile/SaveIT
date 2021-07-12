@@ -97,6 +97,9 @@ Tenemos que elegir Año y Mes para mostrar la ubicación de los movimientos real
 ### Ahorros
 En esta pantalla podemos ver el reporte desde el punto de vista de nuestros ahorros y como se van acumulando.
 
+![image](https://user-images.githubusercontent.com/20273903/125214707-d9aa9280-e28e-11eb-9c4b-775f0a135f6d.png)
+
+
 Es importante destacar que en esta vista se verá como Ingreso (Verde), todo lo que en mis movimientos marque como Egreso y Ahorro.  
 
 Lo mismo sucede a la inversa, en esta vista, se verá como Egreso (Rojo), todo lo que en mis movimientos marque como Ingreso y Ahorro.
@@ -115,7 +118,7 @@ La información desde el punto de vista del flujo económico se ve reflejada en 
 <a name="ingresoporvoz"/>
 
 ### Ingreso por Voz
-xxxxxxxxxxxxxxxxxxx
+Se pueden crear movimientos por comando de voz utilizando el asistente de Google.
 
 [Volver Arriba](#saveit)
 
