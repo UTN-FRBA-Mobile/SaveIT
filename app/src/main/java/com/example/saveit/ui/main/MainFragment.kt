@@ -135,7 +135,13 @@ class MainFragment: Fragment() {
                             else 0.0}.sum()
                     }
                     ahorrosDisplay = String.format("%.2f", actualSavings).toDouble()
-                    binding.textViewMontoAhorros.text = "+ \$" + ahorrosDisplay
+
+                    when {
+                        ahorrosDisplay >= 0 -> binding.textViewMontoAhorros.text = "+ \$" + ahorrosDisplay
+                        ahorrosDisplay < 0 -> binding.textViewMontoAhorros.text = "- \$" + ahorrosDisplay * -1
+                    }
+
+
                 })
             })
         })
