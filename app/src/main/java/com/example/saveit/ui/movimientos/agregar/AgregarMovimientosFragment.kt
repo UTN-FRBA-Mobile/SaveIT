@@ -131,7 +131,6 @@ class AgregarMovimientosFragment : Fragment() {
                         requireActivity(),
                         Manifest.permission.ACCESS_FINE_LOCATION
                     ) == PackageManager.PERMISSION_GRANTED -> {
-                        System.out.println("#####################################PASO POR WHEN TENGO PERMISO BUSCO UBICACION")
                         obtenerUbicacionActual();
                     }
                     shouldShowRequestPermissionRationale(
@@ -164,9 +163,6 @@ class AgregarMovimientosFragment : Fragment() {
                 limpiarUbicacion()
             }
         }
-//        if (!tieneHardwareNecesario()) {
-//            binding.botonUbicacion.visibility = View.GONE //TODO: PRobar y mejorar la vista
-//        }
 
         return binding.root
     }
@@ -452,7 +448,7 @@ class AgregarMovimientosFragment : Fragment() {
                 "Location (failure): $exception"
                 Toast.makeText(
                     requireContext(),
-                    "No se pudo obtener la ubicación, $exception",
+                    "No se pudo obtener la ubicación.",
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -469,6 +465,8 @@ class AgregarMovimientosFragment : Fragment() {
 
             if (fragmentPrevioEsListaMovimientos()) {
                 id = args.currentMovimiento.id
+                latitud = args.currentMovimiento.latitud
+                longitud = args.currentMovimiento.longitud
                 cotizacionDolar = args.currentMovimiento.cotizacionDolar
             } else {
                 id = 0
@@ -578,6 +576,7 @@ class AgregarMovimientosFragment : Fragment() {
         }
         if (fragmentPrevioEsListaMovimientos()) {
             binding.moneda.isEnabled = false
+            binding.botonUbicacion.isEnabled = false
         }
     }
 
